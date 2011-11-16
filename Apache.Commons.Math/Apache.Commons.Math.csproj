@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{720683C9-4E3C-4FD3-88D6-E2BC5921D029}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Apache.Commons.Math</RootNamespace>
+    <AssemblyName>Apache.Commons.Math</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\ConvergenceException.cs" />
+    <Compile Include="Exceptions\DimensionMismatchException.cs" />
+    <Compile Include="Exceptions\MathArgumentException.cs" />
+    <Compile Include="Exceptions\MathArithmeticException.cs" />
+    <Compile Include="Exceptions\MathIllegalNumberException.cs" />
+    <Compile Include="Exceptions\MathIllegalStateException.cs" />
+    <Compile Include="Exceptions\MathInternalError.cs" />
+    <Compile Include="Exceptions\MathParseException.cs" />
+    <Compile Include="Exceptions\MathNotSupportedException.cs" />
+    <Compile Include="Exceptions\MaxCountExceededException.cs" />
+    <Compile Include="Exceptions\TooManyEvaluationsException.cs" />
+    <Compile Include="Exceptions\Util\ArgUtils.cs" />
+    <Compile Include="Exceptions\Util\LocalizedFormat.cs" />
+    <Compile Include="Exceptions\Util\DummyLocalizable.cs" />
+    <Compile Include="Exceptions\Util\ExceptionContext.cs" />
+    <Compile Include="Exceptions\Util\IExceptionContextProvider.cs" />
+    <Compile Include="Exceptions\Util\ILocalizable.cs" />
+    <Compile Include="Exceptions\ZeroException.cs" />
+    <Compile Include="MathException.cs" />
+    <Compile Include="Exceptions\Util\LocalizedFormats.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedFormats.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Exceptions\Util\LocalizedFormats.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizedFormats.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
