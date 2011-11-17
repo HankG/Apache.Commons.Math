@@ -69,6 +69,8 @@
     <Compile Include="Exceptions\Util\IExceptionContextProvider.cs" />
     <Compile Include="Exceptions\Util\ILocalizable.cs" />
     <Compile Include="Exceptions\ZeroException.cs" />
+    <Compile Include="IField.cs" />
+    <Compile Include="IFieldElement.cs" />
     <Compile Include="MathException.cs" />
     <Compile Include="Exceptions\Util\LocalizedFormats.Designer.cs">
       <AutoGen>True</AutoGen>
