@@ -41,6 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\ConvergenceException.cs" />
+    <Compile Include="Exceptions\NonMonotonicSequenceException.cs" />
+    <Compile Include="Exceptions\NotFiniteNumberException.cs" />
+    <Compile Include="Exceptions\NotPositiveException.cs" />
+    <Compile Include="Exceptions\NotStrictlyPositiveException.cs" />
+    <Compile Include="Exceptions\NullArgumentException.cs" />
+    <Compile Include="Exceptions\NumberIsTooLargeException.cs" />
     <Compile Include="Exceptions\DimensionMismatchException.cs" />
     <Compile Include="Exceptions\MathArgumentException.cs" />
     <Compile Include="Exceptions\MathArithmeticException.cs" />
@@ -50,6 +56,11 @@
     <Compile Include="Exceptions\MathParseException.cs" />
     <Compile Include="Exceptions\MathNotSupportedException.cs" />
     <Compile Include="Exceptions\MaxCountExceededException.cs" />
+    <Compile Include="Exceptions\MultiDimensionMismatchException.cs" />
+    <Compile Include="Exceptions\NoBracketingException.cs" />
+    <Compile Include="Exceptions\NoDataException.cs" />
+    <Compile Include="Exceptions\NumberIsTooSmallException.cs" />
+    <Compile Include="Exceptions\OutOfRangeException.cs" />
     <Compile Include="Exceptions\TooManyEvaluationsException.cs" />
     <Compile Include="Exceptions\Util\ArgUtils.cs" />
     <Compile Include="Exceptions\Util\LocalizedFormat.cs" />
@@ -65,6 +76,7 @@
       <DependentUpon>LocalizedFormats.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\OrderDirection.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormats.resx">

@@ -18,34 +18,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Apache.Commons.Math.Exceptions.Util;
 
-namespace Apache.Commons.Math.Exceptions
+namespace Apache.Commons.Math.Util
 {
     /// <summary>
-    /// Base class for exceptions raised by a wrong number.
-    /// <para>This class is not intended to be instantiated directly: it should serve as a
-    /// base class to create all the exceptions that are raised because some precondition is
-    /// violated by a number argument.</para>
+    /// Specification of ordering direction.
     /// </summary>
-    [Serializable]
-    public class MathIllegalNumberException<T>: MathArgumentException
+    public enum OrderDirection
     {
         /// <summary>
-        /// The argument.
+        /// Constant for increasing direction.
         /// </summary>
-        public T Argument { get; private set; }
-
+        Increasing,
         /// <summary>
-        /// Creates the exceptions.
+        /// Constant for decreasing direction.
         /// </summary>
-        /// <param name="pattern">The message pattern.</param>
-        /// <param name="wrong">The wrong number</param>
-        /// <param name="arguments">The arguments</param>
-        protected MathIllegalNumberException(ILocalizable pattern, T wrong, params object[] arguments):
-            base(pattern, arguments)
-        {
-            this.Argument = wrong;
-        }
+        Decreasing
     }
 }

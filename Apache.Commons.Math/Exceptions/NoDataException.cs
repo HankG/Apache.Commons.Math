@@ -23,29 +23,20 @@ using Apache.Commons.Math.Exceptions.Util;
 namespace Apache.Commons.Math.Exceptions
 {
     /// <summary>
-    /// Base class for exceptions raised by a wrong number.
-    /// <para>This class is not intended to be instantiated directly: it should serve as a
-    /// base class to create all the exceptions that are raised because some precondition is
-    /// violated by a number argument.</para>
+    /// Exception to be thrown when the required data is missing.
     /// </summary>
     [Serializable]
-    public class MathIllegalNumberException<T>: MathArgumentException
+    public class NoDataException: MathArgumentException
     {
         /// <summary>
-        /// The argument.
+        /// Default constructor.
         /// </summary>
-        public T Argument { get; private set; }
+        public NoDataException() : this(LocalizedFormat.NO_DATA) { }
 
         /// <summary>
-        /// Creates the exceptions.
+        /// Construct the exception with a specific context.
         /// </summary>
-        /// <param name="pattern">The message pattern.</param>
-        /// <param name="wrong">The wrong number</param>
-        /// <param name="arguments">The arguments</param>
-        protected MathIllegalNumberException(ILocalizable pattern, T wrong, params object[] arguments):
-            base(pattern, arguments)
-        {
-            this.Argument = wrong;
-        }
+        /// <param name="specific">Contextual information on what caused the exception.</param>
+        public NoDataException(ILocalizable specific) : base(specific) { }
     }
 }

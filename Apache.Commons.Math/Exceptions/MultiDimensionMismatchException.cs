@@ -23,32 +23,39 @@ using Apache.Commons.Math.Exceptions.Util;
 namespace Apache.Commons.Math.Exceptions
 {
     /// <summary>
-    /// Exception to be thrown when two dimensions differ.
+    /// Exception thrown when two sets of dimensions differ.
     /// </summary>
     [Serializable]
-    public class DimensionMismatchException: MathIllegalNumberException<int>
+    public class MultiDimensionMismatchException: MathArgumentException
     {
         /// <summary>
-        /// Correct dimension.
+        /// Wrong dimensions.
         /// </summary>
-        public int Dimension { get; private set; }
+        public int[] WrongDimensions { get; private set; }
+        /// <summary>
+        /// Correct dimensions.
+        /// </summary>
+        public int[] ExpectedDimensions { get; private set; }
+
+        /// <summary>
+        /// Constructs an exception from the mismatched dimensions.
+        /// </summary>
+        /// <param name="wrong">Wrong dimensions.</param>
+        /// <param name="expected">Expected dimensions.</param>
+        public MultiDimensionMismatchException(int[] wrong, int[] expected) :
+            this(LocalizedFormat.DIMENSIONS_MISMATCH, wrong, expected) { }
 
         /// <summary>
         /// Construct an exception from the mismatched dimensions.
         /// </summary>
-        /// <param name="specific">Specific context information pattern.</param>
-        /// <param name="wrong">Wrong dimension.</param>
-        /// <param name="expected">Expected dimension.</param>
-        public DimensionMismatchException(ILocalizable specific, int wrong, int expected): base(specific, wrong, expected)
+        /// <param name="specific">Message pattern providing the specific context of the error.</param>
+        /// <param name="wrong">Wrong dimensions.</param>
+        /// <param name="expected">Expected dimensions.</param>
+        public MultiDimensionMismatchException(ILocalizable specific, int[] wrong, int[] expected):
+            base(specific, wrong, expected)
         {
-            this.Dimension = expected;
+            this.WrongDimensions = wrong.Clone() as int[];
+            this.ExpectedDimensions = expected.Clone() as int[];
         }
-
-        /// <summary>
-        /// Construct an exception from the mismatched dimensions.
-        /// </summary>
-        /// <param name="wrong">Wrong dimension.</param>
-        /// <param name="expected">Expected dimension.</param>
-        public DimensionMismatchException(int wrong, int expected) : this(LocalizedFormat.DIMENSIONS_MISMATCH_SIMPLE, wrong, expected) { }
     }
 }

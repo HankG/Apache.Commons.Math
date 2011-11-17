@@ -23,32 +23,41 @@ using Apache.Commons.Math.Exceptions.Util;
 namespace Apache.Commons.Math.Exceptions
 {
     /// <summary>
-    /// Exception to be thrown when some counter maximum value is exceeded.
+    /// Exception to be thrown when some argument is out of range.
     /// </summary>
     [Serializable]
-    public class MaxCountExceededException: MathIllegalStateException
+    public class OutOfRangeException<T>: MathIllegalNumberException<T>
     {
         /// <summary>
-        /// Maximum number of evaluations.
+        /// The lower bound.
         /// </summary>
-        public long Max { get; private set; }
+        public T Lo { get; private set; }
+        
+        /// <summary>
+        /// The higher bound.
+        /// </summary>
+        public T Hi { get; private set; }
 
         /// <summary>
-        /// Construct the exception.
+        /// Construct an exception from the mismatched data.
         /// </summary>
-        /// <param name="max">The maximum.</param>
-        public MaxCountExceededException(int max) : this(LocalizedFormat.MAX_COUNT_EXCEEDED, max) { }
+        /// <param name="wrong">The wrong value</param>
+        /// <param name="lo">Lower bound</param>
+        /// <param name="hi">Higher bound</param>
+        public OutOfRangeException(T wrong, T lo, T hi) : this(LocalizedFormat.OUT_OF_RANGE_SIMPLE, wrong, lo, hi) { }
 
         /// <summary>
-        /// Construct the exception with a specific context.
+        /// Construct an exception from the mismatched dimensions with a specific context information.
         /// </summary>
-        /// <param name="specific">Specific context pattern.</param>
-        /// <param name="max">The maximum</param>
-        /// <param name="args">Additional arguments.</param>
-        public MaxCountExceededException(ILocalizable specific, int max, params object[] args)
+        /// <param name="specific">Context information.</param>
+        /// <param name="wrong">Requested value.</param>
+        /// <param name="lo">Lower bound.</param>
+        /// <param name="hi">Higher bound.</param>
+        public OutOfRangeException(ILocalizable specific, T wrong, T lo, T hi):
+            base(specific, wrong, lo, hi)
         {
-            Context.AddMessage(specific, max, args);
-            this.Max = max;
+            this.Lo = lo;
+            this.Hi = hi;
         }
     }
 }

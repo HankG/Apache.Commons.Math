@@ -23,32 +23,42 @@ using Apache.Commons.Math.Exceptions.Util;
 namespace Apache.Commons.Math.Exceptions
 {
     /// <summary>
-    /// Exception to be thrown when some counter maximum value is exceeded.
+    /// Exception to be thrown when a number is too small.
     /// </summary>
     [Serializable]
-    public class MaxCountExceededException: MathIllegalStateException
+    public class NumberIsTooLargeException<T>: MathIllegalNumberException<T>
     {
         /// <summary>
-        /// Maximum number of evaluations.
+        /// Higher bound.
         /// </summary>
-        public long Max { get; private set; }
+        public T Max { get; private set;}
+        /// <summary>
+        /// Whether the maximum is included in the allowed range.
+        /// </summary>
+        public bool BoundIsAllowed { get; private set; }
 
         /// <summary>
         /// Construct the exception.
         /// </summary>
-        /// <param name="max">The maximum.</param>
-        public MaxCountExceededException(int max) : this(LocalizedFormat.MAX_COUNT_EXCEEDED, max) { }
+        /// <param name="wrong">The wrong value.</param>
+        /// <param name="max">The maximum value</param>
+        /// <param name="boundIsAllowed">Whether <paramref name="max"/> is included in the allowed range.</param>
+        public NumberIsTooLargeException(T wrong, T max, bool boundIsAllowed) :
+            this(boundIsAllowed ? LocalizedFormat.NUMBER_TOO_LARGE : LocalizedFormat.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
+             wrong, max, boundIsAllowed) { }
 
         /// <summary>
         /// Construct the exception with a specific context.
         /// </summary>
-        /// <param name="specific">Specific context pattern.</param>
-        /// <param name="max">The maximum</param>
-        /// <param name="args">Additional arguments.</param>
-        public MaxCountExceededException(ILocalizable specific, int max, params object[] args)
+        /// <param name="specific">Specific context.</param>
+        /// <param name="wrong">The wrong value.</param>
+        /// <param name="max">The maximum value.</param>
+        /// <param name="boundIsAllowed">Whether <paramref name="max"/> is included in the allowed range.</param>
+        public NumberIsTooLargeException(ILocalizable specific, T wrong, T max, bool boundIsAllowed):
+            base(specific, wrong, max)
         {
-            Context.AddMessage(specific, max, args);
             this.Max = max;
+            this.BoundIsAllowed = boundIsAllowed;
         }
     }
 }
