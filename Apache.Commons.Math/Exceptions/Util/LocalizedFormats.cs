@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Apache.Commons.Math.Exceptions.Util
 {
-    public class LocalizedFormats: ILocalizable
+    public class LocalizedFormat: ILocalizable
     {
-        public static readonly LocalizedFormats ARGUMENT_OUTSIDE_DOMAIN = new LocalizedFormat("Argument {0} outside domain [{1} ; {2}]");
+        public static readonly LocalizedFormat ARGUMENT_OUTSIDE_DOMAIN = new LocalizedFormat("Argument {0} outside domain [{1} ; {2}]");
         public static readonly LocalizedFormat ARRAY_SIZE_EXCEEDS_MAX_VARIABLES = new LocalizedFormat("array size cannot be greater than {0}");
         public static readonly LocalizedFormat ARRAY_SIZES_SHOULD_HAVE_DIFFERENCE_1 = new LocalizedFormat("array sizes should have difference 1 ({0} != {1} + 1)");
         public static readonly LocalizedFormat ARRAY_SUMS_TO_ZERO = new LocalizedFormat("array sums to zero");
@@ -322,7 +322,7 @@ namespace Apache.Commons.Math.Exceptions.Util
         /// Simple constructor.
         /// </summary>
         /// <param name="sourceFormat">The english format to use when no localized version is available.</param>
-        private LocalizedFormats(string sourceFormat)
+        private LocalizedFormat(string sourceFormat)
         {
             this.sourceFormat = sourceFormat;
         }
@@ -334,7 +334,7 @@ namespace Apache.Commons.Math.Exceptions.Util
 
         public string GetLocalizedString(System.Globalization.CultureInfo cultureInfo)
         {
-            return LocalizedFormat.ResourceManager.GetString(sourceFormat, cultureInfo);
+            return LocalizedFormats.ResourceManager.GetString(sourceFormat, cultureInfo);
         }
     }
 }
