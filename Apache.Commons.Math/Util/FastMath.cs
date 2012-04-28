@@ -66,19 +66,19 @@ namespace Apache.Commons.Math.Util
 	public class FastMath {
 	
 	    /** Archimede's constant PI, ratio of circle circumference to diameter. */
-	    public static final double PI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;
+	    public static readonly double PI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;
 	
 	    /** Napier's constant e, base of the natural logarithm. */
-	    public static final double E = 2850325.0 / 1048576.0 + 8.254840070411028747e-8;
+	    public static readonly double E = 2850325.0 / 1048576.0 + 8.254840070411028747e-8;
 	
 	    /** Index of exp(0) in the array of integer exponentials. */
-	    static final int EXP_INT_TABLE_MAX_INDEX = 750;
+	    static readonly int EXP_INT_TABLE_MAX_INDEX = 750;
 	    /** Length of the array of integer exponentials. */
-	    static final int EXP_INT_TABLE_LEN = EXP_INT_TABLE_MAX_INDEX * 2;
+	    static readonly int EXP_INT_TABLE_LEN = EXP_INT_TABLE_MAX_INDEX * 2;
 	    /** Logarithm table length. */
-	    static final int LN_MANT_LEN = 1024;
+	    static readonly int LN_MANT_LEN = 1024;
 	    /** Exponential fractions table length. */
-	    static final int EXP_FRAC_TABLE_LEN = 1025; // 0, 1/1024, ... 1024/1024
+	    static readonly int EXP_FRAC_TABLE_LEN = 1025; // 0, 1/1024, ... 1024/1024
 	
 	    /** Indicator for tables initialization.
 	     * <p>
@@ -87,16 +87,16 @@ namespace Apache.Commons.Math.Util
 	     * already computed ones provided as literal arrays below.
 	     * </p>
 	     */
-	    private static final boolean RECOMPUTE_TABLES_AT_RUNTIME = false;
+	    private static readonly bool RECOMPUTE_TABLES_AT_RUNTIME = false;
 	
 	    /** log(2) (high bits). */
-	    private static final double LN_2_A = 0.693147063255310059;
+	    private static readonly double LN_2_A = 0.693147063255310059;
 	
 	    /** log(2) (low bits). */
-	    private static final double LN_2_B = 1.17304635250823482e-7;
+	    private static readonly double LN_2_B = 1.17304635250823482e-7;
 	
 	    /** Coefficients for log, when input 0.99 < x < 1.01. */
-	    private static final double LN_QUICK_COEF[][] = {
+	    private static readonly double[][] LN_QUICK_COEF = {
 	        {1.0, 5.669184079525E-24},
 	        {-0.25, -0.25},
 	        {0.3333333134651184, 1.986821492305628E-8},
@@ -109,7 +109,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Coefficients for log in the range of 1.0 < x < 1.0 + 2^-10. */
-	    private static final double LN_HI_PREC_COEF[][] = {
+	    private static readonly double[][] LN_HI_PREC_COEF = {
 	        {1.0, -6.032174644509064E-23},
 	        {-0.25, -0.25},
 	        {0.3333333134651184, 1.9868161777724352E-8},
@@ -119,10 +119,10 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Sine, Cosine, Tangent tables are for 0, 1/8, 2/8, ... 13/8 = PI/2 approx. */
-	    private static final int SINE_TABLE_LEN = 14;
+	    private static readonly int SINE_TABLE_LEN = 14;
 	
 	    /** Sine table (high bits). */
-	    private static final double SINE_TABLE_A[] =
+	    private static readonly double[] SINE_TABLE_A =
 	        {
 	        +0.0d,
 	        +0.1246747374534607d,
@@ -141,7 +141,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Sine table (low bits). */
-	    private static final double SINE_TABLE_B[] =
+	    private static readonly double[] SINE_TABLE_B =
 	        {
 	        +0.0d,
 	        -4.068233003401932E-9d,
@@ -160,7 +160,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Cosine table (high bits). */
-	    private static final double COSINE_TABLE_A[] =
+	    private static readonly double[] COSINE_TABLE_A =
 	        {
 	        +1.0d,
 	        +0.9921976327896118d,
@@ -179,7 +179,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Cosine table (low bits). */
-	    private static final double COSINE_TABLE_B[] =
+	    private static readonly double COSINE_TABLE_B =
 	        {
 	        +0.0d,
 	        +3.4439717236742845E-8d,
@@ -199,7 +199,7 @@ namespace Apache.Commons.Math.Util
 	
 	
 	    /** Tangent table, used by atan() (high bits). */
-	    private static final double TANGENT_TABLE_A[] =
+	    private static readonly double[] TANGENT_TABLE_A =
 	        {
 	        +0.0d,
 	        +0.1256551444530487d,
@@ -218,7 +218,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Tangent table, used by atan() (low bits). */
-	    private static final double TANGENT_TABLE_B[] =
+	    private static readonly double[] TANGENT_TABLE_B =
 	        {
 	        +0.0d,
 	        -7.877917738262007E-9d,
@@ -237,7 +237,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Bits of 1/(2*pi), need for reducePayneHanek(). */
-	    private static final long RECIP_2PI[] = new long[] {
+	    private static readonly long[] RECIP_2PI = {
 	        (0x28be60dbL << 32) | 0x9391054aL,
 	        (0x7f09d5f4L << 32) | 0x7d4d3770L,
 	        (0x36d8a566L << 32) | 0x4f10e410L,
@@ -258,7 +258,7 @@ namespace Apache.Commons.Math.Util
 	         0x9afed7ecL << 32  };
 	
 	    /** Bits of pi/4, need for reducePayneHanek(). */
-	    private static final long PI_O_4_BITS[] = new long[] {
+	    private static readonly long[] PI_O_4_BITS = new long[] {
 	        (0xc90fdaa2L << 32) | 0x2168c234L,
 	        (0xc4c6628bL << 32) | 0x80dc1cd1L };
 	
@@ -266,10 +266,10 @@ namespace Apache.Commons.Math.Util
 	     * This is used by sinQ, because its faster to do a table lookup than
 	     * a multiply in this time-critical routine
 	     */
-	    private static final double EIGHTHS[] = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};
+	    private static readonly double[] EIGHTHS = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};
 	
 	    /** Table of 2^((n+2)/3) */
-	    private static final double CBRTTWO[] = { 0.6299605249474366,
+	    private static readonly double[] CBRTTWO = { 0.6299605249474366,
 	                                            0.7937005259840998,
 	                                            1.0,
 	                                            1.2599210498948732,
@@ -286,48 +286,48 @@ namespace Apache.Commons.Math.Util
 	     * 0x40000000 - used to split a double into two parts, both with the low order bits cleared.
 	     * Equivalent to 2^30.
 	     */
-	    private static final long HEX_40000000 = 0x40000000L; // 1073741824L
+	    private static readonly long HEX_40000000 = 0x40000000L; // 1073741824L
 	
 	    /** Mask used to clear low order 30 bits */
-	    private static final long MASK_30BITS = -1L - (HEX_40000000 -1); // 0xFFFFFFFFC0000000L;
+	    private static readonly long MASK_30BITS = -1L - (HEX_40000000 -1); // 0xFFFFFFFFC0000000L;
 	
 	    /** 2^52 - double numbers this large must be integral (no fraction) or NaN or Infinite */
-	    private static final double TWO_POWER_52 = 4503599627370496.0;
+	    private static readonly double TWO_POWER_52 = 4503599627370496.0;
 	
 	    /** Constant: {@value}. */
-	    private static final double F_1_3 = 1d / 3d;
+	    private static readonly double F_1_3 = 1d / 3d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_5 = 1d / 5d;
+	    private static readonly double F_1_5 = 1d / 5d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_7 = 1d / 7d;
+	    private static readonly double F_1_7 = 1d / 7d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_9 = 1d / 9d;
+	    private static readonly double F_1_9 = 1d / 9d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_11 = 1d / 11d;
+	    private static readonly double F_1_11 = 1d / 11d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_13 = 1d / 13d;
+	    private static readonly double F_1_13 = 1d / 13d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_15 = 1d / 15d;
+	    private static readonly double F_1_15 = 1d / 15d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_17 = 1d / 17d;
+	    private static readonly double F_1_17 = 1d / 17d;
 	    /** Constant: {@value}. */
-	    private static final double F_3_4 = 3d / 4d;
+	    private static readonly double F_3_4 = 3d / 4d;
 	    /** Constant: {@value}. */
-	    private static final double F_15_16 = 15d / 16d;
+	    private static readonly double F_15_16 = 15d / 16d;
 	    /** Constant: {@value}. */
-	    private static final double F_13_14 = 13d / 14d;
+	    private static readonly double F_13_14 = 13d / 14d;
 	    /** Constant: {@value}. */
-	    private static final double F_11_12 = 11d / 12d;
+	    private static readonly double F_11_12 = 11d / 12d;
 	    /** Constant: {@value}. */
-	    private static final double F_9_10 = 9d / 10d;
+	    private static readonly double F_9_10 = 9d / 10d;
 	    /** Constant: {@value}. */
-	    private static final double F_7_8 = 7d / 8d;
+	    private static readonly double F_7_8 = 7d / 8d;
 	    /** Constant: {@value}. */
-	    private static final double F_5_6 = 5d / 6d;
+	    private static readonly double F_5_6 = 5d / 6d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_2 = 1d / 2d;
+	    private static readonly double F_1_2 = 1d / 2d;
 	    /** Constant: {@value}. */
-	    private static final double F_1_4 = 1d / 4d;
+	    private static readonly double F_1_4 = 1d / 4d;
 	
 	    /**
 	     * Private Constructor
@@ -357,7 +357,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number on which evaluation is done
 	     * @return square root of a
 	     */
-	    public static double sqrt(final double a) {
+	    public static double sqrt(double a) {
 	        return Math.sqrt(a);
 	    }
 	
@@ -383,7 +383,7 @@ namespace Apache.Commons.Math.Util
 	          return exp(-x)/2.0;
 	      }
 	
-	      double hiPrec[] = new double[2];
+	      double[] hiPrec = new double[2];
 	      if (x < 0.0) {
 	          x = -x;
 	      }
@@ -455,7 +455,7 @@ namespace Apache.Commons.Math.Util
 	      double result;
 	
 	      if (x > 0.25) {
-	          double hiPrec[] = new double[2];
+	          double[] hiPrec = new double[2];
 	          exp(x, 0.0, hiPrec);
 	
 	          double ya = hiPrec[0] + hiPrec[1];
@@ -491,7 +491,7 @@ namespace Apache.Commons.Math.Util
 	          result *= 0.5;
 	      }
 	      else {
-	          double hiPrec[] = new double[2];
+	          double[] hiPrec = new double[2];
 	          expm1(x, hiPrec);
 	
 	          double ya = hiPrec[0] + hiPrec[1];
@@ -571,7 +571,7 @@ namespace Apache.Commons.Math.Util
 	
 	      double result;
 	      if (x >= 0.5) {
-	          double hiPrec[] = new double[2];
+	          double[] hiPrec = new double[2];
 	          // tanh(x) = (exp(2x) - 1) / (exp(2x) + 1)
 	          exp(x*2.0, 0.0, hiPrec);
 	
@@ -613,7 +613,7 @@ namespace Apache.Commons.Math.Util
 	          result = ratioa + ratiob;
 	      }
 	      else {
-	          double hiPrec[] = new double[2];
+	          double[] hiPrec = new double[2];
 	          // tanh(x) = expm1(2x) / (expm1(2x) + 2)
 	          expm1(x*2.0, hiPrec);
 	
@@ -663,7 +663,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number on which evaluation is done
 	     * @return inverse hyperbolic cosine of a
 	     */
-	    public static double acosh(final double a) {
+	    public static double acosh(double a) {
 	        return FastMath.log(a + FastMath.sqrt(a * a - 1));
 	    }
 	
@@ -682,7 +682,7 @@ namespace Apache.Commons.Math.Util
 	        if (a > 0.167) {
 	            absAsinh = FastMath.log(FastMath.sqrt(a * a + 1) + a);
 	        } else {
-	            final double a2 = a * a;
+	            double a2 = a * a;
 	            if (a > 0.097) {
 	                absAsinh = a * (1 - a2 * (F_1_3 - a2 * (F_1_5 - a2 * (F_1_7 - a2 * (F_1_9 - a2 * (F_1_11 - a2 * (F_1_13 - a2 * (F_1_15 - a2 * F_1_17 * F_15_16) * F_13_14) * F_11_12) * F_9_10) * F_7_8) * F_5_6) * F_3_4) * F_1_2);
 	            } else if (a > 0.036) {
@@ -712,7 +712,7 @@ namespace Apache.Commons.Math.Util
 	        if (a > 0.15) {
 	            absAtanh = 0.5 * FastMath.log((1 + a) / (1 - a));
 	        } else {
-	            final double a2 = a * a;
+	            double a2 = a * a;
 	            if (a > 0.087) {
 	                absAtanh = a * (1 + a2 * (F_1_3 + a2 * (F_1_5 + a2 * (F_1_7 + a2 * (F_1_9 + a2 * (F_1_11 + a2 * (F_1_13 + a2 * (F_1_15 + a2 * F_1_17))))))));
 	            } else if (a > 0.031) {
@@ -732,7 +732,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number on which evaluation is done
 	     * @return -1.0, -0.0, +0.0, +1.0 or NaN depending on sign of a
 	     */
-	    public static double signum(final double a) {
+	    public static double signum(double a) {
 	        return (a < 0.0) ? -1.0 : ((a > 0.0) ? 1.0 : a); // return +0.0/-0.0/NaN depending on a
 	    }
 	
@@ -741,7 +741,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number on which evaluation is done
 	     * @return -1.0, -0.0, +0.0, +1.0 or NaN depending on sign of a
 	     */
-	    public static float signum(final float a) {
+	    public static float signum(float a) {
 	        return (a < 0.0f) ? -1.0f : ((a > 0.0f) ? 1.0f : a); // return +0.0/-0.0/NaN depending on a
 	    }
 	
@@ -749,7 +749,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number to which neighbor should be computed
 	     * @return neighbor of a towards positive infinity
 	     */
-	    public static double nextUp(final double a) {
+	    public static double nextUp(double a) {
 	        return nextAfter(a, Double.POSITIVE_INFINITY);
 	    }
 	
@@ -757,7 +757,7 @@ namespace Apache.Commons.Math.Util
 	     * @param a number to which neighbor should be computed
 	     * @return neighbor of a towards positive infinity
 	     */
-	    public static float nextUp(final float a) {
+	    public static float nextUp(float a) {
 	        return nextAfter(a, Float.POSITIVE_INFINITY);
 	    }
 	
@@ -804,6 +804,7 @@ namespace Apache.Commons.Math.Util
 	        double intPartA;
 	        double intPartB;
 	        int intVal;
+			double result;
 	
 	        /* Lookup exp(floor(x)).
 	         * intPartA will have the upper 22 bits, intPartB will have the lower
@@ -822,7 +823,7 @@ namespace Apache.Commons.Math.Util
 	
 	            if (intVal > 709) {
 	                /* This will produce a subnormal output */
-	                final double result = exp(x+40.19140625, extra, hiPrec) / 285040095144011776.0;
+	                result = exp(x+40.19140625, extra, hiPrec) / 285040095144011776.0;
 	                if (hiPrec != null) {
 	                    hiPrec[0] /= 285040095144011776.0;
 	                    hiPrec[1] /= 285040095144011776.0;
@@ -832,7 +833,7 @@ namespace Apache.Commons.Math.Util
 	
 	            if (intVal == 709) {
 	                /* exp(1.494140625) is nearly a machine number... */
-	                final double result = exp(x+1.494140625, extra, hiPrec) / 4.455505956692756620;
+	                result = exp(x+1.494140625, extra, hiPrec) / 4.455505956692756620;
 	                if (hiPrec != null) {
 	                    hiPrec[0] /= 4.455505956692756620;
 	                    hiPrec[1] /= 4.455505956692756620;
@@ -865,15 +866,15 @@ namespace Apache.Commons.Math.Util
 	         * x and look up the exp function of it.
 	         * fracPartA will have the upper 22 bits, fracPartB the lower 52 bits.
 	         */
-	        final int intFrac = (int) ((x - intVal) * 1024.0);
-	        final double fracPartA = ExpFracTable.EXP_FRAC_TABLE_A[intFrac];
-	        final double fracPartB = ExpFracTable.EXP_FRAC_TABLE_B[intFrac];
+	        int intFrac = (int) ((x - intVal) * 1024.0);
+	        double fracPartA = ExpFracTable.EXP_FRAC_TABLE_A[intFrac];
+	        double fracPartB = ExpFracTable.EXP_FRAC_TABLE_B[intFrac];
 	
 	        /* epsilon is the difference in x from the nearest multiple of 2^-10.  It
 	         * has a value in the range 0 <= epsilon < 2^-10.
 	         * Do the subtraction from x as the last step to avoid possible loss of percison.
 	         */
-	        final double epsilon = x - (intVal + intFrac / 1024.0);
+	        double epsilon = x - (intVal + intFrac / 1024.0);
 	
 	        /* Compute z = exp(epsilon) - 1.0 via a minimax polynomial.  z has
 	       full double precision (52 bits).  Since z < 2^-10, we will have
@@ -900,8 +901,8 @@ namespace Apache.Commons.Math.Util
 	       important.  For accuracy add by increasing size.  tempA is exact and
 	       much larger than the others.  If there are extra bits specified from the
 	       pow() function, use them. */
-	        final double tempC = tempB + tempA;
-	        final double result;
+	        double tempC = tempB + tempA;
+
 	        if (extra != 0.0) {
 	            result = tempC*extra*z + tempC*extra + tempC*z + tempB + tempA;
 	        } else {
@@ -930,7 +931,7 @@ namespace Apache.Commons.Math.Util
 	     * @param hiPrecOut receive high precision result for -1.0 < x < 1.0
 	     * @return exp(x) - 1
 	     */
-	    private static double expm1(double x, double hiPrecOut[]) {
+	    private static double expm1(double x, double[] hiPrecOut) {
 	        if (x != x || x == 0.0) { // NaN or zero
 	            return x;
 	        }
@@ -938,12 +939,12 @@ namespace Apache.Commons.Math.Util
 	        if (x <= -1.0 || x >= 1.0) {
 	            // If not between +/- 1.0
 	            //return exp(x) - 1.0;
-	            double hiPrec[] = new double[2];
+	            double[] hiPrec = new double[2];
 	            exp(x, 0.0, hiPrec);
 	            if (x > 0.0) {
 	                return -1.0 + hiPrec[0] + hiPrec[1];
 	            } else {
-	                final double ra = -1.0 + hiPrec[0];
+	                double ra = -1.0 + hiPrec[0];
 	                double rb = -(ra + 1.0 - hiPrec[0]);
 	                rb += hiPrec[1];
 	                return ra + rb;
@@ -954,6 +955,7 @@ namespace Apache.Commons.Math.Util
 	        double baseB;
 	        double epsilon;
 	        boolean negative = false;
+			double temp;
 	
 	        if (x < 0.0) {
 	            x = -x;
@@ -965,7 +967,7 @@ namespace Apache.Commons.Math.Util
 	            double tempA = ExpFracTable.EXP_FRAC_TABLE_A[intFrac] - 1.0;
 	            double tempB = ExpFracTable.EXP_FRAC_TABLE_B[intFrac];
 	
-	            double temp = tempA + tempB;
+	            temp = tempA + tempB;
 	            tempB = -(temp - tempA - tempB);
 	            tempA = temp;
 	
@@ -986,7 +988,7 @@ namespace Apache.Commons.Math.Util
 	        zb = zb * epsilon;
 	
 	        double za = epsilon;
-	        double temp = za + zb;
+	        temp = za + zb;
 	        zb = -(temp - za - zb);
 	        za = temp;
 	
@@ -1038,7 +1040,7 @@ namespace Apache.Commons.Math.Util
 	            double denomb = -(denom - 1.0 - ya) + yb;
 	            double ratio = ya * denomr;
 	            temp = ratio * HEX_40000000;
-	            final double ra = ratio + temp - temp;
+	            double ra = ratio + temp - temp;
 	            double rb = ratio - ra;
 	
 	            temp = denom * HEX_40000000;
@@ -1078,7 +1080,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x   a double
 	     * @return log(x)
 	     */
-	    public static double log(final double x) {
+	    public static double log(double x) {
 	        return log(x, null);
 	    }
 	
@@ -1088,7 +1090,7 @@ namespace Apache.Commons.Math.Util
 	     * @param hiPrec extra bits of precision on output (To Be Confirmed)
 	     * @return log(x)
 	     */
-	    private static double log(final double x, final double[] hiPrec) {
+	    private static double log(double x, double[] hiPrec) {
 	        if (x==0) { // Handle special case of +0/-0
 	            return Double.NEGATIVE_INFINITY;
 	        }
@@ -1185,7 +1187,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // lnm is a log of a number in the range of 1.0 - 2.0, so 0 <= lnm < ln(2)
-	        double lnm[] = lnMant.LN_MANT[(int)((bits & 0x000ffc0000000000L) >> 42)];
+	        double[] lnm = lnMant.LN_MANT[(int)((bits & 0x000ffc0000000000L) >> 42)];
 	
 	        /*
 	    double epsilon = x / Double.longBitsToDouble(bits & 0xfffffc0000000000L);
@@ -1314,7 +1316,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x a number
 	     * @return log(1 + x)
 	     */
-	    public static double log1p(final double x) {
+	    public static double log1p(double x) {
 	
 	        if (x == -1) {
 	            return x/0.0;   // -Infinity
@@ -1328,9 +1330,9 @@ namespace Apache.Commons.Math.Util
 	            double xpa = 1.0 + x;
 	            double xpb = -(xpa - 1.0 - x);
 	
-	            double hiPrec[] = new double[2];
+	            double[] hiPrec = new double[2];
 	
-	            final double lores = log(xpa, hiPrec);
+	            double lores = log(xpa, hiPrec);
 	            if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
 	                return lores;
 	            }
@@ -1357,20 +1359,20 @@ namespace Apache.Commons.Math.Util
 	     * @param x a number
 	     * @return log10(x)
 	     */
-	    public static double log10(final double x) {
-	        final double hiPrec[] = new double[2];
+	    public static double log10(double x) {
+	        double[] hiPrec = new double[2];
 	
-	        final double lores = log(x, hiPrec);
+	        double lores = log(x, hiPrec);
 	        if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
 	            return lores;
 	        }
 	
-	        final double tmp = hiPrec[0] * HEX_40000000;
-	        final double lna = hiPrec[0] + tmp - tmp;
-	        final double lnb = hiPrec[0] - lna + hiPrec[1];
+	        double tmp = hiPrec[0] * HEX_40000000;
+	        double lna = hiPrec[0] + tmp - tmp;
+	        double lnb = hiPrec[0] - lna + hiPrec[1];
 	
-	        final double rln10a = 0.4342944622039795;
-	        final double rln10b = 1.9699272335463627E-8;
+	        double rln10a = 0.4342944622039795;
+	        double rln10b = 1.9699272335463627E-8;
 	
 	        return rln10b * lnb + rln10b * lna + rln10a * lnb + rln10a * lna;
 	    }
@@ -1391,8 +1393,8 @@ namespace Apache.Commons.Math.Util
 	     * <code>base<sup>y</sup> = x</code>.
 	     * @since 1.2 (previously in {@code MathUtils}, moved as of version 3.0)
 	     */
-	    public static double log(double base, double x) {
-	        return log(x) / log(base);
+	    public static double log(double baseValue, double x) {
+	        return log(x) / log(baseValue);
 	    }
 	
 	    /**
@@ -1403,7 +1405,7 @@ namespace Apache.Commons.Math.Util
 	     * @return double
 	     */
 	    public static double pow(double x, double y) {
-	        final double lns[] = new double[2];
+	        double[] lns = new double[2];
 	
 	        if (y == 0.0) {
 	            return 1.0;
@@ -1517,19 +1519,21 @@ namespace Apache.Commons.Math.Util
 	        /* Split y into ya and yb such that y = ya+yb */
 	        double ya;
 	        double yb;
+			double tmp1;
+			double tmp2;
 	        if (y < 8e298 && y > -8e298) {
-	            double tmp1 = y * HEX_40000000;
+	            tmp1 = y * HEX_40000000;
 	            ya = y + tmp1 - tmp1;
 	            yb = y - ya;
 	        } else {
-	            double tmp1 = y * 9.31322574615478515625E-10;
-	            double tmp2 = tmp1 * 9.31322574615478515625E-10;
+	            tmp1 = y * 9.31322574615478515625E-10;
+	            tmp2 = tmp1 * 9.31322574615478515625E-10;
 	            ya = (tmp1 + tmp2 - tmp1) * HEX_40000000 * HEX_40000000;
 	            yb = y - ya;
 	        }
 	
 	        /* Compute ln(x) */
-	        final double lores = log(x, lns);
+	        double lores = log(x, lns);
 	        if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
 	            return lores;
 	        }
@@ -1538,14 +1542,14 @@ namespace Apache.Commons.Math.Util
 	        double lnb = lns[1];
 	
 	        /* resplit lns */
-	        double tmp1 = lna * HEX_40000000;
-	        double tmp2 = lna + tmp1 - tmp1;
+	        tmp1 = lna * HEX_40000000;
+	        tmp2 = lna + tmp1 - tmp1;
 	        lnb += lna - tmp2;
 	        lna = tmp2;
 	
 	        // y*ln(x) = (aa+ab)
-	        final double aa = lna * ya;
-	        final double ab = lna * yb + lnb * ya + lnb * yb;
+	        double aa = lna * ya;
+	        double ab = lna * yb + lnb * ya + lnb * yb;
 	
 	        lna = aa+ab;
 	        lnb = -(lna - aa - ab);
@@ -1557,7 +1561,7 @@ namespace Apache.Commons.Math.Util
 	        z = z * lnb + 1.0;
 	        z = z * lnb;
 	
-	        final double result = exp(lna, z, null);
+	        double result = exp(lna, z, null);
 	        //result = result + result * z;
 	        return result;
 	    }
@@ -1569,7 +1573,7 @@ namespace Apache.Commons.Math.Util
 	     *  @param x a number smaller than 1/16
 	     *  @return sin(x) - x
 	     */
-	    private static double polySine(final double x)
+	    private static double polySine(double x)
 	    {
 	        double x2 = x*x;
 	
@@ -1611,22 +1615,22 @@ namespace Apache.Commons.Math.Util
 	     */
 	    private static double sinQ(double xa, double xb) {
 	        int idx = (int) ((xa * 8.0) + 0.5);
-	        final double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
+	        double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
 	
 	        // Table lookups
-	        final double sintA = SINE_TABLE_A[idx];
-	        final double sintB = SINE_TABLE_B[idx];
-	        final double costA = COSINE_TABLE_A[idx];
-	        final double costB = COSINE_TABLE_B[idx];
+	        double sintA = SINE_TABLE_A[idx];
+	        double sintB = SINE_TABLE_B[idx];
+	        double costA = COSINE_TABLE_A[idx];
+	        double costB = COSINE_TABLE_B[idx];
 	
 	        // Polynomial eval of sin(epsilon), cos(epsilon)
 	        double sinEpsA = epsilon;
 	        double sinEpsB = polySine(epsilon);
-	        final double cosEpsA = 1.0;
-	        final double cosEpsB = polyCosine(epsilon);
+	        double cosEpsA = 1.0;
+	        double cosEpsB = polyCosine(epsilon);
 	
 	        // Split epsilon   xa + xb = x
-	        final double temp = sinEpsA * HEX_40000000;
+	        double temp = sinEpsA * HEX_40000000;
 	        double temp2 = (sinEpsA + temp) - temp;
 	        sinEpsB +=  sinEpsA - temp2;
 	        sinEpsA = temp2;
@@ -1734,10 +1738,10 @@ namespace Apache.Commons.Math.Util
 	     *  @return cos(xa + xb)
 	     */
 	    private static double cosQ(double xa, double xb) {
-	        final double pi2a = 1.5707963267948966;
-	        final double pi2b = 6.123233995736766E-17;
+	        double pi2a = 1.5707963267948966;
+	        double pi2b = 6.123233995736766E-17;
 	
-	        final double a = pi2a - xa;
+	        double a = pi2a - xa;
 	        double b = -(a - pi2a + xa);
 	        b += pi2b - xb;
 	
@@ -1755,19 +1759,19 @@ namespace Apache.Commons.Math.Util
 	    private static double tanQ(double xa, double xb, boolean cotanFlag) {
 	
 	        int idx = (int) ((xa * 8.0) + 0.5);
-	        final double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
+	        double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
 	
 	        // Table lookups
-	        final double sintA = SINE_TABLE_A[idx];
-	        final double sintB = SINE_TABLE_B[idx];
-	        final double costA = COSINE_TABLE_A[idx];
-	        final double costB = COSINE_TABLE_B[idx];
+	        double sintA = SINE_TABLE_A[idx];
+	        double sintB = SINE_TABLE_B[idx];
+	        double costA = COSINE_TABLE_A[idx];
+	        double costB = COSINE_TABLE_B[idx];
 	
 	        // Polynomial eval of sin(epsilon), cos(epsilon)
 	        double sinEpsA = epsilon;
 	        double sinEpsB = polySine(epsilon);
-	        final double cosEpsA = 1.0;
-	        final double cosEpsB = polyCosine(epsilon);
+	        double cosEpsA = 1.0;
+	        double cosEpsB = polyCosine(epsilon);
 	
 	        // Split epsilon   xa + xb = x
 	        double temp = sinEpsA * HEX_40000000;
@@ -1900,7 +1904,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x number to reduce
 	     * @param result placeholder where to put the result
 	     */
-	    private static void reducePayneHanek(double x, double result[])
+	    private static void reducePayneHanek(double x, double[] result)
 	    {
 	        /* Convert input double to bits */
 	        long inbits = Double.doubleToLongBits(x);
@@ -1920,12 +1924,13 @@ namespace Apache.Commons.Math.Util
 	        long shpiB;
 	        int idx = exponent >> 6;
 	        int shift = exponent - (idx << 6);
-	
-	        if (shift != 0) {
+
+			if (shift != 0) {
 	            shpi0 = (idx == 0) ? 0 : (RECIP_2PI[idx-1] << shift);
-	            shpi0 |= RECIP_2PI[idx] >>> (64-shift);
-	            shpiA = (RECIP_2PI[idx] << shift) | (RECIP_2PI[idx+1] >>> (64-shift));
-	            shpiB = (RECIP_2PI[idx+1] << shift) | (RECIP_2PI[idx+2] >>> (64-shift));
+				uLongBuffer = (ulong)RECIP_2PI[idx-1];
+	            shpi0 |= (long)(((ulong)RECIP_2PI[idx]) >> (64-shift));
+	            shpiA = (RECIP_2PI[idx] << shift) | (long)(((ulong)RECIP_2PI[idx+1]) >> (64-shift));
+	            shpiB = (RECIP_2PI[idx+1] << shift) | (long)(((ulong)(RECIP_2PI[idx+2]) >> (64-shift)));
 	        } else {
 	            shpi0 = (idx == 0) ? 0 : RECIP_2PI[idx-1];
 	            shpiA = RECIP_2PI[idx];
@@ -1933,10 +1938,10 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Multiply input by shpiA */
-	        long a = inbits >>> 32;
+	        long a = (long)(((ulong)inbits) >> 32);
 	        long b = inbits & 0xffffffffL;
 	
-	        long c = shpiA >>> 32;
+	        long c = (long)(((ulong)shpiA) >> 32);
 	        long d = shpiA & 0xffffffffL;
 	
 	        long ac = a * c;
@@ -1945,7 +1950,7 @@ namespace Apache.Commons.Math.Util
 	        long ad = a * d;
 	
 	        long prodB = bd + (ad << 32);
-	        long prodA = ac + (ad >>> 32);
+	        long prodA = ac + (long)(((ulong)ad) >> 32);
 	
 	        boolean bita = (bd & 0x8000000000000000L) != 0;
 	        boolean bitb = (ad & 0x80000000L ) != 0;
@@ -1961,7 +1966,7 @@ namespace Apache.Commons.Math.Util
 	        bitb = (bc & 0x80000000L ) != 0;
 	
 	        prodB = prodB + (bc << 32);
-	        prodA = prodA + (bc >>> 32);
+	        prodA = prodA + (long)(((ulong)bc) >> 32);
 	
 	        bitsum = (prodB & 0x8000000000000000L) != 0;
 	
@@ -1972,14 +1977,14 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Multiply input by shpiB */
-	        c = shpiB >>> 32;
+	        c = (long)(((ulong)shpiB) >> 32);
 	        d = shpiB & 0xffffffffL;
 	        ac = a * c;
 	        bc = b * c;
 	        ad = a * d;
 	
 	        /* Collect terms */
-	        ac = ac + ((bc + ad) >>> 32);
+	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
 	        bita = (prodB & 0x8000000000000000L) != 0;
 	        bitb = (ac & 0x8000000000000000L ) != 0;
@@ -1992,7 +1997,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Multiply by shpi0 */
-	        c = shpi0 >>> 32;
+	        c = (long)(((ulong)shpi0) >> 32);
 	        d = shpi0 & 0xffffffffL;
 	
 	        bd = b * d;
@@ -2011,18 +2016,18 @@ namespace Apache.Commons.Math.Util
 	         */
 	
 	        /* This identifies the quadrant */
-	        int intPart = (int)(prodA >>> 62);
+	        int intPart = (int)(((ulong)prodA) >> 62);
 	
 	        /* Multiply by 4 */
 	        prodA <<= 2;
-	        prodA |= prodB >>> 62;
+	        prodA |= (long)(((ulong)prodB) >> 62);
 	        prodB <<= 2;
 	
 	        /* Multiply by PI/4 */
-	        a = prodA >>> 32;
+	        a = (long)(((ulong)prodA) >> 32);
 	        b = prodA & 0xffffffffL;
 	
-	        c = PI_O_4_BITS[0] >>> 32;
+	        c = (long)(((ulong)PI_O_4_BITS[0]) >> 32);
 	        d = PI_O_4_BITS[0] & 0xffffffffL;
 	
 	        ac = a * c;
@@ -2031,7 +2036,7 @@ namespace Apache.Commons.Math.Util
 	        ad = a * d;
 	
 	        long prod2B = bd + (ad << 32);
-	        long prod2A = ac + (ad >>> 32);
+	        long prod2A = ac + (long)(((ulong)ad) >> 32);
 	
 	        bita = (bd & 0x8000000000000000L) != 0;
 	        bitb = (ad & 0x80000000L ) != 0;
@@ -2047,7 +2052,7 @@ namespace Apache.Commons.Math.Util
 	        bitb = (bc & 0x80000000L ) != 0;
 	
 	        prod2B = prod2B + (bc << 32);
-	        prod2A = prod2A + (bc >>> 32);
+	        prod2A = prod2A + (long)(((ulong)bc) >> 32);
 	
 	        bitsum = (prod2B & 0x8000000000000000L) != 0;
 	
@@ -2058,14 +2063,14 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Multiply input by pio4bits[1] */
-	        c = PI_O_4_BITS[1] >>> 32;
+	        c = (long)(((ulong)PI_O_4_BITS[1]) >> 32);
 	        d = PI_O_4_BITS[1] & 0xffffffffL;
 	        ac = a * c;
 	        bc = b * c;
 	        ad = a * d;
 	
 	        /* Collect terms */
-	        ac = ac + ((bc + ad) >>> 32);
+	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
 	        bita = (prod2B & 0x8000000000000000L) != 0;
 	        bitb = (ac & 0x8000000000000000L ) != 0;
@@ -2078,16 +2083,16 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Multiply inputB by pio4bits[0] */
-	        a = prodB >>> 32;
+	        a = (long)(((ulong)prodB) >> 32);
 	        b = prodB & 0xffffffffL;
-	        c = PI_O_4_BITS[0] >>> 32;
+	        c = (long)(((ulong)PI_O_4_BITS[0]) >> 32);
 	        d = PI_O_4_BITS[0] & 0xffffffffL;
 	        ac = a * c;
 	        bc = b * c;
 	        ad = a * d;
 	
 	        /* Collect terms */
-	        ac = ac + ((bc + ad) >>> 32);
+	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
 	        bita = (prod2B & 0x8000000000000000L) != 0;
 	        bitb = (ac & 0x8000000000000000L ) != 0;
@@ -2100,8 +2105,8 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Convert to double */
-	        double tmpA = (prod2A >>> 12) / TWO_POWER_52;  // High order 52 bits
-	        double tmpB = (((prod2A & 0xfffL) << 40) + (prod2B >>> 24)) / TWO_POWER_52 / TWO_POWER_52; // Low bits
+	        double tmpA = (long)(((ulong)prod2A) >> 12) / TWO_POWER_52;  // High order 52 bits
+	        double tmpB = (((prod2A & 0xfffL) << 40) + (long)(((ulong)prod2B) >> 24)) / TWO_POWER_52 / TWO_POWER_52; // Low bits
 	
 	        double sumA = tmpA + tmpB;
 	        double sumB = -(sumA - tmpA - tmpB);
@@ -2148,7 +2153,7 @@ namespace Apache.Commons.Math.Util
 	            // PI * (2**20)
 	            // Argument too big for CodyWaite reduction.  Must use
 	            // PayneHanek.
-	            double reduceResults[] = new double[3];
+	            double[] reduceResults = new double[3];
 	            reducePayneHanek(xa, reduceResults);
 	            quadrant = ((int) reduceResults[0]) & 3;
 	            xa = reduceResults[1];
@@ -2234,7 +2239,7 @@ namespace Apache.Commons.Math.Util
 	            // PI * (2**20)
 	            // Argument too big for CodyWaite reduction.  Must use
 	            // PayneHanek.
-	            double reduceResults[] = new double[3];
+	            double[] reduceResults = new double[3];
 	            reducePayneHanek(xa, reduceResults);
 	            quadrant = ((int) reduceResults[0]) & 3;
 	            xa = reduceResults[1];
@@ -2330,7 +2335,7 @@ namespace Apache.Commons.Math.Util
 	            // PI * (2**20)
 	            // Argument too big for CodyWaite reduction.  Must use
 	            // PayneHanek.
-	            double reduceResults[] = new double[3];
+	            double[] reduceResults = new double[3];
 	            reducePayneHanek(xa, reduceResults);
 	            quadrant = ((int) reduceResults[0]) & 3;
 	            xa = reduceResults[1];
@@ -2376,10 +2381,10 @@ namespace Apache.Commons.Math.Util
 	
 	        if (xa > 1.5) {
 	            // Accurracy suffers between 1.5 and PI/2
-	            final double pi2a = 1.5707963267948966;
-	            final double pi2b = 6.123233995736766E-17;
+	            double pi2a = 1.5707963267948966;
+	            double pi2b = 6.123233995736766E-17;
 	
-	            final double a = pi2a - xa;
+	            double a = pi2a - xa;
 	            double b = -(a - pi2a + xa);
 	            b += pi2b - xb;
 	
@@ -2441,7 +2446,7 @@ namespace Apache.Commons.Math.Util
 	        if (xa < 1) {
 	            idx = (int) (((-1.7168146928204136 * xa * xa + 8.0) * xa) + 0.5);
 	        } else {
-	            final double oneOverXa = 1 / xa;
+	            double oneOverXa = 1 / xa;
 	            idx = (int) (-((-1.7168146928204136 * oneOverXa * oneOverXa + 8.0) * oneOverXa) + 13.07);
 	        }
 	        double epsA = xa - TANGENT_TABLE_A[idx];
@@ -2463,7 +2468,7 @@ namespace Apache.Commons.Math.Util
 	        if (idx == 0) {
 	            /* If the slope of the arctan is gentle enough (< 0.45), this approximation will suffice */
 	            //double denom = 1.0 / (1.0 + xa*tangentTableA[idx] + xb*tangentTableA[idx] + xa*tangentTableB[idx] + xb*tangentTableB[idx]);
-	            final double denom = 1d / (1d + (xa + xb) * (TANGENT_TABLE_A[idx] + TANGENT_TABLE_B[idx]));
+	            double denom = 1d / (1d + (xa + xb) * (TANGENT_TABLE_A[idx] + TANGENT_TABLE_B[idx]));
 	            //double denom = 1.0 / (1.0 + xa*tangentTableA[idx]);
 	            ya = epsA * denom;
 	            yb = epsB * denom;
@@ -2480,12 +2485,12 @@ namespace Apache.Commons.Math.Util
 	            ya = epsA / za;
 	
 	            temp = ya * HEX_40000000;
-	            final double yaa = (ya + temp) - temp;
-	            final double yab = ya - yaa;
+	            double yaa = (ya + temp) - temp;
+	            double yab = ya - yaa;
 	
 	            temp = za * HEX_40000000;
-	            final double zaa = (za + temp) - temp;
-	            final double zab = za - zaa;
+	            double zaa = (za + temp) - temp;
+	            double zab = za - zaa;
 	
 	            /* Correct for rounding in division */
 	            yb = (epsA - yaa * zaa - yaa * zab - yab * zaa - yab * zab) / za;
@@ -2499,7 +2504,7 @@ namespace Apache.Commons.Math.Util
 	        epsB = yb;
 	
 	        /* Evaluate polynomial */
-	        final double epsA2 = epsA * epsA;
+	        double epsA2 = epsA * epsA;
 	
 	        /*
 	    yb = -0.09001346640161823;
@@ -2529,8 +2534,8 @@ namespace Apache.Commons.Math.Util
 	        yb += epsB / (1d + epsA * epsA);
 	
 	        //result = yb + eighths[idx] + ya;
-	        double za = EIGHTHS[idx] + ya;
-	        double zb = -(za - EIGHTHS[idx] - ya);
+	        za = EIGHTHS[idx] + ya;
+	        zb = -(za - EIGHTHS[idx] - ya);
 	        temp = za + yb;
 	        zb += -(temp - za - yb);
 	        za = temp;
@@ -2540,8 +2545,8 @@ namespace Apache.Commons.Math.Util
 	
 	        if (leftPlane) {
 	            // Result is in the left plane
-	            final double pia = 1.5707963267948966 * 2;
-	            final double pib = 6.123233995736766E-17 * 2;
+	            double pia = 1.5707963267948966 * 2;
+	            double pib = 6.123233995736766E-17 * 2;
 	
 	            za = pia - result;
 	            zb = -(za - pia + result);
@@ -2571,9 +2576,9 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        if (y == 0) {
-	            final double result = x * y;
-	            final double invx = 1d / x;
-	            final double invy = 1d / y;
+	            double result = x * y;
+	            double invx = 1d / x;
+	            double invy = 1d / y;
 	
 	            if (invx == 0) { // X is infinite
 	                if (x > 0) {
@@ -2654,7 +2659,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // Compute ratio r = y/x
-	        final double r = y / x;
+	        double r = y / x;
 	        if (Double.isInfinite(r)) { // bypass calculations that can create NaN
 	            return atan(r, 0, x < 0);
 	        }
@@ -2663,12 +2668,12 @@ namespace Apache.Commons.Math.Util
 	        double rb = r - ra;
 	
 	        // Split x
-	        final double xa = doubleHighPart(x);
-	        final double xb = x - xa;
+	        double xa = doubleHighPart(x);
+	        double xb = x - xa;
 	
 	        rb += (y - ra * xa - ra * xb - rb * xa - rb * xb) / x;
 	
-	        final double temp = ra + rb;
+	        double temp = ra + rb;
 	        rb = -(temp - ra - rb);
 	        ra = temp;
 	
@@ -2677,7 +2682,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // Call atan
-	        final double result = atan(ra, rb, x < 0);
+	        result = atan(ra, rb, x < 0);
 	
 	        return result;
 	    }
@@ -2711,8 +2716,8 @@ namespace Apache.Commons.Math.Util
 	
 	      /* Split x */
 	      double temp = x * HEX_40000000;
-	      final double xa = x + temp - temp;
-	      final double xb = x - xa;
+	      double xa = x + temp - temp;
+	      double xb = x - xa;
 	
 	      /* Square it */
 	      double ya = xa*xa;
@@ -2787,8 +2792,8 @@ namespace Apache.Commons.Math.Util
 	
 	      /* Split x */
 	      double temp = x * HEX_40000000;
-	      final double xa = x + temp - temp;
-	      final double xb = x - xa;
+	      double xa = x + temp - temp;
+	      double xb = x - xa;
 	
 	      /* Square it */
 	      double ya = xa*xa;
@@ -2875,7 +2880,7 @@ namespace Apache.Commons.Math.Util
 	                                          (long)(((exp3 + 1023) & 0x7ff)) << 52);
 	
 	      /* This will be a number between 1 and 2 */
-	      final double mant = Double.longBitsToDouble((inbits & 0x000fffffffffffffL) | 0x3ff0000000000000L);
+	      double mant = Double.longBitsToDouble((inbits & 0x000fffffffffffffL) | 0x3ff0000000000000L);
 	
 	      /* Estimate the cube root of mant by polynomial */
 	      double est = -0.010714690733195933;
@@ -2889,7 +2894,7 @@ namespace Apache.Commons.Math.Util
 	      // est should now be good to about 15 bits of precision.   Do 2 rounds of
 	      // Newton's method to get closer,  this should get us full double precision
 	      // Scale down x for the purpose of doing newtons method.  This avoids over/under flows.
-	      final double xs = x / (p2*p2*p2);
+	      double xs = x / (p2*p2*p2);
 	      est += (xs - est*est*est) / (3*est*est);
 	      est += (xs - est*est*est) / (3*est*est);
 	
@@ -2936,8 +2941,8 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // These are PI/180 split into high and low order bits
-	        final double facta = 0.01745329052209854;
-	        final double factb = 1.997844754509471E-9;
+	        double facta = 0.01745329052209854;
+	        double factb = 1.997844754509471E-9;
 	
 	        double xa = doubleHighPart(x);
 	        double xb = x - xa;
@@ -2961,8 +2966,8 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // These are 180/PI split into high and low order bits
-	        final double facta = 57.2957763671875;
-	        final double factb = 3.145894820876798E-6;
+	        double facta = 57.2957763671875;
+	        double factb = 3.145894820876798E-6;
 	
 	        double xa = doubleHighPart(x);
 	        double xb = x - xa;
@@ -2975,7 +2980,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x number from which absolute value is requested
 	     * @return abs(x)
 	     */
-	    public static int abs(final int x) {
+	    public static int abs(int x) {
 	        return (x < 0) ? -x : x;
 	    }
 	
@@ -2984,7 +2989,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x number from which absolute value is requested
 	     * @return abs(x)
 	     */
-	    public static long abs(final long x) {
+	    public static long abs(long x) {
 	        return (x < 0l) ? -x : x;
 	    }
 	
@@ -2993,7 +2998,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x number from which absolute value is requested
 	     * @return abs(x)
 	     */
-	    public static float abs(final float x) {
+	    public static float abs(float x) {
 	        return (x < 0.0f) ? -x : (x == 0.0f) ? 0.0f : x; // -0.0 => +0.0
 	    }
 	
@@ -3036,7 +3041,7 @@ namespace Apache.Commons.Math.Util
 	     * @param n power of 2
 	     * @return d &times; 2<sup>n</sup>
 	     */
-	    public static double scalb(final double d, final int n) {
+	    public static double scalb(double d, int n) {
 	
 	        // first simple and fast handling when 2^n can be represented using normal numbers
 	        if ((n > -1023) && (n < 1024)) {
@@ -3055,9 +3060,9 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // decompose d
-	        final long bits = Double.doubleToLongBits(d);
-	        final long sign = bits & 0x8000000000000000L;
-	        int  exponent   = ((int) (bits >>> 52)) & 0x7ff;
+	        long bits = Double.doubleToLongBits(d);
+	        long sign = bits & 0x8000000000000000L;
+	        int  exponent   = ((int) (((uint)bits) >> 52)) & 0x7ff;
 	        long mantissa   = bits & 0x000fffffffffffffL;
 	
 	        // compute scaled exponent
@@ -3075,8 +3080,8 @@ namespace Apache.Commons.Math.Util
 	                mantissa = mantissa | (1L << 52);
 	
 	                // scales down complete mantissa, hence losing least significant bits
-	                final long mostSignificantLostBit = mantissa & (1L << (-scaledExponent));
-	                mantissa = mantissa >>> (1 - scaledExponent);
+	                long mostSignificantLostBit = mantissa & (1L << (-scaledExponent));
+	                mantissa = ((ulong)mantissa) >> (1 - scaledExponent);
 	                if (mostSignificantLostBit != 0) {
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
@@ -3092,7 +3097,7 @@ namespace Apache.Commons.Math.Util
 	            if (exponent == 0) {
 	
 	                // the input number is subnormal, normalize it
-	                while ((mantissa >>> 52) != 1) {
+	                while ((((ulong)mantissa) >> 52) != 1) {
 	                    mantissa = mantissa << 1;
 	                    --scaledExponent;
 	                }
@@ -3120,7 +3125,7 @@ namespace Apache.Commons.Math.Util
 	     * @param n power of 2
 	     * @return f &times; 2<sup>n</sup>
 	     */
-	    public static float scalb(final float f, final int n) {
+	    public static float scalb(float f, int n) {
 	
 	        // first simple and fast handling when 2^n can be represented using normal numbers
 	        if ((n > -127) && (n < 128)) {
@@ -3139,9 +3144,9 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // decompose f
-	        final int bits = Float.floatToIntBits(f);
-	        final int sign = bits & 0x80000000;
-	        int  exponent  = (bits >>> 23) & 0xff;
+	        int bits = Float.floatToIntBits(f);
+	        int sign = bits & 0x80000000;
+	        int exponent  = (((uint)bits) >> 23) & 0xff;
 	        int mantissa   = bits & 0x007fffff;
 	
 	        // compute scaled exponent
@@ -3159,8 +3164,8 @@ namespace Apache.Commons.Math.Util
 	                mantissa = mantissa | (1 << 23);
 	
 	                // scales down complete mantissa, hence losing least significant bits
-	                final int mostSignificantLostBit = mantissa & (1 << (-scaledExponent));
-	                mantissa = mantissa >>> (1 - scaledExponent);
+	                int mostSignificantLostBit = mantissa & (1 << (-scaledExponent));
+	                mantissa = ((uint)mantissa) >> (1 - scaledExponent);
 	                if (mostSignificantLostBit != 0) {
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
@@ -3176,7 +3181,7 @@ namespace Apache.Commons.Math.Util
 	            if (exponent == 0) {
 	
 	                // the input number is subnormal, normalize it
-	                while ((mantissa >>> 23) != 1) {
+	                while ((((uint)mantissa) >> 23) != 1) {
 	                    mantissa = mantissa << 1;
 	                    --scaledExponent;
 	                }
@@ -3244,8 +3249,8 @@ namespace Apache.Commons.Math.Util
 	        // special cases MAX_VALUE to infinity and  MIN_VALUE to 0
 	        // are handled just as normal numbers
 	
-	        final long bits = Double.doubleToLongBits(d);
-	        final long sign = bits & 0x8000000000000000L;
+	        long bits = Double.doubleToLongBits(d);
+	        long sign = bits & 0x8000000000000000L;
 	        if ((direction < d) ^ (sign == 0L)) {
 	            return Double.longBitsToDouble(sign | ((bits & 0x7fffffffffffffffL) + 1));
 	        } else {
@@ -3285,7 +3290,7 @@ namespace Apache.Commons.Math.Util
 	     * {@code direction} is greater or smaller than {@code f})
 	     * @return the next machine representable number in the specified direction
 	     */
-	    public static float nextAfter(final float f, final double direction) {
+	    public static float nextAfter(float f, double direction) {
 	
 	        // handling of some important special cases
 	        if (Double.isNaN(f) || Double.isNaN(direction)) {
@@ -3300,8 +3305,8 @@ namespace Apache.Commons.Math.Util
 	        // special cases MAX_VALUE to infinity and  MIN_VALUE to 0
 	        // are handled just as normal numbers
 	
-	        final int bits = Float.floatToIntBits(f);
-	        final int sign = bits & 0x80000000;
+	        int bits = Float.floatToIntBits(f);
+	        int sign = bits & 0x80000000;
 	        if ((direction < f) ^ (sign == 0)) {
 	            return Float.intBitsToFloat(sign | ((bits & 0x7fffffff) + 1));
 	        } else {
@@ -3397,7 +3402,7 @@ namespace Apache.Commons.Math.Util
 	     * @param x number from which closest int is requested
 	     * @return closest int to x
 	     */
-	    public static int round(final float x) {
+	    public static int round(float x) {
 	        return (int) floor(x + 0.5f);
 	    }
 	
@@ -3406,7 +3411,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return a if a is lesser or equal to b, b otherwise
 	     */
-	    public static int min(final int a, final int b) {
+	    public static int min(int a, int b) {
 	        return (a <= b) ? a : b;
 	    }
 	
@@ -3415,7 +3420,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return a if a is lesser or equal to b, b otherwise
 	     */
-	    public static long min(final long a, final long b) {
+	    public static long min(long a, long b) {
 	        return (a <= b) ? a : b;
 	    }
 	
@@ -3424,7 +3429,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return a if a is lesser or equal to b, b otherwise
 	     */
-	    public static float min(final float a, final float b) {
+	    public static float min(float a, float b) {
 	        if (a > b) {
 	            return b;
 	        }
@@ -3449,7 +3454,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return a if a is lesser or equal to b, b otherwise
 	     */
-	    public static double min(final double a, final double b) {
+	    public static double min(double a, double b) {
 	        if (a > b) {
 	            return b;
 	        }
@@ -3474,7 +3479,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return b if a is lesser or equal to b, a otherwise
 	     */
-	    public static int max(final int a, final int b) {
+	    public static int max(int a, int b) {
 	        return (a <= b) ? b : a;
 	    }
 	
@@ -3483,7 +3488,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return b if a is lesser or equal to b, a otherwise
 	     */
-	    public static long max(final long a, final long b) {
+	    public static long max(long a, long b) {
 	        return (a <= b) ? b : a;
 	    }
 	
@@ -3492,7 +3497,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return b if a is lesser or equal to b, a otherwise
 	     */
-	    public static float max(final float a, final float b) {
+	    public static float max(float a, float b) {
 	        if (a > b) {
 	            return a;
 	        }
@@ -3517,7 +3522,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second value
 	     * @return b if a is lesser or equal to b, a otherwise
 	     */
-	    public static double max(final double a, final double b) {
+	    public static double max(double a, double b) {
 	        if (a > b) {
 	            return a;
 	        }
@@ -3551,15 +3556,15 @@ namespace Apache.Commons.Math.Util
 	     * @param y a value
 	     * @return sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
 	     */
-	    public static double hypot(final double x, final double y) {
+	    public static double hypot(double x, double y) {
 	        if (Double.isInfinite(x) || Double.isInfinite(y)) {
 	            return Double.POSITIVE_INFINITY;
 	        } else if (Double.isNaN(x) || Double.isNaN(y)) {
 	            return Double.NaN;
 	        } else {
 	
-	            final int expX = getExponent(x);
-	            final int expY = getExponent(y);
+	            int expX = getExponent(x);
+	            int expY = getExponent(y);
 	            if (expX > expY + 27) {
 	                // y is neglectible with respect to x
 	                return abs(x);
@@ -3569,14 +3574,14 @@ namespace Apache.Commons.Math.Util
 	            } else {
 	
 	                // find an intermediate scale to avoid both overflow and underflow
-	                final int middleExp = (expX + expY) / 2;
+	                int middleExp = (expX + expY) / 2;
 	
 	                // scale parameters without losing precision
-	                final double scaledX = scalb(x, -middleExp);
-	                final double scaledY = scalb(y, -middleExp);
+	                double scaledX = scalb(x, -middleExp);
+	                double scaledY = scalb(y, -middleExp);
 	
 	                // compute scaled hypotenuse
-	                final double scaledH = sqrt(scaledX * scaledX + scaledY * scaledY);
+	                double scaledH = sqrt(scaledX * scaledX + scaledY * scaledY);
 	
 	                // remove scaling
 	                return scalb(scaledH, middleExp);
@@ -3653,8 +3658,8 @@ namespace Apache.Commons.Math.Util
 	     * @param d number from which exponent is requested
 	     * @return exponent for d in IEEE754 representation, without bias
 	     */
-	    public static int getExponent(final double d) {
-	        return (int) ((Double.doubleToLongBits(d) >>> 52) & 0x7ff) - 1023;
+	    public static int getExponent(double d) {
+	        return (int) ((((ulong)Double.doubleToLongBits(d)) >> 52) & 0x7ff) - 1023;
 	    }
 	
 	    /**
@@ -3666,8 +3671,8 @@ namespace Apache.Commons.Math.Util
 	     * @param f number from which exponent is requested
 	     * @return exponent for d in IEEE754 representation, without bias
 	     */
-	    public static int getExponent(final float f) {
-	        return ((Float.floatToIntBits(f) >>> 23) & 0xff) - 127;
+	    public static int getExponent(float f) {
+	        return ((((uint)Float.floatToIntBits(f)) >> 23) & 0xff) - 127;
 	    }
 	
 	    /**
@@ -3695,19 +3700,19 @@ namespace Apache.Commons.Math.Util
 	        /** Exponential evaluated at integer values,
 	         * exp(x) =  expIntTableA[x + EXP_INT_TABLE_MAX_INDEX] + expIntTableB[x+EXP_INT_TABLE_MAX_INDEX].
 	         */
-	        private static final double[] EXP_INT_TABLE_A;
+	        private static readonly double[] EXP_INT_TABLE_A;
 	        /** Exponential evaluated at integer values,
 	         * exp(x) =  expIntTableA[x + EXP_INT_TABLE_MAX_INDEX] + expIntTableB[x+EXP_INT_TABLE_MAX_INDEX]
 	         */
-	        private static final double[] EXP_INT_TABLE_B;
+	        private static readonly double[] EXP_INT_TABLE_B;
 	
-	        static {
+	        static ExpIntTable() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
 	                EXP_INT_TABLE_A = new double[FastMath.EXP_INT_TABLE_LEN];
 	                EXP_INT_TABLE_B = new double[FastMath.EXP_INT_TABLE_LEN];
 	
-	                final double tmp[] = new double[2];
-	                final double recip[] = new double[2];
+	                double[] tmp = new double[2];
+	                double[] recip = new double[2];
 	
 	                // Populate expIntTable
 	                for (int i = 0; i < FastMath.EXP_INT_TABLE_MAX_INDEX; i++) {
@@ -3735,21 +3740,21 @@ namespace Apache.Commons.Math.Util
 	         * exp(x/1024) =  expFracTableA[x] + expFracTableB[x].
 	         * 1024 = 2^10
 	         */
-	        private static final double[] EXP_FRAC_TABLE_A;
+	        private static readonly double[] EXP_FRAC_TABLE_A;
 	        /** Exponential over the range of 0 - 1 in increments of 2^-10
 	         * exp(x/1024) =  expFracTableA[x] + expFracTableB[x].
 	         */
-	        private static final double[] EXP_FRAC_TABLE_B;
+	        private static readonly double[] EXP_FRAC_TABLE_B;
 	
-	        static {
+	        static ExpFracTable() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
 	                EXP_FRAC_TABLE_A = new double[FastMath.EXP_FRAC_TABLE_LEN];
 	                EXP_FRAC_TABLE_B = new double[FastMath.EXP_FRAC_TABLE_LEN];
 	
-	                final double tmp[] = new double[2];
+	                double[] tmp = new double[2];
 	
 	                // Populate expFracTable
-	                final double factor = 1d / (EXP_FRAC_TABLE_LEN - 1);
+	                double factor = 1d / (EXP_FRAC_TABLE_LEN - 1);
 	                for (int i = 0; i < EXP_FRAC_TABLE_A.length; i++) {
 	                    FastMathCalc.slowexp(i * factor, tmp);
 	                    EXP_FRAC_TABLE_A[i] = tmp[0];
@@ -3765,15 +3770,15 @@ namespace Apache.Commons.Math.Util
 	    /** Enclose large data table in nested static class so it's only loaded on first access. */
 	    private static class lnMant {
 	        /** Extended precision logarithm table over the range 1 - 2 in increments of 2^-10. */
-	        private static final double[][] LN_MANT;
+	        private static readonly double[][] LN_MANT;
 	
-	        static {
+	        static lnMant() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
 	                LN_MANT = new double[FastMath.LN_MANT_LEN][];
 	
 	                // Populate lnMant table
 	                for (int i = 0; i < LN_MANT.length; i++) {
-	                    final double d = Double.longBitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
+	                    double d = Double.longBitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
 	                    LN_MANT[i] = FastMathCalc.slowLog(d);
 	                }
 	            } else {
