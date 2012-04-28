@@ -60,8 +60,8 @@ namespace Apache.Commons.Math.Exceptions
 
         public NonMonotonicSequenceException(T wrong, T previous, int index, OrderDirection direction, bool strict):
             base(direction == OrderDirection.Increasing ?
-            (strict ? LocalizedFormat.NOT_STRICTLY_INCREASING_SEQUENCE : LocalizedFormat.NOT_INCREASING_SEQUENCE) :
-            (strict ? LocalizedFormat.NOT_STRICTLY_DECREASING_SEQUENCE : LocalizedFormat.NOT_DECREASING_SEQUENCE),
+            (strict ? LocalizedFormats.NOT_STRICTLY_INCREASING_SEQUENCE : LocalizedFormats.NOT_INCREASING_SEQUENCE) :
+            (strict ? LocalizedFormats.NOT_STRICTLY_DECREASING_SEQUENCE : LocalizedFormats.NOT_DECREASING_SEQUENCE),
             wrong, previous, index, index - 1)
         {
             this.Direction = direction;

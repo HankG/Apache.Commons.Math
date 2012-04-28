@@ -33,7 +33,7 @@ namespace Apache.Commons.Math.Exceptions
         /// </summary>
         /// <param name="wrong">Value that is infinite or NaN.</param>
         /// <param name="args">Optional arguments.</param>
-        public NotFiniteNumberException(T wrong, params object[] args) : this(LocalizedFormat.NOT_FINITE_NUMBER, wrong, args) { }
+        public NotFiniteNumberException(T wrong, params object[] args) : this(LocalizedFormats.NOT_FINITE_NUMBER, wrong, args) { }
 
         /// <summary>
         /// Construct the exception with a specific context.

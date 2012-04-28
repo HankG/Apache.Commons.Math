@@ -32,7 +32,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ConvergenceException() : base(LocalizedFormat.CONVERGENCE_FAILED) { }
+        public ConvergenceException() : base(LocalizedFormats.CONVERGENCE_FAILED) { }
 
         /// <summary>
         /// Construct the exception with a specific context and arguments.

@@ -44,7 +44,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="wrong">The wrong value</param>
         /// <param name="lo">Lower bound</param>
         /// <param name="hi">Higher bound</param>
-        public OutOfRangeException(T wrong, T lo, T hi) : this(LocalizedFormat.OUT_OF_RANGE_SIMPLE, wrong, lo, hi) { }
+        public OutOfRangeException(T wrong, T lo, T hi) : this(LocalizedFormats.OUT_OF_RANGE_SIMPLE, wrong, lo, hi) { }
 
         /// <summary>
         /// Construct an exception from the mismatched dimensions with a specific context information.

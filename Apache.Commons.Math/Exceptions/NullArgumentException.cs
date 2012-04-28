@@ -31,7 +31,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public NullArgumentException() : this(LocalizedFormat.NULL_NOT_ALLOWED) { }
+        public NullArgumentException() : this(LocalizedFormats.NULL_NOT_ALLOWED) { }
 
         /// <summary>
         /// Construct the exceptions.

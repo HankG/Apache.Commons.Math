@@ -35,7 +35,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="position">Index, in the <paramref name="wrong"/> string, that caused the parsing to fail.</param>
         /// <param name="type">Type of the object supposedly represented by the <paramref name="wrong"/> string.</param>
         public MathParseException(string wrong, int position, Type type) :
-            base(LocalizedFormat.CANNOT_PARSE_AS_TYPE, wrong, position, type) { }
+            base(LocalizedFormats.CANNOT_PARSE_AS_TYPE, wrong, position, type) { }
 
         /// <summary>
         /// Simple constructor.
@@ -43,6 +43,6 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="wrong">Bad string representation of the object.</param>
         /// <param name="position">Index, in the <paramref name="wrong"/> string, that caused the parsing to fail.</param>
         public MathParseException(string wrong, int position) :
-            base(LocalizedFormat.CANNOT_PARSE, wrong, position) { }
+            base(LocalizedFormats.CANNOT_PARSE, wrong, position) { }
     }
 }

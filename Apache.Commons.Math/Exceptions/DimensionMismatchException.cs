@@ -49,6 +49,6 @@ namespace Apache.Commons.Math.Exceptions
         /// </summary>
         /// <param name="wrong">Wrong dimension.</param>
         /// <param name="expected">Expected dimension.</param>
-        public DimensionMismatchException(int wrong, int expected) : this(LocalizedFormat.DIMENSIONS_MISMATCH_SIMPLE, wrong, expected) { }
+        public DimensionMismatchException(int wrong, int expected) : this(LocalizedFormats.DIMENSIONS_MISMATCH_SIMPLE, wrong, expected) { }
     }
 }

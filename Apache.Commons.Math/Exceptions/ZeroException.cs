@@ -31,7 +31,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public ZeroException() : this(LocalizedFormat.ZERO_NOT_ALLOWED) { }
+        public ZeroException() : this(LocalizedFormats.ZERO_NOT_ALLOWED) { }
 
         /// <summary>
         /// Construct the exception with a specific context.

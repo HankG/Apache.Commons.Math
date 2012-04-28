@@ -37,7 +37,7 @@ namespace Apache.Commons.Math.Exceptions
         /// Construct the exception.
         /// </summary>
         /// <param name="max">The maximum.</param>
-        public MaxCountExceededException(int max) : this(LocalizedFormat.MAX_COUNT_EXCEEDED, max) { }
+        public MaxCountExceededException(int max) : this(LocalizedFormats.MAX_COUNT_EXCEEDED, max) { }
 
         /// <summary>
         /// Construct the exception with a specific context.

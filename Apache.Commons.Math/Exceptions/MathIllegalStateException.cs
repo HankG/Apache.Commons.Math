@@ -37,7 +37,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public MathIllegalStateException(): this(LocalizedFormat.ILLEGAL_STATE) { }
+        public MathIllegalStateException(): this(LocalizedFormats.ILLEGAL_STATE) { }
 
         /// <summary>
         /// Simple constructor.

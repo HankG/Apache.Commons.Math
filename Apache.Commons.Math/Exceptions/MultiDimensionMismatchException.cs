@@ -43,7 +43,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="wrong">Wrong dimensions.</param>
         /// <param name="expected">Expected dimensions.</param>
         public MultiDimensionMismatchException(int[] wrong, int[] expected) :
-            this(LocalizedFormat.DIMENSIONS_MISMATCH, wrong, expected) { }
+            this(LocalizedFormats.DIMENSIONS_MISMATCH, wrong, expected) { }
 
         /// <summary>
         /// Construct an exception from the mismatched dimensions.

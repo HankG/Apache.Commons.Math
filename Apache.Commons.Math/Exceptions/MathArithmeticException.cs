@@ -41,7 +41,7 @@ namespace Apache.Commons.Math.Exceptions
         public MathArithmeticException()
         {
             context = new ExceptionContext(this);
-            context.AddMessage(LocalizedFormat.ARITHMETIC_EXCEPTION);
+            context.AddMessage(LocalizedFormats.ARITHMETIC_EXCEPTION);
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="max">The maximum value</param>
         /// <param name="boundIsAllowed">Whether <paramref name="max"/> is included in the allowed range.</param>
         public NumberIsTooLargeException(T wrong, T max, bool boundIsAllowed) :
-            this(boundIsAllowed ? LocalizedFormat.NUMBER_TOO_LARGE : LocalizedFormat.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
+            this(boundIsAllowed ? LocalizedFormats.NUMBER_TOO_LARGE : LocalizedFormats.NUMBER_TOO_LARGE_BOUND_EXCLUDED,
              wrong, max, boundIsAllowed) { }
 
         /// <summary>

@@ -33,13 +33,13 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Simple constructor.
         /// </summary>
-        public MathInternalError(): base(LocalizedFormat.INTERNAL_ERROR, REPORT_URL) { }
+        public MathInternalError(): base(LocalizedFormats.INTERNAL_ERROR, REPORT_URL) { }
 
         /// <summary>
         /// Simple constructor.
         /// </summary>
         /// <param name="inner">The root cause of this exception.</param>
-        public MathInternalError(Exception inner) : base(inner, LocalizedFormat.INTERNAL_ERROR, REPORT_URL) { }
+        public MathInternalError(Exception inner) : base(inner, LocalizedFormats.INTERNAL_ERROR, REPORT_URL) { }
 
         /// <summary>
         /// Constructor accepting a localized message.

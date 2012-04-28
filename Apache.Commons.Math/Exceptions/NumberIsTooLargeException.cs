@@ -44,7 +44,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="min">The minimum value</param>
         /// <param name="boundIsAllowed">Whether <paramref name="min"/> is included in the allowed range.</param>
         public NumberIsTooSmallException(T wrong, T min, bool boundIsAllowed) :
-            this(boundIsAllowed ? LocalizedFormat.NUMBER_TOO_SMALL : LocalizedFormat.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
+            this(boundIsAllowed ? LocalizedFormats.NUMBER_TOO_SMALL : LocalizedFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
              wrong, min, boundIsAllowed) { }
 
         /// <summary>

@@ -53,7 +53,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="fLo">Value at the lower end of the interval.</param>
         /// <param name="fHi">Value at the higher end of the interval.</param>
         public NoBracketingException(double lo, double hi, double fLo, double fHi) :
-            this(LocalizedFormat.SAME_SIGN_AT_ENDPOINTS, lo, hi, fLo, fHi) { }
+            this(LocalizedFormats.SAME_SIGN_AT_ENDPOINTS, lo, hi, fLo, fHi) { }
 
         /// <summary>
         /// Construct the exception.

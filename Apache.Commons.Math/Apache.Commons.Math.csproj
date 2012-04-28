@@ -10,7 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Apache.Commons.Math</RootNamespace>
     <AssemblyName>Apache.Commons.Math</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,6 +37,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\ConvergenceException.cs" />
@@ -63,7 +63,6 @@
     <Compile Include="Exceptions\OutOfRangeException.cs" />
     <Compile Include="Exceptions\TooManyEvaluationsException.cs" />
     <Compile Include="Exceptions\Util\ArgUtils.cs" />
-    <Compile Include="Exceptions\Util\LocalizedFormat.cs" />
     <Compile Include="Exceptions\Util\DummyLocalizable.cs" />
     <Compile Include="Exceptions\Util\ExceptionContext.cs" />
     <Compile Include="Exceptions\Util\IExceptionContextProvider.cs" />
@@ -75,13 +74,16 @@
     <Compile Include="Exceptions\Util\LocalizedFormats.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LocalizedFormats.resx</DependentUpon>
+      <DependentUpon>LocalizedFormatBuilder.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\OrderDirection.cs" />
+    <Compile Include="Util\ArithmeticUtils.cs" />
+    <Compile Include="Exceptions\Util\LocalizedFormats.cs" />
+    <Compile Include="Util\FastMath.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Exceptions\Util\LocalizedFormats.resx">
+    <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizedFormats.Designer.cs</LastGenOutput>
     </EmbeddedResource>

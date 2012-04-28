@@ -35,7 +35,7 @@ namespace Apache.Commons.Math.Exceptions
         public TooManyEvaluationsException(int max)
             : base(max)
         {
-            Context.AddMessage(LocalizedFormat.EVALUATIONS);
+            Context.AddMessage(LocalizedFormats.EVALUATIONS);
         }
     }
 }

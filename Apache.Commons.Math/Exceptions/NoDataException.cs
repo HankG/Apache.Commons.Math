@@ -31,7 +31,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public NoDataException() : this(LocalizedFormat.NO_DATA) { }
+        public NoDataException() : this(LocalizedFormats.NO_DATA) { }
 
         /// <summary>
         /// Construct the exception with a specific context.

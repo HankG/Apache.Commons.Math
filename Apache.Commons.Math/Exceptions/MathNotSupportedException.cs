@@ -38,7 +38,7 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public MathNotSupportedException() : this(LocalizedFormat.UNSUPPORTED_OPERATION) { }
+        public MathNotSupportedException() : this(LocalizedFormats.UNSUPPORTED_OPERATION) { }
 
         /// <summary>
         /// Simple constructor.
