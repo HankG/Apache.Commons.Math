@@ -44,39 +44,42 @@ namespace JavaDotNet.Math
 	 * @author Anthony Balkissoon abalkiss at redhat dot com
 	 *
 	 */
-	public final class MathContext implements Serializable
+	[Serializable]
+	public sealed class MathContext
 	{
 	  /** A MathContext for unlimited precision arithmetic * */
-	  public static final MathContext UNLIMITED = 
+	  public static readonly MathContext UNLIMITED = 
 	    new MathContext(0, RoundingMode.HALF_UP);
 	  
 	  /**
 	   * A MathContext for the IEEE 754R Decimal32 format - 7 digit preicision and
 	   * HALF_EVEN rounding.
 	   */
-	  public static final MathContext DECIMAL32 = 
+	  public static readonly MathContext DECIMAL32 = 
 	    new MathContext(7, RoundingMode.HALF_EVEN);
 	  
 	  /**
 	   * A MathContext for the IEEE 754R Decimal64 format - 16 digit preicision and
 	   * HALF_EVEN rounding.
 	   */
-	  public static final MathContext DECIMAL64 = 
+	  public static readonly MathContext DECIMAL64 = 
 	    new MathContext(16, RoundingMode.HALF_EVEN);
 	  
 	  /**
 	   * A MathContext for the IEEE 754R Decimal128 format - 34 digit preicision and
 	   * HALF_EVEN rounding.
 	   */
-	  public static final MathContext DECIMAL128 = 
+	  public static readonly MathContext DECIMAL128 = 
 	    new MathContext(34, RoundingMode.HALF_EVEN);
 	  
 	  /**
 	   * This is the serialVersionUID reported here:
 	   * java.sun.com/j2se/1.5.0/docs/api/serialized-form.html#java.math.MathContext
 	   */
-	  private static final long serialVersionUID = 5579720004786848255L;
-	  
+#pragma warning disable 0414
+	  private static readonly long serialVersionUID = 5579720004786848255L;
+#pragma warning restore 0414
+		
 	  private int precision;
 	  
 	  private RoundingMode roundMode;
@@ -88,9 +91,9 @@ namespace JavaDotNet.Math
 	   * 
 	   * @throws IllegalArgumentException if precision is < 0.
 	   */
-	  public MathContext(int setPrecision)
+	  public MathContext(int setPrecision):this(setPrecision, RoundingMode.HALF_UP)
 	  {
-	    this(setPrecision, RoundingMode.HALF_UP);
+	    
 	  }
 	  
 	  /**
@@ -104,7 +107,7 @@ namespace JavaDotNet.Math
 	  public MathContext(int setPrecision, RoundingMode setRoundingMode)
 	  {
 	    if (setPrecision < 0)
-	      throw new IllegalArgumentException("Precision cannot be less than zero.");
+	      throw new ArgumentException("Precision cannot be less than zero.");
 	    precision = setPrecision;
 	    roundMode = setRoundingMode;
 	  }
@@ -121,20 +124,21 @@ namespace JavaDotNet.Math
 	  {
 	    try
 	    {
-	      int roundingModeIndex = val.indexOf("roundingMode", 10);
-	      precision = Integer.parseInt(val.substring(10, roundingModeIndex - 1));
-	      roundMode = RoundingMode.valueOf(val.substring(roundingModeIndex + 13));
+	      int roundingModeIndex = val.IndexOf("roundingMode", 10);
+	      precision = Int32.Parse(val.Substring(10, roundingModeIndex - 1));
+		  //TODO: Determine what the logic of the subscring passed to an int parameter without explicit conversion
+	      roundMode = RoundingModes.valueOf(Int32.Parse (val.Substring(roundingModeIndex + 13)));
 	    }
-	    catch (NumberFormatException nfe)
+	    catch (FormatException nfe)
 	    {
-	      throw new IllegalArgumentException("String not in correct format");
+	      throw new ArgumentException("String not in correct format", nfe);
 	    }
-	    catch (IllegalArgumentException iae)
+	    catch (ArgumentException iae)
 	    {
-	      throw new IllegalArgumentException("String not in correct format");
+	      throw new ArgumentException("String not in correct format", iae);
 	    }
 	    if (precision < 0)
-	      throw new IllegalArgumentException("Precision cannot be less than 0.");
+	      throw new ArgumentException("Precision cannot be less than 0.");
 	  }
 	  
 	  /**
@@ -143,13 +147,13 @@ namespace JavaDotNet.Math
 	   * 
 	   * @return true if the above conditions hold
 	   */
-	  public boolean equals(Object x)
+	  public bool equals(Object x)
 	  {
-	    if (!(x instanceof MathContext))
+	    if (!(x is MathContext))
 	      return false;
 	    MathContext mc = (MathContext)x;
 	    return mc.precision == this.precision
-	           && mc.roundMode.equals(this.roundMode);
+	           && mc.roundMode == this.roundMode;
 	  }
 	  
 	  /**
@@ -191,7 +195,7 @@ namespace JavaDotNet.Math
 	   */
 	  public int hashCode()
 	  {
-	    return precision ^ roundMode.hashCode();
+	    return precision ^ roundMode.GetHashCode();
 	  }
 	}
 }

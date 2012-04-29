@@ -47,12 +47,17 @@ namespace JavaDotNet.Math
 	 */
 	public enum RoundingMode
 	{
-	  UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN, UNNECESSARY;
+	  UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN, UNNECESSARY
+	}
 	
+	public static class RoundingModes
+	{
 	  /**
 	   * For compatability with Sun's JDK
 	   */
-	  private static final long serialVersionUID = 432302042773881265L;
+#pragma warning disable 0414
+	  private static readonly long serialVersionUID = 432302042773881265L;
+#pragma warning restore 0414
 	  
 	  /**
 	   * Returns the RoundingMode object corresponding to the legacy rounding modes
@@ -65,28 +70,28 @@ namespace JavaDotNet.Math
 	    switch (rm)
 	      {
 	      case BigDecimal.ROUND_CEILING:
-	        return CEILING;
+	        return RoundingMode.CEILING;
 	      case BigDecimal.ROUND_FLOOR:
-	        return FLOOR;
+	        return RoundingMode.FLOOR;
 	      case BigDecimal.ROUND_DOWN:
-	        return DOWN;
+	        return RoundingMode.DOWN;
 	      case BigDecimal.ROUND_UP:
-	        return UP;
+	        return RoundingMode.UP;
 	      case BigDecimal.ROUND_HALF_UP:
-	        return HALF_UP;
+	        return RoundingMode.HALF_UP;
 	      case BigDecimal.ROUND_HALF_DOWN:
-	        return HALF_DOWN;
+	        return RoundingMode.HALF_DOWN;
 	      case BigDecimal.ROUND_HALF_EVEN:
-	        return HALF_EVEN;
+	        return RoundingMode.HALF_EVEN;
 	      case BigDecimal.ROUND_UNNECESSARY:
-	        return UNNECESSARY;
+	        return RoundingMode.UNNECESSARY;
 	      default:
 	        throw new 
-	          IllegalArgumentException("invalid argument: " + rm + 
+	          ArgumentException("invalid argument: " + rm + 
 	                                   ".  Argument should be one of the " + 
 	                                   "rounding modes defined in BigDecimal.");
 	      }
 	  }
-	}
+   }
 }
 

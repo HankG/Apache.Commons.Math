@@ -65,7 +65,7 @@ namespace JavaDotNet.Lang
 	  /**
 	   * Table for calculating digits, used in Character, Long, and Integer.
 	   */
-	  static readonly char[] digits = {
+	  protected static readonly char[] digits = {
 	    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 	    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
@@ -128,6 +128,14 @@ namespace JavaDotNet.Lang
 	  {
 	    return (short) intValue();
 	  }
+		
+	  public static long SerialVersionUID
+		{
+			get
+			{
+				return serialVersionUID;
+			}
+		}
 	}
 }
 

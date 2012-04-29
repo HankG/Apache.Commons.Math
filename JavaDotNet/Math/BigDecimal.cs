@@ -1,4 +1,6 @@
 using System;
+using System.Numerics;
+using JavaDotNet.Lang;
 
 /* java.math.BigDecimal -- Arbitrary precision decimals.
    Copyright (C) 1999, 2000, 2001, 2003, 2005, 2006 Free Software Foundation, Inc.
@@ -39,43 +41,52 @@ exception statement from your version. */
 
 namespace JavaDotNet.Math
 {
-	public class BigDecimal extends Number implements IComparable<BigDecimal>
+	public class BigDecimal : Number, IComparable<BigDecimal>
 	{
-	  private BigInteger intVal;
-	  private int scale;
-	  private int precision = 0;
-	  private static final long serialVersionUID = 6108874887143696463L;
+	  private BigInteger _intVal;
+	  private int _scale;
+	  private int _precision = 0;
+	
+#pragma warning disable 0414
+	  private static readonly long serialVersionUID = 6108874887143696463L;
+#pragma warning restore 0414
+		
+	  /* Internally use BigInteger.TEN  a lot so creating one here
+	   *
+	   */
+	  private static readonly BigInteger _bigInteger_TEN = new BigInteger(10);
 	
 	  /**
 	   * The constant zero as a BigDecimal with scale zero.
 	   * @since 1.5
 	   */
-	  public static final BigDecimal ZERO = 
-	    new BigDecimal (BigInteger.ZERO, 0);
+	  public static readonly BigDecimal ZERO = 
+	    new BigDecimal (BigInteger.Zero, 0);
 	
 	  /**
 	   * The constant one as a BigDecimal with scale zero.
 	   * @since 1.5
 	   */
-	  public static final BigDecimal ONE = 
-	    new BigDecimal (BigInteger.ONE, 0);
+	  public static readonly BigDecimal ONE = 
+	    new BigDecimal (BigInteger.One, 0);
 	
 	  /**
 	   * The constant ten as a BigDecimal with scale zero.
 	   * @since 1.5
 	   */
-	  public static final BigDecimal TEN = 
-	    new BigDecimal (BigInteger.TEN, 0);
+	  public static readonly BigDecimal TEN = 
+	    new BigDecimal (_bigInteger_TEN, 0);
 	
-	  public static final int ROUND_UP = 0;
-	  public static final int ROUND_DOWN = 1;
-	  public static final int ROUND_CEILING = 2;
-	  public static final int ROUND_FLOOR = 3;
-	  public static final int ROUND_HALF_UP = 4;
-	  public static final int ROUND_HALF_DOWN = 5;
-	  public static final int ROUND_HALF_EVEN = 6;
-	  public static final int ROUND_UNNECESSARY = 7;
-	
+	  public const int ROUND_UP = 0;
+	  public const int ROUND_DOWN = 1;
+	  public const int ROUND_CEILING = 2;
+	  public const int ROUND_FLOOR = 3;
+	  public const int ROUND_HALF_UP = 4;
+	  public const int ROUND_HALF_DOWN = 5;
+	  public const int ROUND_HALF_EVEN = 6;
+	  public const int ROUND_UNNECESSARY = 7;
+			
+		
 	  /**
 	   * Constructs a new BigDecimal whose unscaled value is val and whose
 	   * scale is zero.
@@ -84,7 +95,7 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal (int val)
 	  {
-	    this.intVal = BigInteger.valueOf(val);
+	    this.intVal = new BigInteger(val);
 	    this.scale = 0;
 	  }
 	  
@@ -97,9 +108,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY
 	   * @since 1.5
 	   */
-	  public BigDecimal (int val, MathContext mc)
+	  public BigDecimal (int val, MathContext mc):this(val)
 	  {
-	    this (val);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -116,7 +126,7 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal (long val)
 	  {
-	    this.intVal = BigInteger.valueOf(val);
+	    this.intVal = new BigInteger(val);
 	    this.scale = 0;
 	  }
 	  
@@ -129,9 +139,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY
 	   * @since 1.5
 	   */
-	  public BigDecimal (long val, MathContext mc)
+	  public BigDecimal (long val, MathContext mc):this(val)
 	  {
-	    this(val);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -152,9 +161,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY
 	   * * @since 1.5
 	   */
-	  public BigDecimal (BigInteger num, MathContext mc)
+	  public BigDecimal (BigInteger num, MathContext mc):this (num, 0)
 	  {
-	    this (num, 0);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -174,9 +182,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY   
 	   * @since 1.5
 	   */
-	  public BigDecimal (String val, MathContext mc)
+	  public BigDecimal (String val, MathContext mc):this(val)
 	  {
-	    this (val);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -191,9 +198,9 @@ namespace JavaDotNet.Math
 	   * scale is zero.
 	   * @param num the value of the new BigDecimal
 	   */
-	  public BigDecimal (BigInteger num) 
+	  public BigDecimal (BigInteger num):this(num,0)
 	  {
-	    this (num, 0);
+
 	  }
 	
 	  /**
@@ -218,9 +225,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY
 	   * @since 1.5
 	   */
-	  public BigDecimal (BigInteger num, int scale, MathContext mc)
+	  public BigDecimal (BigInteger num, int scale, MathContext mc):this (num, scale)
 	  {
-	    this (num, scale);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -239,9 +245,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY 
 	   * @since 1.5
 	   */
-	  public BigDecimal (double num, MathContext mc)
+	  public BigDecimal (double num, MathContext mc):this(num)
 	  {
-	    this (num);
 	    if (mc.getPrecision() != 0)
 	      {
 	        BigDecimal result = this.round(mc);
@@ -251,23 +256,23 @@ namespace JavaDotNet.Math
 	      }
 	  }
 	  
-	  public BigDecimal (double num) throws NumberFormatException 
+	  public BigDecimal (double num) 
 	  {
-	    if (Double.isInfinite (num) || Double.isNaN (num))
-	      throw new NumberFormatException ("invalid argument: " + num);
+	    if (Double.IsInfinity (num) || Double.IsNaN (num))
+	      throw new ArgumentOutOfRangeException ("invalid argument: " + num);
 	    // Note we can't convert NUM to a String and then use the
 	    // String-based constructor.  The BigDecimal documentation makes
 	    // it clear that the two constructors work differently.
 	
-	    final int mantissaBits = 52;
-	    final int exponentBits = 11;
-	    final long mantMask = (1L << mantissaBits) - 1;
-	    final long expMask = (1L << exponentBits) - 1;
+	    int mantissaBits = 52;
+	    int exponentBits = 11;
+	    long mantMask = (1L << mantissaBits) - 1;
+	    long expMask = (1L << exponentBits) - 1;
 	
-	    long bits = Double.doubleToLongBits (num);
+	    long bits = BitConverter.DoubleToInt64Bits(num);
 	    long mantissa = bits & mantMask;
-	    long exponent = (bits >>> mantissaBits) & expMask;
-	    boolean denormal = exponent == 0;
+	    long exponent = ((long)((ulong)bits >> mantissaBits)) & expMask;
+	    bool denormal = exponent == 0;
 	
 	    // Correct the exponent for the bias.
 	    exponent -= denormal ? 1022 : 1023;
@@ -286,19 +291,19 @@ namespace JavaDotNet.Math
 		mantissa >>= 1;
 	      }
 	
-	    intVal = BigInteger.valueOf (bits < 0 ? - mantissa : mantissa);
+	    intVal = new BigInteger (bits < 0 ? - mantissa : mantissa);
 	    if (exponent < 0)
 	      {
 		// We have MANTISSA * 2 ^ (EXPONENT).
 		// Since (1/2)^N == 5^N * 10^-N we can easily convert this
 		// into a power of 10.
 		scale = (int) (- exponent);
-		BigInteger mult = BigInteger.valueOf (5).pow (scale);
-		intVal = intVal.multiply (mult);
+		BigInteger mult = BigInteger.Pow(new BigInteger (5), scale);
+		intVal = BigInteger.Multiply (intVal, mult);
 	      }
 	    else
 	      {
-		intVal = intVal.shiftLeft ((int) exponent);
+		intVal = intVal << (int) exponent;
 		scale = 0;
 	      }
 	  }
@@ -316,9 +321,8 @@ namespace JavaDotNet.Math
 	   * mode is RoundingMode.UNNECESSARY
 	   * @since 1.5
 	   */
-	  public BigDecimal(char[] in, int offset, int len, MathContext mc)
+	  public BigDecimal(char[] input, int offset, int len, MathContext mc):this(input, offset, len)
 	  {
-	    this(in, offset, len);
 	    // If mc has precision other than zero then we must round.
 	    if (mc.getPrecision() != 0)
 	      {
@@ -340,9 +344,8 @@ namespace JavaDotNet.Math
 	   * is RoundingMode.UNNECESSARY
 	   * @since 1.5
 	   */
-	  public BigDecimal(char[] in, MathContext mc)
+	  public BigDecimal(char[] input, MathContext mc):this(input, 0, input.Length)
 	  {
-	    this(in, 0, in.length);
 	    // If mc has precision other than zero then we must round.
 	    if (mc.getPrecision() != 0)
 	      {
@@ -361,9 +364,8 @@ namespace JavaDotNet.Math
 	   * representation
 	   * @since 1.5
 	   */
-	  public BigDecimal(char[] in)
+	  public BigDecimal(char[] input):this(input, 0, input.Length)
 	  {
-	    this(in, 0, in.length);
 	  }
 	  
 	  /**
@@ -376,7 +378,7 @@ namespace JavaDotNet.Math
 	   * BigDecimal representation.
 	   * @since 1.5
 	   */
-	  public BigDecimal(char[] in, int offset, int len)
+	  public BigDecimal(char[] input, int offset, int len)
 	  {
 	    //  start is the index into the char array where the significand starts
 	    int start = offset;
@@ -415,13 +417,13 @@ namespace JavaDotNet.Math
 	    //  offset = 2, len = 8, start = 3, dot = -1, point = 8, end = 10 
 	    
 	    //  Determine the sign of the number.
-	    boolean negative = false;
-	    if (in[offset] == '+')
+	    bool negative = false;
+	    if (input[offset] == '+')
 	      {
 	        ++start;
 	        ++point;
 	      }
-	    else if (in[offset] == '-')
+	    else if (input[offset] == '-')
 	      {
 	        ++start;
 	        ++point;
@@ -432,12 +434,12 @@ namespace JavaDotNet.Math
 	    //  start of the exponent.
 	    while (point < end)
 	      {
-	        char c = in[point];
+	        char c = input[point];
 	        if (c == '.')
 	          {
 	            // If dot != -1 then we've seen more than one decimal point.
 	            if (dot != -1)
-	              throw new NumberFormatException("multiple `.'s in number");
+	              throw new ArgumentOutOfRangeException("multiple `.'s in number");
 	            dot = point;
 	          }
 	        // Break when we reach the start of the exponent.
@@ -445,37 +447,37 @@ namespace JavaDotNet.Math
 	          break;
 	        // Throw an exception if the character was not a decimal or an 
 	        // exponent and is not a digit.
-	        else if (!Character.isDigit(c))
-	          throw new NumberFormatException("unrecognized character at " + point
+	        else if (!Char.IsDigit(c))
+	          throw new FormatException("unrecognized character at " + point
 	                                          + ": " + c);
 	        ++point;
 	      }
 	
 	    // val is a StringBuilder from which we'll create a BigInteger
 	    // which will be the unscaled value for this BigDecimal
-	    CPStringBuilder val = new CPStringBuilder(point - start - 1);
+	    System.Text.StringBuilder val = new System.Text.StringBuilder(point - start - 1);
 	    if (dot != -1)
 	      {
 	        // If there was a decimal we must combine the two parts that 
 	        // contain only digits and we must set the scale properly.
-	        val.append(in, start, dot - start);
-	        val.append(in, dot + 1, point - dot - 1);
+	        val.Append(input, start, dot - start);
+	        val.Append(input, dot + 1, point - dot - 1);
 	        scale = point - 1 - dot;
 	      }
 	    else
 	      {
 	        // If there was no decimal then the unscaled value is just the number
 	        // formed from all the digits and the scale is zero.
-	        val.append(in, start, point - start);
+	        val.Append(input, start, point - start);
 	        scale = 0;
 	      }
-	    if (val.length() == 0)
-	      throw new NumberFormatException("no digits seen");
+	    if (val.Length == 0)
+	      throw new FormatException("no digits seen");
 	
 	    // Prepend a negative sign if necessary.
 	    if (negative)
-	      val.insert(0, '-');
-	    intVal = new BigInteger(val.toString());
+	      val.Insert(0, '-');
+	    intVal = BigInteger.Parse(val.ToString());
 	
 	    // Now parse exponent.
 	    // If point < end that means we broke out of the previous loop when we
@@ -484,40 +486,38 @@ namespace JavaDotNet.Math
 	      {
 	        point++;
 	        // Ignore a '+' sign.
-	        if (in[point] == '+')
+	        if (input[point] == '+')
 	          point++;
 	
 	        // Throw an exception if there were no digits found after the 'e'
 	        // or 'E'.
 	        if (point >= end)
-	          throw new NumberFormatException("no exponent following e or E");
+	          throw new FormatException("no exponent following e or E");
 	
-	        try
-	          {
-	            // Adjust the scale according to the exponent.  
-	            // Remember that the value of a BigDecimal is
-	            // unscaledValue x Math.pow(10, -scale)
-	            scale -= Integer.parseInt(new String(in, point, end - point));
-	          }
-	        catch (NumberFormatException ex)
-	          {
-	            throw new NumberFormatException("malformed exponent");
-	          }
+			int decrementValue = 0;
+			if(Int32.TryParse(new String(input, point, end - point), out decrementValue))
+			{
+				scale -= decrementValue;
+			}
+			else
+			{
+				throw new FormatException("malformed exponent");
+			}
 	      }
 	  }
 	  
-	  public BigDecimal (String num) throws NumberFormatException 
+	  public BigDecimal (String num)
 	  {
-	    int len = num.length();
+	    int len = num.Length;
 	    int start = 0, point = 0;
 	    int dot = -1;
-	    boolean negative = false;
-	    if (num.charAt(0) == '+')
+	    bool negative = false;
+	    if (num[0] == '+')
 	      {
 		++start;
 		++point;
 	      }
-	    else if (num.charAt(0) == '-')
+	    else if (num[0] == '-')
 	      {
 		++start;
 		++point;
@@ -526,57 +526,58 @@ namespace JavaDotNet.Math
 	
 	    while (point < len)
 	      {
-		char c = num.charAt (point);
+		char c = num[point];
 		if (c == '.')
 		  {
 		    if (dot >= 0)
-		      throw new NumberFormatException ("multiple `.'s in number");
+		      throw new FormatException ("multiple `.'s in number");
 		    dot = point;
 		  }
 		else if (c == 'e' || c == 'E')
 		  break;
-		else if (Character.digit (c, 10) < 0)
-		  throw new NumberFormatException ("unrecognized character: " + c);
+		else if (!Char.IsDigit(c))
+		  throw new FormatException ("unrecognized character: " + c);
 		++point;
 	      }
 	
 	    String val;
 	    if (dot >= 0)
 	      {
-		val = num.substring (start, dot) + num.substring (dot + 1, point);
+		val = num.Substring (start, dot) + num.Substring (dot + 1, point);
 		scale = point - 1 - dot;
 	      }
 	    else
 	      {
-		val = num.substring (start, point);
+		val = num.Substring (start, point);
 		scale = 0;
 	      }
-	    if (val.length () == 0)
-	      throw new NumberFormatException ("no digits seen");
+	    if (val.Length  == 0)
+	      throw new FormatException ("no digits seen");
 	
 	    if (negative)
 	      val = "-" + val;
-	    intVal = new BigInteger (val);
+	    intVal = BigInteger.Parse(val);
 	
 	    // Now parse exponent.
 	    if (point < len)
 	      {
 	        point++;
-	        if (num.charAt(point) == '+')
+	        if (num[point] == '+')
 	          point++;
 	
 	        if (point >= len )
-	          throw new NumberFormatException ("no exponent following e or E");
+	          throw new FormatException ("no exponent following e or E");
 		
-	        try 
-		  {	    
-	        scale -= Integer.parseInt (num.substring (point));
+		  	int decrement = 0;
+		    if(Int32.TryParse(num.Substring(point), out decrement))
+			{
+				scale -= decrement;
+			}
+			else
+			{
+				throw new FormatException("malformed exponent");
+	        }
 		  }
-	        catch (NumberFormatException ex) 
-		  {
-		    throw new NumberFormatException ("malformed exponent");
-		  }
-	      }
 	  }
 	
 	  public static BigDecimal valueOf (long val) 
@@ -585,7 +586,6 @@ namespace JavaDotNet.Math
 	  }
 	
 	  public static BigDecimal valueOf (long val, int scale) 
-	    throws NumberFormatException 
 	  {
 	    if ((scale == 0) && ((int)val == val))
 	      switch ((int) val)
@@ -596,7 +596,7 @@ namespace JavaDotNet.Math
 		  return ONE;
 		}
 	
-	    return new BigDecimal (BigInteger.valueOf (val), scale);
+	    return new BigDecimal (new BigInteger(val), scale);
 	  }
 	
 	  public BigDecimal add (BigDecimal val) 
@@ -606,12 +606,13 @@ namespace JavaDotNet.Math
 	    // scale == 0 instead of the scale we need.
 	    BigInteger op1 = intVal;
 	    BigInteger op2 = val.intVal;
+		BigInteger ten = _bigInteger_TEN;
 	    if (scale < val.scale)
-	      op1 = op1.multiply (BigInteger.TEN.pow (val.scale - scale));
+	      op1 = BigInteger.Multiply(op1, BigInteger.Pow (ten, (val.scale - scale)));
 	    else if (scale > val.scale)
-	      op2 = op2.multiply (BigInteger.TEN.pow (scale - val.scale));
+	      op2 = BigInteger.Multiply(op2, BigInteger.Pow (ten, (scale - val.scale)));
 	
-	    return new BigDecimal (op1.add (op2), Math.max (scale, val.scale));
+	    return new BigDecimal (BigInteger.Add (op1, op2), System.Math.Max (scale, val.scale));
 	  }
 	  
 	  /**
@@ -651,7 +652,7 @@ namespace JavaDotNet.Math
 	
 	  public BigDecimal multiply (BigDecimal val) 
 	  {
-	    return new BigDecimal (intVal.multiply (val.intVal), scale + val.scale);
+	    return new BigDecimal (BigInteger.Multiply(intVal, val.intVal), scale + val.scale);
 	  }
 	  
 	  /**
@@ -670,7 +671,6 @@ namespace JavaDotNet.Math
 	  }
 	
 	  public BigDecimal divide (BigDecimal val, int roundingMode) 
-	    throws ArithmeticException, IllegalArgumentException 
 	  {
 	    return divide (val, scale, roundingMode);
 	  }
@@ -689,7 +689,7 @@ namespace JavaDotNet.Math
 	  public BigDecimal divide(BigDecimal val, 
 	                           int scale, RoundingMode roundingMode)
 	  {
-	    return divide (val, scale, roundingMode.ordinal());
+	    return divide (val, scale, (int)roundingMode);
 	  }
 	
 	  /**
@@ -703,17 +703,16 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal divide (BigDecimal val, RoundingMode roundingMode)
 	  {
-	    return divide (val, scale, roundingMode.ordinal());
+	    return divide (val, scale, (int)roundingMode);
 	  }
 	  
 	  public BigDecimal divide(BigDecimal val, int newScale, int roundingMode)
-	    throws ArithmeticException, IllegalArgumentException 
 	  {
 	    if (roundingMode < 0 || roundingMode > 7)
 	      throw 
-		new IllegalArgumentException("illegal rounding mode: " + roundingMode);
+		new ArgumentException("illegal rounding mode: " + roundingMode);
 	
-	    if (intVal.signum () == 0)	// handle special case of 0.0/0.0
+	    if (intVal.Sign == 0)	// handle special case of 0.0/0.0
 	      return newScale == 0 ? ZERO : new BigDecimal (ZERO.intVal, newScale);
 	    
 	    // Ensure that pow gets a non-negative value.
@@ -723,22 +722,24 @@ namespace JavaDotNet.Math
 	      {
 		// Effectively increase the scale of val to avoid an
 		// ArithmeticException for a negative power.
-	        valIntVal = valIntVal.multiply (BigInteger.TEN.pow (-power));
-		power = 0;
+	        valIntVal = BigInteger.Multiply(valIntVal, BigInteger.Pow (_bigInteger_TEN, -power));
+			power = 0;
 	      }
 	
-	    BigInteger dividend = intVal.multiply (BigInteger.TEN.pow (power));
+	    BigInteger dividend = BigInteger.Multiply(intVal, BigInteger.Pow (_bigInteger_TEN, power));
+		BigInteger remainder;
+		BigInteger value = BigInteger.DivRem(dividend, valIntVal, out remainder);
 	    
-	    BigInteger parts[] = dividend.divideAndRemainder (valIntVal);
+	    BigInteger[] parts = {value, remainder };
 	
 	    BigInteger unrounded = parts[0];
-	    if (parts[1].signum () == 0) // no remainder, no rounding necessary
+	    if (parts[1].Sign == 0) // no remainder, no rounding necessary
 	      return new BigDecimal (unrounded, newScale);
 	
 	    if (roundingMode == ROUND_UNNECESSARY)
 	      throw new ArithmeticException ("Rounding necessary");
 	
-	    int sign = intVal.signum () * valIntVal.signum ();
+	    int sign = intVal.Sign * valIntVal.Sign;
 	
 	    if (roundingMode == ROUND_CEILING)
 	      roundingMode = (sign > 0) ? ROUND_UP : ROUND_DOWN;
@@ -750,9 +751,9 @@ namespace JavaDotNet.Math
 		// 1 if >. This implies that the remainder to round is less than,
 		// equal to, or greater than half way to the next digit.
 		BigInteger posRemainder
-		  = parts[1].signum () < 0 ? parts[1].negate() : parts[1];
-		valIntVal = valIntVal.signum () < 0 ? valIntVal.negate () : valIntVal;
-		int half = posRemainder.shiftLeft(1).compareTo(valIntVal);
+		  = parts[1].Sign < 0 ? BigInteger.Negate (parts[1]) : parts[1];
+		valIntVal = valIntVal.Sign < 0 ? BigInteger.Negate (valIntVal) : valIntVal;
+		int half = (posRemainder << 1).CompareTo(valIntVal);
 	
 		switch(roundingMode)
 		  {
@@ -767,7 +768,7 @@ namespace JavaDotNet.Math
 		      roundingMode = ROUND_DOWN;
 		    else if (half > 0)
 		      roundingMode = ROUND_UP;
-		    else if (unrounded.testBit(0)) // odd, then ROUND_HALF_UP
+		    else if (!unrounded.IsEven) // odd, then ROUND_HALF_UP
 		      roundingMode = ROUND_UP;
 		    else                           // even, ROUND_HALF_DOWN
 		      roundingMode = ROUND_DOWN;
@@ -776,7 +777,7 @@ namespace JavaDotNet.Math
 	      }
 	
 	    if (roundingMode == ROUND_UP)
-	      unrounded = unrounded.add (BigInteger.valueOf (sign > 0 ? 1 : -1));
+	      unrounded = BigInteger.Add (unrounded, new BigInteger(sign > 0 ? 1 : -1));
 	
 	    // roundingMode == ROUND_DOWN
 	    return new BigDecimal (unrounded, newScale);
@@ -790,7 +791,6 @@ namespace JavaDotNet.Math
 	   * @since 1.5
 	   */
 	  public BigDecimal divide(BigDecimal divisor)
-	    throws ArithmeticException, IllegalArgumentException 
 	  {
 	    return divide(divisor, scale, ROUND_UNNECESSARY);
 	  }
@@ -850,43 +850,48 @@ namespace JavaDotNet.Math
 	  {
 	    if (scale <= 0)
 	      return this;
-	    String intValStr = intVal.toString();
-	    intValStr = intValStr.substring(0, intValStr.length() - scale);
-	    intVal = new BigInteger(intValStr).multiply(BigInteger.TEN.pow(scale));
+	    String intValStr = intVal.ToString();
+	    intValStr = intValStr.Substring(0, intValStr.Length - scale);
+	    intVal = BigInteger.Multiply(BigInteger.Parse(intValStr), BigInteger.Pow (_bigInteger_TEN, scale));
 	    return this;
 	  }
 	    
 	  public int compareTo (BigDecimal val) 
 	  {
 	    if (scale == val.scale)
-	      return intVal.compareTo (val.intVal);
+	      return intVal.CompareTo (val.intVal);
 	
-	    BigInteger thisParts[] = 
-	      intVal.divideAndRemainder (BigInteger.TEN.pow (scale));
-	    BigInteger valParts[] =
-	      val.intVal.divideAndRemainder (BigInteger.TEN.pow (val.scale));
+		BigInteger tenPowScale = BigInteger.Pow (_bigInteger_TEN, scale);
+		BigInteger valRemainder;
+		BigInteger valRVal = BigInteger.DivRem(intVal, tenPowScale, out valRemainder);
+	    BigInteger[] thisParts = {valRVal, valRemainder};
+			
+		BigInteger tenPowValScale = BigInteger.Pow (_bigInteger_TEN, val.scale);
+		BigInteger valIntValRemainder;
+		BigInteger valIntValRval = BigInteger.DivRem(val.intVal,tenPowValScale, out valIntValRemainder);
+	    BigInteger[] valParts = {valIntValRval, valIntValRemainder};
 	    
 	    int compare;
-	    if ((compare = thisParts[0].compareTo (valParts[0])) != 0)
+	    if ((compare = thisParts[0].CompareTo (valParts[0])) != 0)
 	      return compare;
 	
 	    // quotients are the same, so compare remainders
 	
 	    // Add some trailing zeros to the remainder with the smallest scale
 	    if (scale < val.scale)
-	      thisParts[1] = thisParts[1].multiply
-				(BigInteger.valueOf (10).pow (val.scale - scale));
+	      thisParts[1] = BigInteger.Multiply(thisParts[1], 
+				BigInteger.Pow ( _bigInteger_TEN, (val.scale - scale)));
 	    else if (scale > val.scale)
-	      valParts[1] = valParts[1].multiply
-				(BigInteger.valueOf (10).pow (scale - val.scale));
+	      valParts[1] = BigInteger.Multiply(valParts[1],
+				BigInteger.Pow (_bigInteger_TEN, (scale - val.scale)));
 	
 	    // and compare them
-	    return thisParts[1].compareTo (valParts[1]);
+	    return thisParts[1].CompareTo (valParts[1]);
 	  }
 	
-	  public boolean equals (Object o) 
+	  public bool equals (Object o) 
 	  {
-	    return (o instanceof BigDecimal 
+	    return (o is BigDecimal 
 		    && scale == ((BigDecimal) o).scale
 		    && compareTo ((BigDecimal) o) == 0);
 	  }
@@ -931,20 +936,39 @@ namespace JavaDotNet.Math
 	    if (scale >= n)
 	      return new BigDecimal (intVal, scale - n);
 	
-	    return new BigDecimal (intVal.multiply 
-				   (BigInteger.TEN.pow (n - scale)), 0);
+		BigInteger tenPow = BigInteger.Pow(_bigInteger_TEN, (n - scale));
+	    return new BigDecimal (BigInteger.Multiply(intVal,tenPow), 0);
 	  }
 	
 	  public int signum () 
 	  {
-	    return intVal.signum ();
+	    return intVal.Sign;
 	  }
 	
-	  public int scale () 
+	  public int scale 
 	  {
-	    return scale;
+			get
+			{
+	    		return _scale;
+			}
+			set
+			{
+				_scale = value;
+			}
 	  }
 	  
+	  public BigInteger intVal 
+	  { 
+			get 
+			{ 
+				return _intVal;
+			}
+			set 
+			{
+				_intVal = value;
+			}
+	  }
+		
 	  public BigInteger unscaledValue()
 	  {
 	    return intVal;
@@ -952,12 +976,12 @@ namespace JavaDotNet.Math
 	
 	  public BigDecimal abs () 
 	  {
-	    return new BigDecimal (intVal.abs (), scale);
+	    return new BigDecimal (BigInteger.Abs (intVal), scale);
 	  }
 	
 	  public BigDecimal negate () 
 	  {
-	    return new BigDecimal (intVal.negate (), scale);
+	    return new BigDecimal (BigInteger.Negate(intVal), scale);
 	  }
 	  
 	  /**
@@ -1011,7 +1035,7 @@ namespace JavaDotNet.Math
 	  public BigDecimal round(MathContext mc)
 	  {
 	    int mcPrecision = mc.getPrecision();
-	    int numToChop = precision() - mcPrecision;
+	    int numToChop = this.precision - mcPrecision;
 	    // If mc specifies not to chop any digits or if we've already chopped 
 	    // enough digits (say by using a MathContext in the constructor for this
 	    // BigDecimal) then just return this.
@@ -1020,8 +1044,8 @@ namespace JavaDotNet.Math
 	    
 	    // Make a new BigDecimal which is the correct power of 10 to chop off
 	    // the required number of digits and then call divide.
-	    BigDecimal div = new BigDecimal(BigInteger.TEN.pow(numToChop));
-	    BigDecimal rounded = divide(div, scale, mc.getRoundingMode().ordinal());
+	    BigDecimal div = new BigDecimal(BigInteger.Pow (_bigInteger_TEN,numToChop));
+	    BigDecimal rounded = divide(div, scale, (int)mc.getRoundingMode());
 	    rounded.scale -= numToChop;
 	    rounded.precision = mcPrecision;
 	    return rounded;
@@ -1032,15 +1056,22 @@ namespace JavaDotNet.Math
 	   * unscaled value).  The precision of a zero value is 1.
 	   * @return the number of digits in the unscaled value, or 1 if the value 
 	   * is zero.
-	   */
-	  public int precision()
+	   */		
+	  public int precision
 	  {
-	    if (precision == 0)
-	      {
-		String s = intVal.toString();
-		precision = s.length() - (( s.charAt(0) == '-' ) ? 1 : 0);
-	      }
-	    return precision;
+			get
+			{
+				if (_precision == 0)
+			      {
+					String s = this.intVal.ToString();
+					_precision = s.Length - (( s[0] == '-' ) ? 1 : 0);
+			      }
+			    return _precision;
+			}
+			set
+			{
+				_precision = value;
+			}
 	  }
 	  
 	  /**
@@ -1065,14 +1096,14 @@ namespace JavaDotNet.Math
 	  {
 	    // bigStr is the String representation of the unscaled value.  If
 	    // scale is zero we simply return this.
-	    String bigStr = intVal.toString();
+	    String bigStr = intVal.ToString();
 	    if (scale == 0)
 	      return bigStr;
 	
-	    boolean negative = (bigStr.charAt(0) == '-');
-	    int point = bigStr.length() - scale - (negative ? 1 : 0);
+	    bool negative = (bigStr[0] == '-');
+	    int point = bigStr.Length - scale - (negative ? 1 : 0);
 	
-	    CPStringBuilder val = new CPStringBuilder();
+	    System.Text.StringBuilder val = new System.Text.StringBuilder();
 	
 	    if (scale >= 0 && (point - 1) >= -6)
 	      {
@@ -1081,40 +1112,40 @@ namespace JavaDotNet.Math
 	          {
 	            // Zeros need to be prepended to the StringBuilder.
 	            if (negative)
-	              val.append('-');
+	              val.Append('-');
 	            // Prepend a '0' and a '.' and then as many more '0's as necessary.
-	            val.append('0').append('.');
+	            val.Append('0').Append('.');
 	            while (point < 0)
 	              {
-	                val.append('0');
+	                val.Append('0');
 	                point++;
 	              }
 	            // Append the unscaled value.
-	            val.append(bigStr.substring(negative ? 1 : 0));
+	            val.Append(bigStr.Substring(negative ? 1 : 0));
 	          }
 	        else
 	          {
 	            // No zeros need to be prepended so the String is simply the 
 	            // unscaled value with the decimal point inserted.
-	            val.append(bigStr);
-	            val.insert(point + (negative ? 1 : 0), '.');
+	            val.Append(bigStr);
+	            val.Insert(point + (negative ? 1 : 0), '.');
 	          }
 	      }
 	    else
 	      {
 	        // We must use scientific notation to represent this BigDecimal.
-	        val.append(bigStr);
+	        val.Append(bigStr);
 	        // If there is more than one digit in the unscaled value we put a 
 	        // decimal after the first digit.
-	        if (bigStr.length() > 1)
-	          val.insert( ( negative ? 2 : 1 ), '.');
+	        if (bigStr.Length > 1)
+	          val.Insert( ( negative ? 2 : 1 ), '.');
 	        // And then append 'E' and the exponent = (point - 1).
-	        val.append('E');
+	        val.Append('E');
 	        if (point - 1 >= 0)
-	          val.append('+');
-	        val.append( point - 1 );
+	          val.Append('+');
+	        val.Append( point - 1 );
 	      }
-	    return val.toString();
+	    return val.ToString();
 	  }
 	
 	  /**
@@ -1130,16 +1161,16 @@ namespace JavaDotNet.Math
 	  {
 	    // bigStr is the String representation of the unscaled value.  If
 	    // scale is zero we simply return this.
-	    String bigStr = intVal.toString();
+	    String bigStr = intVal.ToString();
 	    if (scale == 0)
 	      return bigStr;
 	
-	    boolean negative = (bigStr.charAt(0) == '-');
-	    int point = bigStr.length() - scale - (negative ? 1 : 0);
+	    bool negative = (bigStr[0] == '-');
+	    int point = bigStr.Length - scale - (negative ? 1 : 0);
 	
 	    // This is the adjusted exponent described above.
 	    int adjExp = point - 1;
-	    CPStringBuilder val = new CPStringBuilder();
+	    System.Text.StringBuilder val = new System.Text.StringBuilder();
 	
 	    if (scale >= 0 && adjExp >= -6)
 	      {
@@ -1148,23 +1179,23 @@ namespace JavaDotNet.Math
 	          {
 	            // Zeros need to be prepended to the StringBuilder.
 	            if (negative)
-	              val.append('-');
+	              val.Append('-');
 	            // Prepend a '0' and a '.' and then as many more '0's as necessary.
-	            val.append('0').append('.');
+	            val.Append('0').Append('.');
 	            while (point < 0)
 	              {
-	                val.append('0');
+	                val.Append('0');
 	                point++;
 	              }
 	            // Append the unscaled value.
-	            val.append(bigStr.substring(negative ? 1 : 0));
+	            val.Append(bigStr.Substring(negative ? 1 : 0));
 	          }
 	        else
 	          {
 	            // No zeros need to be prepended so the String is simply the 
 	            // unscaled value with the decimal point inserted.
-	            val.append(bigStr);
-	            val.insert(point + (negative ? 1 : 0), '.');
+	            val.Append(bigStr);
+	            val.Insert(point + (negative ? 1 : 0), '.');
 	          }
 	      }
 	    else
@@ -1172,7 +1203,7 @@ namespace JavaDotNet.Math
 	        // We must use scientific notation to represent this BigDecimal.
 	        // The exponent must be a multiple of 3 and the integer part
 	        // must be between 1 and 999.
-	        val.append(bigStr);        
+	        val.Append(bigStr);        
 	        int zeros = adjExp % 3;
 	        int dot = 1;
 	        if (adjExp > 0)
@@ -1204,21 +1235,21 @@ namespace JavaDotNet.Math
 	
 	        // Either we have to append zeros because, for example, 1.1E+5 should
 	        // be 110E+3, or we just have to put the decimal in the right place.
-	        if (dot > val.length())
+	        if (dot > val.Length)
 	          {
-	            while (dot > val.length())
-	              val.append('0');
+	            while (dot > val.Length)
+	              val.Append('0');
 	          }
-	        else if (bigStr.length() > dot)
-	          val.insert(dot + (negative ? 1 : 0), '.');
+	        else if (bigStr.Length > dot)
+	          val.Insert(dot + (negative ? 1 : 0), '.');
 	        
 	        // And then append 'E' and the exponent (adjExp).
-	        val.append('E');
+	        val.Append('E');
 	        if (adjExp >= 0)
-	          val.append('+');
-	        val.append(adjExp);
+	          val.Append('+');
+	        val.Append(adjExp);
 	      }
-	    return val.toString();
+	    return val.ToString();
 	  }
 	  
 	  /**
@@ -1235,45 +1266,45 @@ namespace JavaDotNet.Math
 	  {
 	    // If the scale is zero we simply return the String representation of the 
 	    // unscaled value.
-	    String bigStr = intVal.toString();
+	    String bigStr = intVal.ToString();
 	    if (scale == 0)
 	      return bigStr;
 	
 	    // Remember if we have to put a negative sign at the start.
-	    boolean negative = (bigStr.charAt(0) == '-');
+	    bool negative = (bigStr[0] == '-');
 	
-	    int point = bigStr.length() - scale - (negative ? 1 : 0);
+	    int point = bigStr.Length - scale - (negative ? 1 : 0);
 	
-	    CPStringBuilder sb = new CPStringBuilder(bigStr.length() + 2
+	    System.Text.StringBuilder sb = new System.Text.StringBuilder(bigStr.Length + 2
 						     + (point <= 0 ? (-point + 1) : 0));
 	    if (point <= 0)
 	      {
 	        // We have to prepend zeros and a decimal point.
 	        if (negative)
-	          sb.append('-');
-	        sb.append('0').append('.');
+	          sb.Append('-');
+	        sb.Append('0').Append('.');
 	        while (point < 0)
 	          {
-	            sb.append('0');
+	            sb.Append('0');
 	            point++;
 	          }
-	        sb.append(bigStr.substring(negative ? 1 : 0));
+	        sb.Append(bigStr.Substring(negative ? 1 : 0));
 	      }
-	    else if (point < bigStr.length())
+	    else if (point < bigStr.Length)
 	      {
 	        // No zeros need to be prepended or appended, just put the decimal
 	        // in the right place.
-	        sb.append(bigStr);
-	        sb.insert(point + (negative ? 1 : 0), '.');
+	        sb.Append(bigStr);
+	        sb.Insert(point + (negative ? 1 : 0), '.');
 	      }
 	    else
 	      {
 	        // We must append zeros instead of using scientific notation.
-	        sb.append(bigStr);
-	        for (int i = bigStr.length(); i < point; i++)
-	          sb.append('0');
+	        sb.Append(bigStr);
+	        for (int i = bigStr.Length; i < point; i++)
+	          sb.Append('0');
 	      }
-	    return sb.toString();
+	    return sb.ToString();
 	  }
 	  
 	  /**
@@ -1286,9 +1317,9 @@ namespace JavaDotNet.Math
 	    // If scale > 0 then we must divide, if scale > 0 then we must multiply,
 	    // and if scale is zero then we just return intVal;
 	    if (scale > 0)
-	      return intVal.divide (BigInteger.TEN.pow (scale));
+	      return BigInteger.Divide(intVal,BigInteger.Pow (_bigInteger_TEN, scale));
 	    else if (scale < 0)
-	      return intVal.multiply(BigInteger.TEN.pow(-scale));
+	      return BigInteger.Multiply(intVal,BigInteger.Pow(_bigInteger_TEN, -scale));
 	    return intVal;
 	  }
 	  
@@ -1303,22 +1334,22 @@ namespace JavaDotNet.Math
 	    if (scale > 0)
 	      {
 	        // If we have to divide, we must check if the result is exact.
-	        BigInteger[] result = 
-	          intVal.divideAndRemainder(BigInteger.TEN.pow(scale));
-	        if (result[1].equals(BigInteger.ZERO))
-	          return result[0];
+			BigInteger remainder;
+			BigInteger divResult = BigInteger.DivRem(intVal, BigInteger.Pow (_bigInteger_TEN, scale), out remainder);
+	        if (remainder.Equals(BigInteger.Zero))
+	          return divResult;
 	        throw new ArithmeticException("No exact BigInteger representation");
 	      }
 	    else if (scale < 0)
 	      // If we're multiplying instead, then we needn't check for exactness.
-	      return intVal.multiply(BigInteger.TEN.pow(-scale));
+	      return BigInteger.Multiply(intVal,BigInteger.Pow(_bigInteger_TEN, -scale));
 	    // If the scale is zero we can simply return intVal.
 	    return intVal;
 	  }
 	
-	  public int intValue () 
+	  public override int intValue () 
 	  {
-	    return toBigInteger ().intValue ();
+	    return (int)(toBigInteger ());
 	  }
 	  
 	  /**
@@ -1331,46 +1362,45 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal stripTrailingZeros()  
 	  {
-	    String intValStr = intVal.toString();
+	    String intValStr = intVal.ToString();
 	    int newScale = scale;
-	    int pointer = intValStr.length() - 1;
+	    int pointer = intValStr.Length - 1;
 	    // This loop adjusts pointer which will be used to give us the substring
 	    // of intValStr to use in our new BigDecimal, and also accordingly
 	    // adjusts the scale of our new BigDecimal.
-	    while (intValStr.charAt(pointer) == '0')
+	    while (intValStr[pointer] == '0')
 	      {
 	        pointer --;
 	        newScale --;
 	      }
 	    // Create a new BigDecimal with the appropriate substring and then
 	    // set its scale.
-	    BigDecimal result = new BigDecimal(intValStr.substring(0, pointer + 1));    
+	    BigDecimal result = new BigDecimal(intValStr.Substring(0, pointer + 1));    
 	    result.scale = newScale;
 	    return result;
 	  }
 	
-	  public long longValue ()
+	  public override long longValue ()
 	  {
-	    return toBigInteger().longValue();
+	    return (long)(toBigInteger());
 	  }
 	
-	  public float floatValue() 
+	  public override float floatValue() 
 	  {
-	    return Float.valueOf(toString()).floatValue();
+	    return Single.Parse(toString());
 	  }
 	
-	  public double doubleValue() 
+	  public override double doubleValue() 
 	  {
-	    return Double.valueOf(toString()).doubleValue();
+	    return Double.Parse(toString());
 	  }
 	
-	  public BigDecimal setScale (int scale) throws ArithmeticException
+	  public BigDecimal setScale (int scale)
 	  {
 	    return setScale (scale, ROUND_UNNECESSARY);
 	  }
 	
 	  public BigDecimal setScale (int scale, int roundingMode)
-	    throws ArithmeticException, IllegalArgumentException
 	  {
 	    // NOTE: The 1.5 JRE doesn't throw this, ones prior to it do and
 	    // the spec says it should. Nevertheless, if 1.6 doesn't fix this
@@ -1393,7 +1423,7 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal setScale(int newScale, RoundingMode roundingMode)
 	  {
-	    return setScale(newScale, roundingMode.ordinal());
+	    return setScale(newScale, (int)roundingMode);
 	  }
 	  
 	  /**
@@ -1407,9 +1437,9 @@ namespace JavaDotNet.Math
 	   */
 	  public static BigDecimal valueOf(double val)
 	  {
-	    if (Double.isInfinite(val) || Double.isNaN(val))
-	      throw new NumberFormatException("argument cannot be NaN or infinite.");
-	    return new BigDecimal(Double.toString(val));
+	    if (Double.IsInfinity(val) || Double.IsNaN(val))
+	      throw new FormatException("argument cannot be NaN or infinite.");
+	    return new BigDecimal(String.Format("{0}",val));
 	  }
 	  
 	  /**
@@ -1437,7 +1467,7 @@ namespace JavaDotNet.Math
 	  {
 	    if (n < 0 || n > 999999999)
 	      throw new ArithmeticException("n must be between 0 and 999999999");
-	    BigDecimal result = new BigDecimal(intVal.pow(n), scale * n);
+	    BigDecimal result = new BigDecimal(BigInteger.Pow (intVal, n), scale * n);
 	    return result;
 	  }
 	  
@@ -1479,7 +1509,7 @@ namespace JavaDotNet.Math
 	   */
 	  public BigDecimal ulp()
 	  {
-	    return new BigDecimal(BigInteger.ONE, scale);
+	    return new BigDecimal(BigInteger.One, scale);
 	  }
 	  
 	  /**
@@ -1494,13 +1524,13 @@ namespace JavaDotNet.Math
 	    BigDecimal temp = setScale(0, ROUND_UNNECESSARY);
 	    BigInteger tempVal = temp.intVal;
 	    // Check for overflow.
-	    long result = intVal.longValue();
-	    if (tempVal.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 1
+	    long result = (long)intVal;
+	    if (tempVal.CompareTo(new BigInteger(Int64.MaxValue)) > 1
 	        || (result < 0 && signum() == 1) || (result > 0 && signum() == -1))
 	      throw new ArithmeticException("this BigDecimal is too " +
 	            "large to fit into the return type");
 	    
-	    return intVal.longValue();
+	    return (long)(intVal);
 	  }
 	  
 	  /**
@@ -1556,6 +1586,13 @@ namespace JavaDotNet.Math
 	      throw new ArithmeticException ("this BigDecimal cannot fit into a short");
 	    return result;
 	  }
+
+	  #region IComparable[BigDecimal] implementation
+	  int IComparable<BigDecimal>.CompareTo (BigDecimal other)
+	  {
+		 return this.compareTo(other);
+	  }
+	  #endregion
 	}
 }
 
