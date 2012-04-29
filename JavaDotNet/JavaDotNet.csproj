@@ -35,9 +35,11 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Math\ACMBitConverter.cs" />
     <Compile Include="Math\BigDecimal.cs" />
+    <Compile Include="Lang\Number.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Math\" />
+    <Folder Include="Lang\" />
   </ItemGroup>
 </Project>
