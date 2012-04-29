@@ -8,7 +8,7 @@ using System;
  */
 
 
-namespace Apache.Commons.Math
+namespace JavaDotNet.Math
 {
 	public class ACMBitConverter
 	{
@@ -21,7 +21,7 @@ namespace Apache.Commons.Math
 		{
 			//TODO: Implement SingleToInt32Bits
 			throw new NotImplementedException();
-			return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+			//return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
 		}
 		
 		/**
@@ -34,7 +34,7 @@ namespace Apache.Commons.Math
 		{
 			//TODO: Implement SingleToRawInt32Bits
 			throw new NotImplementedException();
-			return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+			//return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
 		}
 		
 
@@ -47,7 +47,7 @@ namespace Apache.Commons.Math
 		{
 			//TODO: Implement Int32BitsToSingle
 			throw new NotImplementedException();
-			return BitConverter.ToSingle(BitConverter.GetBytes(value), 0);
+			//return BitConverter.ToSingle(BitConverter.GetBytes(value), 0);
 		}
 		
 		public ACMBitConverter ()

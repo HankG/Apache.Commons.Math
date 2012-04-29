@@ -83,6 +83,7 @@
     <Compile Include="Util\FastMath.cs" />
     <Compile Include="Util\FastMathCalc.cs" />
     <Compile Include="Util\Precision.cs" />
+    <Compile Include="Util\FastMathLiteralArrays.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
