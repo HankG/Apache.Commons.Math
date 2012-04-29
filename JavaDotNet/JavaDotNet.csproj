@@ -44,6 +44,7 @@
     <Compile Include="Math\BigDecimal.cs" />
     <Compile Include="Lang\Number.cs" />
     <Compile Include="Math\MathContext.cs" />
+    <Compile Include="Math\RoundingMode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
