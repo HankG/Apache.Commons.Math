@@ -1,4 +1,5 @@
 using System;
+using Apache.Commons.Math.Exceptions;
 
 namespace Apache.Commons.Math.Util
 {
@@ -8,10 +9,10 @@ namespace Apache.Commons.Math.Util
 	     * 0x40000000 - used to split a double into two parts, both with the low order bits cleared.
 	     * Equivalent to 2^30.
 	     */
-	    private static final long HEX_40000000 = 0x40000000L; // 1073741824L
+	    private static readonly long HEX_40000000 = 0x40000000L; // 1073741824L
 	
 	    /** Factorial table, for Taylor series expansions. 0!, 1!, 2!, ... 19! */
-	    private static final double FACT[] = new double[]
+	    private static readonly double[] FACT = 
 	        {
 	        +1.0d,                        // 0
 	        +1.0d,                        // 1
@@ -36,30 +37,30 @@ namespace Apache.Commons.Math.Util
 	        };
 	
 	    /** Coefficients for slowLog. */
-	    private static final double LN_SPLIT_COEF[][] = {
-	        {2.0, 0.0},
-	        {0.6666666269302368, 3.9736429850260626E-8},
-	        {0.3999999761581421, 2.3841857910019882E-8},
-	        {0.2857142686843872, 1.7029898543501842E-8},
-	        {0.2222222089767456, 1.3245471311735498E-8},
-	        {0.1818181574344635, 2.4384203044354907E-8},
-	        {0.1538461446762085, 9.140260083262505E-9},
-	        {0.13333332538604736, 9.220590270857665E-9},
-	        {0.11764700710773468, 1.2393345855018391E-8},
-	        {0.10526403784751892, 8.251545029714408E-9},
-	        {0.0952233225107193, 1.2675934823758863E-8},
-	        {0.08713622391223907, 1.1430250008909141E-8},
-	        {0.07842259109020233, 2.404307984052299E-9},
-	        {0.08371849358081818, 1.176342548272881E-8},
-	        {0.030589580535888672, 1.2958646899018938E-9},
-	        {0.14982303977012634, 1.225743062930824E-8},
+	    private static readonly double[][] LN_SPLIT_COEF = new double[][]{
+	        new double[]{2.0, 0.0},
+	        new double[]{0.6666666269302368, 3.9736429850260626E-8},
+	        new double[]{0.3999999761581421, 2.3841857910019882E-8},
+	        new double[]{0.2857142686843872, 1.7029898543501842E-8},
+	        new double[]{0.2222222089767456, 1.3245471311735498E-8},
+	        new double[]{0.1818181574344635, 2.4384203044354907E-8},
+	        new double[]{0.1538461446762085, 9.140260083262505E-9},
+	        new double[]{0.13333332538604736, 9.220590270857665E-9},
+	        new double[]{0.11764700710773468, 1.2393345855018391E-8},
+	        new double[]{0.10526403784751892, 8.251545029714408E-9},
+	        new double[]{0.0952233225107193, 1.2675934823758863E-8},
+	        new double[]{0.08713622391223907, 1.1430250008909141E-8},
+	        new double[]{0.07842259109020233, 2.404307984052299E-9},
+	        new double[]{0.08371849358081818, 1.176342548272881E-8},
+	        new double[]{0.030589580535888672, 1.2958646899018938E-9},
+	        new double[]{0.14982303977012634, 1.225743062930824E-8},
 	    };
 	
 	    /** Table start declaration. */
-	    private static final String TABLE_START_DECL = "    {";
+	    private static readonly String TABLE_START_DECL = "    {";
 	
 	    /** Table end declaration. */
-	    private static final String TABLE_END_DECL   = "    };";
+	    private static readonly String TABLE_END_DECL   = "    };";
 	
 	    /**
 	     * Private Constructor.
@@ -76,11 +77,10 @@ namespace Apache.Commons.Math.Util
 	     * @param TANGENT_TABLE_A table of the most significant part of the tangents
 	     * @param TANGENT_TABLE_B table of the most significant part of the tangents
 	     */
-	    @SuppressWarnings("unused")
 	    private static void buildSinCosTables(double[] SINE_TABLE_A, double[] SINE_TABLE_B,
 	                                          double[] COSINE_TABLE_A, double[] COSINE_TABLE_B,
 	                                          int SINE_TABLE_LEN, double[] TANGENT_TABLE_A, double[] TANGENT_TABLE_B) {
-	        final double result[] = new double[2];
+	        double[] result = new double[2];
 	
 	        /* Use taylor series for 0 <= x <= 6/8 */
 	        for (int i = 0; i < 7; i++) {
@@ -97,11 +97,11 @@ namespace Apache.Commons.Math.Util
 	
 	        /* Use angle addition formula to complete table to 13/8, just beyond pi/2 */
 	        for (int i = 7; i < SINE_TABLE_LEN; i++) {
-	            double xs[] = new double[2];
-	            double ys[] = new double[2];
-	            double as[] = new double[2];
-	            double bs[] = new double[2];
-	            double temps[] = new double[2];
+	            double[] xs = new double[2];
+	            double[] ys = new double[2];
+	            double[] ans = new double[2];
+	            double[] bs = new double[2];
+	            double[] temps = new double[2];
 	
 	            if ( (i & 1) == 0) {
 	                // Even, use double angle
@@ -116,11 +116,11 @@ namespace Apache.Commons.Math.Util
 	                SINE_TABLE_B[i] = result[1] * 2.0;
 	
 	                /* Compute cosine */
-	                splitMult(ys, ys, as);
+	                splitMult(ys, ys, ans);
 	                splitMult(xs, xs, temps);
 	                temps[0] = -temps[0];
 	                temps[1] = -temps[1];
-	                splitAdd(as, temps, result);
+	                splitAdd(ans, temps, result);
 	                COSINE_TABLE_A[i] = result[0];
 	                COSINE_TABLE_B[i] = result[1];
 	            } else {
@@ -128,21 +128,21 @@ namespace Apache.Commons.Math.Util
 	                xs[1] = SINE_TABLE_B[i/2];
 	                ys[0] = COSINE_TABLE_A[i/2];
 	                ys[1] = COSINE_TABLE_B[i/2];
-	                as[0] = SINE_TABLE_A[i/2+1];
-	                as[1] = SINE_TABLE_B[i/2+1];
+	                ans[0] = SINE_TABLE_A[i/2+1];
+	                ans[1] = SINE_TABLE_B[i/2+1];
 	                bs[0] = COSINE_TABLE_A[i/2+1];
 	                bs[1] = COSINE_TABLE_B[i/2+1];
 	
 	                /* compute sine */
 	                splitMult(xs, bs, temps);
-	                splitMult(ys, as, result);
+	                splitMult(ys, ans, result);
 	                splitAdd(result, temps, result);
 	                SINE_TABLE_A[i] = result[0];
 	                SINE_TABLE_B[i] = result[1];
 	
 	                /* Compute cosine */
 	                splitMult(ys, bs, result);
-	                splitMult(xs, as, temps);
+	                splitMult(xs, ans, temps);
 	                temps[0] = -temps[0];
 	                temps[1] = -temps[1];
 	                splitAdd(result, temps, result);
@@ -153,22 +153,22 @@ namespace Apache.Commons.Math.Util
 	
 	        /* Compute tangent = sine/cosine */
 	        for (int i = 0; i < SINE_TABLE_LEN; i++) {
-	            double xs[] = new double[2];
-	            double ys[] = new double[2];
-	            double as[] = new double[2];
+	            double[] xs = new double[2];
+	            double[] ys = new double[2];
+	            double[] ans = new double[2];
 	
-	            as[0] = COSINE_TABLE_A[i];
-	            as[1] = COSINE_TABLE_B[i];
+	            ans[0] = COSINE_TABLE_A[i];
+	            ans[1] = COSINE_TABLE_B[i];
 	
-	            splitReciprocal(as, ys);
+	            splitReciprocal(ans, ys);
 	
 	            xs[0] = SINE_TABLE_A[i];
 	            xs[1] = SINE_TABLE_B[i];
 	
-	            splitMult(xs, ys, as);
+	            splitMult(xs, ys, ans);
 	
-	            TANGENT_TABLE_A[i] = as[0];
-	            TANGENT_TABLE_B[i] = as[1];
+	            TANGENT_TABLE_A[i] = ans[0];
+	            TANGENT_TABLE_B[i] = ans[1];
 	        }
 	
 	    }
@@ -181,33 +181,33 @@ namespace Apache.Commons.Math.Util
 	     * (may be null)
 	     * @return cos(x)
 	     */
-	    static double slowCos(final double x, final double result[]) {
+	    static double slowCos(double x, double[] result) {
 	
-	        final double xs[] = new double[2];
-	        final double ys[] = new double[2];
-	        final double facts[] = new double[2];
-	        final double as[] = new double[2];
+	        double[] xs = new double[2];
+	        double[] ys = new double[2];
+	        double[] facts = new double[2];
+	        double[] ans = new double[2];
 	        split(x, xs);
 	        ys[0] = ys[1] = 0.0;
 	
-	        for (int i = FACT.length-1; i >= 0; i--) {
-	            splitMult(xs, ys, as);
-	            ys[0] = as[0]; ys[1] = as[1];
+	        for (int i = FACT.Length-1; i >= 0; i--) {
+	            splitMult(xs, ys, ans);
+	            ys[0] = ans[0]; ys[1] = ans[1];
 	
 	            if ( (i & 1) != 0) { // skip odd entries
 	                continue;
 	            }
 	
-	            split(FACT[i], as);
-	            splitReciprocal(as, facts);
+	            split(FACT[i], ans);
+	            splitReciprocal(ans, facts);
 	
 	            if ( (i & 2) != 0 ) { // alternate terms are negative
 	                facts[0] = -facts[0];
 	                facts[1] = -facts[1];
 	            }
 	
-	            splitAdd(ys, facts, as);
-	            ys[0] = as[0]; ys[1] = as[1];
+	            splitAdd(ys, facts, ans);
+	            ys[0] = ans[0]; ys[1] = ans[1];
 	        }
 	
 	        if (result != null) {
@@ -226,32 +226,32 @@ namespace Apache.Commons.Math.Util
 	     * (may be null)
 	     * @return sin(x)
 	     */
-	    static double slowSin(final double x, final double result[]) {
-	        final double xs[] = new double[2];
-	        final double ys[] = new double[2];
-	        final double facts[] = new double[2];
-	        final double as[] = new double[2];
+	    static double slowSin(double x, double[] result) {
+	        double[] xs = new double[2];
+	        double[] ys = new double[2];
+	        double[] facts = new double[2];
+	        double[] ans = new double[2];
 	        split(x, xs);
 	        ys[0] = ys[1] = 0.0;
 	
-	        for (int i = FACT.length-1; i >= 0; i--) {
-	            splitMult(xs, ys, as);
-	            ys[0] = as[0]; ys[1] = as[1];
+	        for (int i = FACT.Length-1; i >= 0; i--) {
+	            splitMult(xs, ys, ans);
+	            ys[0] = ans[0]; ys[1] = ans[1];
 	
 	            if ( (i & 1) == 0) { // Ignore even numbers
 	                continue;
 	            }
 	
-	            split(FACT[i], as);
-	            splitReciprocal(as, facts);
+	            split(FACT[i], ans);
+	            splitReciprocal(ans, facts);
 	
 	            if ( (i & 2) != 0 ) { // alternate terms are negative
 	                facts[0] = -facts[0];
 	                facts[1] = -facts[1];
 	            }
 	
-	            splitAdd(ys, facts, as);
-	            ys[0] = as[0]; ys[1] = as[1];
+	            splitAdd(ys, facts, ans);
+	            ys[0] = ans[0]; ys[1] = ans[1];
 	        }
 	
 	        if (result != null) {
@@ -270,25 +270,25 @@ namespace Apache.Commons.Math.Util
 	     *  for extra precision (i.e. exp(x) = result[0] + result[1]
 	     *  @return exp(x)
 	     */
-	    static double slowexp(final double x, final double result[]) {
-	        final double xs[] = new double[2];
-	        final double ys[] = new double[2];
-	        final double facts[] = new double[2];
-	        final double as[] = new double[2];
+	    static double slowexp(double x, double[] result) {
+	        double[] xs = new double[2];
+	        double[] ys = new double[2];
+	        double[] facts = new double[2];
+	        double[] ans = new double[2];
 	        split(x, xs);
 	        ys[0] = ys[1] = 0.0;
 	
-	        for (int i = FACT.length-1; i >= 0; i--) {
-	            splitMult(xs, ys, as);
-	            ys[0] = as[0];
-	            ys[1] = as[1];
+	        for (int i = FACT.Length-1; i >= 0; i--) {
+	            splitMult(xs, ys, ans);
+	            ys[0] = ans[0];
+	            ys[1] = ans[1];
 	
-	            split(FACT[i], as);
-	            splitReciprocal(as, facts);
+	            split(FACT[i], ans);
+	            splitReciprocal(ans, facts);
 	
-	            splitAdd(ys, facts, as);
-	            ys[0] = as[0];
-	            ys[1] = as[1];
+	            splitAdd(ys, facts, ans);
+	            ys[0] = ans[0];
+	            ys[1] = ans[1];
 	        }
 	
 	        if (result != null) {
@@ -304,13 +304,13 @@ namespace Apache.Commons.Math.Util
 	     * @param d number to split
 	     * @param split placeholder where to place the result
 	     */
-	    private static void split(final double d, final double split[]) {
+	    private static void split(double d, double[] split) {
 	        if (d < 8e298 && d > -8e298) {
-	            final double a = d * HEX_40000000;
+	            double a = d * HEX_40000000;
 	            split[0] = (d + a) - a;
 	            split[1] = d - split[0];
 	        } else {
-	            final double a = d * 9.31322574615478515625E-10;
+	            double a = d * 9.31322574615478515625E-10;
 	            split[0] = (d + a - d) * HEX_40000000;
 	            split[1] = d - split[0];
 	        }
@@ -320,9 +320,9 @@ namespace Apache.Commons.Math.Util
 	     * @param a input/out array containing the split, changed
 	     * on output
 	     */
-	    private static void resplit(final double a[]) {
-	        final double c = a[0] + a[1];
-	        final double d = -(c - a[0] - a[1]);
+	    private static void resplit(double[] a) {
+	        double c = a[0] + a[1];
+	        double d = -(c - a[0] - a[1]);
 	
 	        if (c < 8e298 && c > -8e298) { // MAGIC NUMBER
 	            double z = c * HEX_40000000;
@@ -340,7 +340,7 @@ namespace Apache.Commons.Math.Util
 	     * @param b second term of multiplication
 	     * @param ans placeholder where to put the result
 	     */
-	    private static void splitMult(double a[], double b[], double ans[]) {
+	    private static void splitMult(double[] a, double[] b, double[] ans) {
 	        ans[0] = a[0] * b[0];
 	        ans[1] = a[0] * b[1] + a[1] * b[0] + a[1] * b[1];
 	
@@ -353,14 +353,14 @@ namespace Apache.Commons.Math.Util
 	     * @param b second term of addition
 	     * @param ans placeholder where to put the result
 	     */
-	    private static void splitAdd(final double a[], final double b[], final double ans[]) {
+	    private static void splitAdd(double[] a, double[] b, double[] ans) {
 	        ans[0] = a[0] + b[0];
 	        ans[1] = a[1] + b[1];
 	
 	        resplit(ans);
 	    }
 	
-	    /** Compute the reciprocal of in.  Use the following algorithm.
+	    /** Compute the reciprocal of inp.  Use the following algorithm.
 	     *  in = c + d.
 	     *  want to find x + y such that x+y = 1/(c+d) and x is much
 	     *  larger than y and x has several zero bits on the right.
@@ -378,17 +378,17 @@ namespace Apache.Commons.Math.Util
 	     *  @param in initial number, in split form
 	     *  @param result placeholder where to put the result
 	     */
-	    static void splitReciprocal(final double in[], final double result[]) {
-	        final double b = 1.0/4194304.0;
-	        final double a = 1.0 - b;
+	    static void splitReciprocal(double[] inp, double[] result) {
+	        double b = 1.0/4194304.0;
+	        double a = 1.0 - b;
 	
-	        if (in[0] == 0.0) {
-	            in[0] = in[1];
-	            in[1] = 0.0;
+	        if (inp[0] == 0.0) {
+	            inp[0] = inp[1];
+	            inp[1] = 0.0;
 	        }
 	
-	        result[0] = a / in[0];
-	        result[1] = (b*in[0]-a*in[1]) / (in[0]*in[0] + in[0]*in[1]);
+	        result[0] = a / inp[0];
+	        result[1] = (b*inp[0]-a*inp[1]) / (inp[0]*inp[0] + inp[0]*inp[1]);
 	
 	        if (result[1] != result[1]) { // can happen if result[1] is NAN
 	            result[1] = 0.0;
@@ -399,8 +399,8 @@ namespace Apache.Commons.Math.Util
 	
 	        for (int i = 0; i < 2; i++) {
 	            /* this may be overkill, probably once is enough */
-	            double err = 1.0 - result[0] * in[0] - result[0] * in[1] -
-	            result[1] * in[0] - result[1] * in[1];
+	            double err = 1.0 - result[0] * inp[0] - result[0] * inp[1] -
+	            result[1] * inp[0] - result[1] * inp[1];
 	            /*err = 1.0 - err; */
 	            err = err * (result[0] + result[1]);
 	            /*printf("err = %16e\n", err); */
@@ -413,10 +413,10 @@ namespace Apache.Commons.Math.Util
 	     * @param b second term of the multiplication
 	     * @param result placeholder where to put the result
 	     */
-	    private static void quadMult(final double a[], final double b[], final double result[]) {
-	        final double xs[] = new double[2];
-	        final double ys[] = new double[2];
-	        final double zs[] = new double[2];
+	    private static void quadMult(double[] a, double[] b, double[] result) {
+	        double[] xs = new double[2];
+	        double[] ys = new double[2];
+	        double[] zs = new double[2];
 	
 	        /* a[0] * b[0] */
 	        split(a[0], xs);
@@ -467,11 +467,11 @@ namespace Apache.Commons.Math.Util
 	     * @param result placeholder where to put the result in extended precision
 	     * @return exp(p) in standard precision (equal to result[0] + result[1])
 	     */
-	    static double expint(int p, final double result[]) {
+	    static double expint(int p, double[] result) {
 	        //double x = M_E;
-	        final double xs[] = new double[2];
-	        final double as[] = new double[2];
-	        final double ys[] = new double[2];
+	        double[] xs = new double[2];
+	        double[] ans = new double[2];
+	        double[] ys = new double[2];
 	        //split(x, xs);
 	        //xs[1] = (double)(2.7182818284590452353602874713526625L - xs[0]);
 	        //xs[0] = 2.71827697753906250000;
@@ -487,12 +487,12 @@ namespace Apache.Commons.Math.Util
 	
 	        while (p > 0) {
 	            if ((p & 1) != 0) {
-	                quadMult(ys, xs, as);
-	                ys[0] = as[0]; ys[1] = as[1];
+	                quadMult(ys, xs, ans);
+	                ys[0] = ans[0]; ys[1] = ans[1];
 	            }
 	
-	            quadMult(xs, xs, as);
-	            xs[0] = as[0]; xs[1] = as[1];
+	            quadMult(xs, xs, ans);
+	            xs[0] = ans[0]; xs[1] = ans[1];
 	
 	            p >>= 1;
 	        }
@@ -526,10 +526,10 @@ namespace Apache.Commons.Math.Util
 	     * @return log(xi)
 	     */
 	    static double[] slowLog(double xi) {
-	        double x[] = new double[2];
-	        double x2[] = new double[2];
-	        double y[] = new double[2];
-	        double a[] = new double[2];
+	        double[] x = new double[2];
+	        double[] x2 = new double[2];
+	        double[] y = new double[2];
+	        double[] a = new double[2];
 	
 	        split(xi, x);
 	
@@ -550,10 +550,10 @@ namespace Apache.Commons.Math.Util
 	        //x[0] -= 1.0;
 	        //resplit(x);
 	
-	        y[0] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][0];
-	        y[1] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][1];
+	        y[0] = LN_SPLIT_COEF[LN_SPLIT_COEF.Length-1][0];
+	        y[1] = LN_SPLIT_COEF[LN_SPLIT_COEF.Length-1][1];
 	
-	        for (int i = LN_SPLIT_COEF.length-2; i >= 0; i--) {
+	        for (int i = LN_SPLIT_COEF.Length-2; i >= 0; i--) {
 	            splitMult(y, x2, a);
 	            y[0] = a[0];
 	            y[1] = a[1];
@@ -572,41 +572,41 @@ namespace Apache.Commons.Math.Util
 	
 	    /**
 	     * Print an array.
-	     * @param out text output stream where output should be printed
+	     * @param output text output stream where output should be printed
 	     * @param name array name
 	     * @param expectedLen expected length of the array
 	     * @param array2d array data
 	     */
-	    static void printarray(PrintStream out, String name, int expectedLen, double[][] array2d) {
-	        out.println(name);
-	        checkLen(expectedLen, array2d.length);
-	        out.println(TABLE_START_DECL + " ");
+	    static void printarray(System.IO.TextWriter output, String name, int expectedLen, double[][] array2d) {
+	        output.WriteLine(name);
+	        checkLen(expectedLen, array2d.Length);
+	        output.WriteLine(TABLE_START_DECL + " ");
 	        int i = 0;
-	        for(double[] array : array2d) { // "double array[]" causes PMD parsing error
-	            out.print("        {");
-	            for(double d : array) { // assume inner array has very few entries
-	                out.printf("%-25.25s", format(d)); // multiple entries per line
+	        foreach(double[] array in array2d) { // "double array[]" causes PMD parsing error
+	            output.Write("        {");
+	            foreach(double d in array) { // assume inner array has very few entries
+	                output.WriteLine("{0,25}", format(d)); // multiple entries per line
 	            }
-	            out.println("}, // " + i++);
+	            output.WriteLine("}, // " + i++);
 	        }
-	        out.println(TABLE_END_DECL);
+	        output.WriteLine(TABLE_END_DECL);
 	    }
 	
 	    /**
 	     * Print an array.
-	     * @param out text output stream where output should be printed
+	     * @param output text output stream where output should be printed
 	     * @param name array name
 	     * @param expectedLen expected length of the array
 	     * @param array array data
 	     */
-	    static void printarray(PrintStream out, String name, int expectedLen, double[] array) {
-	        out.println(name + "=");
-	        checkLen(expectedLen, array.length);
-	        out.println(TABLE_START_DECL);
-	        for(double d : array){
-	            out.printf("        %s%n", format(d)); // one entry per line
+	    static void printarray(System.IO.TextWriter output, String name, int expectedLen, double[] array) {
+	        output.WriteLine(name + "=");
+	        checkLen(expectedLen, array.Length);
+	        output.WriteLine(TABLE_START_DECL);
+	        foreach(double d in array){
+	            output.WriteLine("        {0}", format(d)); // one entry per line
 	        }
-	        out.println(TABLE_END_DECL);
+	        output.WriteLine(TABLE_END_DECL);
 	    }
 	
 	    /** Format a double.
@@ -614,10 +614,10 @@ namespace Apache.Commons.Math.Util
 	     * @return formatted number
 	     */
 	    static String format(double d) {
-	        if (d != d) {
+	        if (Double.IsNaN(d)) {
 	            return "Double.NaN,";
 	        } else {
-	            return ((d >= 0) ? "+" : "") + Double.toString(d) + "d,";
+	            return ((d >= 0) ? "+" : "") + String.Format("{0}",d) + "d,";
 	        }
 	    }
 	
@@ -627,8 +627,7 @@ namespace Apache.Commons.Math.Util
 	     * @param actual actual length
 	     * @exception DimensionMismatchException if the two lengths are not equal
 	     */
-	    private static void checkLen(int expectedLen, int actual)
-	        throws DimensionMismatchException {
+	    private static void checkLen(int expectedLen, int actual){
 	        if (expectedLen != actual) {
 	            throw new DimensionMismatchException(actual, expectedLen);
 	        }

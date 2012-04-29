@@ -297,7 +297,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static long factorial(int n) {
 	        if (n < 0) {
-	            throw new NotPositiveException(LocalizedFormat.FACTORIAL_NEGATIVE_PARAMETER,
+	            throw new NotPositiveException<int>((ILocalizable)LocalizedFormats.FACTORIAL_NEGATIVE_PARAMETER,
 	                                           n);
 	        }
 	        if (n > 20) {
@@ -321,7 +321,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static double factorialDouble(int n) {
 	        if (n < 0) {
-	            throw new NotPositiveException(LocalizedFormat.FACTORIAL_NEGATIVE_PARAMETER,
+	            throw new NotPositiveException<int>(LocalizedFormats.FACTORIAL_NEGATIVE_PARAMETER,
 	                                           n);
 	        }
 	        if (n < 21) {
@@ -339,7 +339,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static double factorialLog(int n) {
 	        if (n < 0) {
-	            throw new NotPositiveException(LocalizedFormat.FACTORIAL_NEGATIVE_PARAMETER,
+	            throw new NotPositiveException<int>(LocalizedFormats.FACTORIAL_NEGATIVE_PARAMETER,
 	                                           n);
 	        }
 	        if (n < 21) {
@@ -385,7 +385,7 @@ namespace Apache.Commons.Math.Util
 	        int u = p;
 	        int v = q;
 	        if ((u == 0) || (v == 0)) {
-	            if ((u == Integer.MIN_VALUE) || (v == Integer.MIN_VALUE)) {
+	            if ((u == Int32.MinValue) || (v == Int32.MaxValue)) {
 	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS,
 	                                                  p, q);
 	            }
@@ -472,7 +472,7 @@ namespace Apache.Commons.Math.Util
 	        long u = p;
 	        long v = q;
 	        if ((u == 0) || (v == 0)) {
-	            if ((u == Long.MIN_VALUE) || (v == Long.MIN_VALUE)){
+	            if ((u == Int64.MinValue) || (v == Int64.MaxValue)){
 	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_64_BITS,
 	                                                  p, q);
 	            }
@@ -553,7 +553,7 @@ namespace Apache.Commons.Math.Util
 	            return 0;
 	        }
 	        int lcm = FastMath.abs(ArithmeticUtils.mulAndCheck(a / gcd(a, b), b));
-	        if (lcm == Integer.MIN_VALUE) {
+	        if (lcm == Int32.MinValue) {
 	            throw new MathArithmeticException(LocalizedFormats.LCM_OVERFLOW_32_BITS,
 	                                              a, b);
 	        }
@@ -587,7 +587,7 @@ namespace Apache.Commons.Math.Util
 	            return 0;
 	        }
 	        long lcm = FastMath.abs(ArithmeticUtils.mulAndCheck(a / gcd(a, b), b));
-	        if (lcm == Long.MIN_VALUE){
+	        if (lcm == Int64.MaxValue){
 	            throw new MathArithmeticException(LocalizedFormats.LCM_OVERFLOW_64_BITS,
 	                                              a, b);
 	        }
@@ -606,7 +606,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static int mulAndCheck(int x, int y) {
 	        long m = ((long)x) * ((long)y);
-	        if (m < Integer.MIN_VALUE || m > Integer.MAX_VALUE) {
+	        if (m < Int32.MinValue || m > Int32.MaxValue) {
 	            throw new MathArithmeticException();
 	        }
 	        return (int)m;
@@ -631,14 +631,14 @@ namespace Apache.Commons.Math.Util
 	            if (a < 0) {
 	                if (b < 0) {
 	                    // check for positive overflow with negative a, negative b
-	                    if (a >= Long.MAX_VALUE / b) {
+	                    if (a >= Int64.MaxValue / b) {
 	                        ret = a * b;
 	                    } else {
 	                        throw new MathArithmeticException();
 	                    }
 	                } else if (b > 0) {
 	                    // check for negative overflow with negative a, positive b
-	                    if (Long.MIN_VALUE / b <= a) {
+	                    if (Int64.MaxValue / b <= a) {
 	                        ret = a * b;
 	                    } else {
 	                        throw new MathArithmeticException();
@@ -653,7 +653,7 @@ namespace Apache.Commons.Math.Util
 	                // assert b > 0
 	
 	                // check for positive overflow with positive a, positive b
-	                if (a <= Long.MAX_VALUE / b) {
+	                if (a <= Int64.MaxValue / b) {
 	                    ret = a * b;
 	                } else {
 	                    throw new MathArithmeticException();
@@ -678,7 +678,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static int subAndCheck(int x, int y) {
 	        long s = (long)x - (long)y;
-	        if (s < Integer.MIN_VALUE || s > Integer.MAX_VALUE) {
+	        if (s < Int32.MinValue || s > Int32.MaxValue) {
 	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_SUBTRACTION, x, y);
 	        }
 	        return (int)s;
@@ -696,7 +696,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static long subAndCheck(long a, long b) {
 	        long ret;
-	        if (b == Long.MIN_VALUE) {
+	        if (b == Int64.MinValue) {
 	            if (a < 0) {
 	                ret = a - b;
 	            } else {
@@ -719,7 +719,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static int pow(int k, int e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<int>(LocalizedFormats.EXPONENT, e);
 	        }
 	
 	        int result = 1;
@@ -745,7 +745,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static int pow(int k, long e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<long>(LocalizedFormats.EXPONENT, e);
 	        }
 	
 	        int result = 1;
@@ -771,7 +771,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static long pow(long k, int e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<int>(LocalizedFormats.EXPONENT, e);
 	        }
 	
 	        long result = 1L;
@@ -797,7 +797,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static long pow(long k, long e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<long>(LocalizedFormats.EXPONENT, e);
 	        }
 	
 	        long result = 1L;
@@ -823,10 +823,10 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static BigInteger pow(BigInteger k, int e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<int>(LocalizedFormats.EXPONENT, e);
 	        }
 	
-	        return k.pow(e);
+	        return BigInteger.Pow(k,e);
 	    }
 	
 	    /**
@@ -839,16 +839,16 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static BigInteger pow(BigInteger k, long e) {
 	        if (e < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	            throw new NotPositiveException<long>(LocalizedFormats.EXPONENT, e);
 	        }
 	
-	        BigInteger result = BigInteger.ONE;
+	        BigInteger result = BigInteger.One;
 	        BigInteger k2p    = k;
 	        while (e != 0) {
 	            if ((e & 0x1) != 0) {
-	                result = result.multiply(k2p);
+	                result = BigInteger.Multiply(result, k2p);
 	            }
-	            k2p = k2p.multiply(k2p);
+	            k2p = BigInteger.Multiply(k2p, k2p);
 	            e = e >> 1;
 	        }
 	
@@ -865,13 +865,13 @@ namespace Apache.Commons.Math.Util
 	     * @throws NotPositiveException if {@code e < 0}.
 	     */
 	    public static BigInteger pow(BigInteger k, BigInteger e) {
-	        if (e.compareTo(BigInteger.ZERO) < 0) {
-	            throw new NotPositiveException(LocalizedFormats.EXPONENT, e);
+	        if (e.CompareTo(BigInteger.Zero) < 0) {
+	            throw new NotPositiveException<BigInteger>(LocalizedFormats.EXPONENT, e);
 	        }
 	
-	        BigInteger result = BigInteger.ONE;
+	        BigInteger result = BigInteger.One;
 	        BigInteger k2p    = k;
-	        while (!BigInteger.ZERO.equals(e)) {
+	        while (!BigInteger.Zero.Equals(e)) {
 	            if (e.testBit(0)) {
 	                result = result.multiply(k2p);
 	            }
@@ -904,7 +904,7 @@ namespace Apache.Commons.Math.Util
 	            if (a < 0) {
 	                if (b < 0) {
 	                    // check for negative overflow
-	                    if (Long.MIN_VALUE - b <= a) {
+	                    if (Int64.MinValue - b <= a) {
 	                        ret = a + b;
 	                    } else {
 	                        throw new MathArithmeticException(pattern, a, b);
@@ -918,7 +918,7 @@ namespace Apache.Commons.Math.Util
 	                // assert b >= 0
 	
 	                // check for positive overflow
-	                if (a <= Long.MAX_VALUE - b) {
+	                if (a <= Int64.MaxValue - b) {
 	                    ret = a + b;
 	                } else {
 	                    throw new MathArithmeticException(pattern, a, b);
@@ -938,11 +938,11 @@ namespace Apache.Commons.Math.Util
 	     */
 	    private static void checkBinomial(int n, int k) {
 	        if (n < k) {
-	            throw new NumberIsTooLargeException(LocalizedFormats.BINOMIAL_INVALID_PARAMETERS_ORDER,
+	            throw new NumberIsTooLargeException<int>(LocalizedFormats.BINOMIAL_INVALID_PARAMETERS_ORDER,
 	                                                k, n, true);
 	        }
 	        if (n < 0) {
-	            throw new NotPositiveException(LocalizedFormats.BINOMIAL_NEGATIVE_PARAMETER, n);
+	            throw new NotPositiveException<int>(LocalizedFormats.BINOMIAL_NEGATIVE_PARAMETER, n);
 	        }
 	    }
 	

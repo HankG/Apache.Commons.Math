@@ -29,12 +29,14 @@ namespace Apache.Commons.Math.Exceptions
     [Serializable]
     public class NotPositiveException<T>: NumberIsTooSmallException<T>
     {
+		private static T zero;
+		
         /// <summary>
         /// Construct the exception.
         /// </summary>
         /// <param name="value">The argument.</param>
         /// <param name="zero">The zero reference.</param>
-        public NotPositiveException(T value, T zero) : base(value, zero, true) { }
+        public NotPositiveException(T value) : base(value, NotPositiveException<T>.zero , true) { }
 
         /// <summary>
         /// Construct the exception with a specific context.
@@ -42,6 +44,6 @@ namespace Apache.Commons.Math.Exceptions
         /// <param name="specific">Specific context where the error occurred.</param>
         /// <param name="value">Argument</param>
         /// <param name="zero">The zero reference.</param>
-        public NotPositiveException(ILocalizable specific, T value, T zero) : base(specific, value, zero, true) { }
+        public NotPositiveException(ILocalizable specific, T value) : base(specific, value, NotPositiveException<T>.zero, true) { }
     }
 }

@@ -334,7 +334,7 @@ namespace Apache.Commons.Math.Exceptions.Util
 
         public string GetLocalizedString(System.Globalization.CultureInfo cultureInfo)
         {
-            return LocalizedFormatsBuilder.ResourceManager.GetString(sourceFormat, cultureInfo);
+            return LocalizedFormatBuilder.ResourceManager.GetString(sourceFormat, cultureInfo);
         }
     }
 }

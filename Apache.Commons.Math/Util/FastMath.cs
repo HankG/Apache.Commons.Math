@@ -96,26 +96,26 @@ namespace Apache.Commons.Math.Util
 	    private static readonly double LN_2_B = 1.17304635250823482e-7;
 	
 	    /** Coefficients for log, when input 0.99 < x < 1.01. */
-	    private static readonly double[][] LN_QUICK_COEF = {
-	        {1.0, 5.669184079525E-24},
-	        {-0.25, -0.25},
-	        {0.3333333134651184, 1.986821492305628E-8},
-	        {-0.25, -6.663542893624021E-14},
-	        {0.19999998807907104, 1.1921056801463227E-8},
-	        {-0.1666666567325592, -7.800414592973399E-9},
-	        {0.1428571343421936, 5.650007086920087E-9},
-	        {-0.12502530217170715, -7.44321345601866E-11},
-	        {0.11113807559013367, 9.219544613762692E-9},
+	    private static readonly double[][] LN_QUICK_COEF = new double[][]{
+	        new double[]{1.0, 5.669184079525E-24},
+	        new double[]{-0.25, -0.25},
+	        new double[]{0.3333333134651184, 1.986821492305628E-8},
+	        new double[]{-0.25, -6.663542893624021E-14},
+	        new double[]{0.19999998807907104, 1.1921056801463227E-8},
+	        new double[]{-0.1666666567325592, -7.800414592973399E-9},
+	        new double[]{0.1428571343421936, 5.650007086920087E-9},
+	        new double[]{-0.12502530217170715, -7.44321345601866E-11},
+	        new double[]{0.11113807559013367, 9.219544613762692E-9},
 	    };
 	
 	    /** Coefficients for log in the range of 1.0 < x < 1.0 + 2^-10. */
-	    private static readonly double[][] LN_HI_PREC_COEF = {
-	        {1.0, -6.032174644509064E-23},
-	        {-0.25, -0.25},
-	        {0.3333333134651184, 1.9868161777724352E-8},
-	        {-0.2499999701976776, -2.957007209750105E-8},
-	        {0.19999954104423523, 1.5830993332061267E-10},
-	        {-0.16624879837036133, -2.6033824355191673E-8}
+	    private static readonly double[][] LN_HI_PREC_COEF = new double[][]{
+	        new double[]{1.0, -6.032174644509064E-23},
+	        new double[]{-0.25, -0.25},
+	        new double[]{0.3333333134651184, 1.9868161777724352E-8},
+	        new double[]{-0.2499999701976776, -2.957007209750105E-8},
+	        new double[]{0.19999954104423523, 1.5830993332061267E-10},
+	        new double[]{-0.16624879837036133, -2.6033824355191673E-8}
 	    };
 	
 	    /** Sine, Cosine, Tangent tables are for 0, 1/8, 2/8, ... 13/8 = PI/2 approx. */
@@ -179,7 +179,7 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Cosine table (low bits). */
-	    private static readonly double COSINE_TABLE_B =
+	    private static readonly double[] COSINE_TABLE_B =
 	        {
 	        +0.0d,
 	        +3.4439717236742845E-8d,
@@ -358,7 +358,7 @@ namespace Apache.Commons.Math.Util
 	     * @return square root of a
 	     */
 	    public static double sqrt(double a) {
-	        return Math.sqrt(a);
+	        return System.Math.Sqrt(a);
 	    }
 	
 	    /** Compute the hyperbolic cosine of a number.
@@ -366,7 +366,7 @@ namespace Apache.Commons.Math.Util
 	     * @return hyperbolic cosine of x
 	     */
 	    public static double cosh(double x) {
-	      if (x != x) {
+	      if (Double.IsNaN(x)) {
 	          return x;
 	      }
 	
@@ -425,8 +425,8 @@ namespace Apache.Commons.Math.Util
 	     * @return hyperbolic sine of x
 	     */
 	    public static double sinh(double x) {
-	      boolean negate = false;
-	      if (x != x) {
+	      bool negate = false;
+	      if (Double.IsNaN(x)) {
 	          return x;
 	      }
 	
@@ -540,9 +540,9 @@ namespace Apache.Commons.Math.Util
 	     * @return hyperbolic tangent of x
 	     */
 	    public static double tanh(double x) {
-	      boolean negate = false;
+	      bool negate = false;
 	
-	      if (x != x) {
+	      if (Double.IsNaN(x)) {
 	          return x;
 	      }
 	
@@ -672,7 +672,7 @@ namespace Apache.Commons.Math.Util
 	     * @return inverse hyperbolic sine of a
 	     */
 	    public static double asinh(double a) {
-	        boolean negative = false;
+	        bool negative = false;
 	        if (a < 0) {
 	            negative = true;
 	            a = -a;
@@ -702,7 +702,7 @@ namespace Apache.Commons.Math.Util
 	     * @return inverse hyperbolic tangent of a
 	     */
 	    public static double atanh(double a) {
-	        boolean negative = false;
+	        bool negative = false;
 	        if (a < 0) {
 	            negative = true;
 	            a = -a;
@@ -750,7 +750,7 @@ namespace Apache.Commons.Math.Util
 	     * @return neighbor of a towards positive infinity
 	     */
 	    public static double nextUp(double a) {
-	        return nextAfter(a, Double.POSITIVE_INFINITY);
+	        return nextAfter(a, Double.PositiveInfinity);
 	    }
 	
 	    /** Compute next number towards positive infinity.
@@ -758,7 +758,7 @@ namespace Apache.Commons.Math.Util
 	     * @return neighbor of a towards positive infinity
 	     */
 	    public static float nextUp(float a) {
-	        return nextAfter(a, Float.POSITIVE_INFINITY);
+	        return nextAfter(a, Float.PositiveInfinity);
 	    }
 	
 	    /** Returns a pseudo-random number between 0.0 and 1.0.
@@ -852,10 +852,10 @@ namespace Apache.Commons.Math.Util
 	
 	            if (intVal > 709) {
 	                if (hiPrec != null) {
-	                    hiPrec[0] = Double.POSITIVE_INFINITY;
+	                    hiPrec[0] = Double.PositiveInfinity;
 	                    hiPrec[1] = 0.0;
 	                }
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            }
 	
 	            intPartA = ExpIntTable.EXP_INT_TABLE_A[EXP_INT_TABLE_MAX_INDEX+intVal];
@@ -932,7 +932,7 @@ namespace Apache.Commons.Math.Util
 	     * @return exp(x) - 1
 	     */
 	    private static double expm1(double x, double[] hiPrecOut) {
-	        if (x != x || x == 0.0) { // NaN or zero
+	        if (Double.IsNaN(x) || x == 0.0) { // NaN or zero
 	            return x;
 	        }
 	
@@ -954,7 +954,7 @@ namespace Apache.Commons.Math.Util
 	        double baseA;
 	        double baseB;
 	        double epsilon;
-	        boolean negative = false;
+	        bool negative = false;
 			double temp;
 	
 	        if (x < 0.0) {
@@ -1092,7 +1092,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    private static double log(double x, double[] hiPrec) {
 	        if (x==0) { // Handle special case of +0/-0
-	            return Double.NEGATIVE_INFINITY;
+	            return Double.Neg;
 	        }
 	        long bits = Double.doubleToLongBits(x);
 	
@@ -1756,7 +1756,7 @@ namespace Apache.Commons.Math.Util
 	     *  @param cotanFlag if true, compute the cotangent instead of the tangent
 	     *  @return tan(xa+xb) (or cotangent, depending on cotanFlag)
 	     */
-	    private static double tanQ(double xa, double xb, boolean cotanFlag) {
+	    private static double tanQ(double xa, double xb, bool cotanFlag) {
 	
 	        int idx = (int) ((xa * 8.0) + 0.5);
 	        double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
@@ -2423,7 +2423,7 @@ namespace Apache.Commons.Math.Util
 	     * @param leftPlane if true, result angle must be put in the left half plane
 	     * @return atan(xa + xb) (or angle shifted by {@code PI} if leftPlane is true)
 	     */
-	    private static double atan(double xa, double xb, boolean leftPlane) {
+	    private static double atan(double xa, double xb, bool leftPlane) {
 	        boolean negate = false;
 	        int idx;
 	
@@ -2602,30 +2602,30 @@ namespace Apache.Commons.Math.Util
 	        // y cannot now be zero
 	
 	        if (y == Double.POSITIVE_INFINITY) {
-	            if (x == Double.POSITIVE_INFINITY) {
-	                return Math.PI * F_1_4;
+	            if (x == Double.PositiveInfinity) {
+	                return System.Math.PI * F_1_4;
 	            }
 	
 	            if (x == Double.NEGATIVE_INFINITY) {
-	                return Math.PI * F_3_4;
+	                return System.Math.PI * F_3_4;
 	            }
 	
-	            return Math.PI * F_1_2;
+	            return System.Math.PI * F_1_2;
 	        }
 	
-	        if (y == Double.NEGATIVE_INFINITY) {
-	            if (x == Double.POSITIVE_INFINITY) {
-	                return -Math.PI * F_1_4;
+	        if (y == Double.NegativeInfinity) {
+	            if (x == Double.PositiveInfinity) {
+	                return -System.Math.PI * F_1_4;
 	            }
 	
-	            if (x == Double.NEGATIVE_INFINITY) {
-	                return -Math.PI * F_3_4;
+	            if (x == Double.NegativeInfinity) {
+	                return -System.Math.PI * F_3_4;
 	            }
 	
-	            return -Math.PI * F_1_2;
+	            return -System.Math.PI * F_1_2;
 	        }
 	
-	        if (x == Double.POSITIVE_INFINITY) {
+	        if (x == Double.PositiveInfinity) {
 	            if (y > 0 || 1 / y > 0) {
 	                return 0d;
 	            }
@@ -2635,14 +2635,14 @@ namespace Apache.Commons.Math.Util
 	            }
 	        }
 	
-	        if (x == Double.NEGATIVE_INFINITY)
+	        if (x == Double.NegativeInfinity)
 	        {
 	            if (y > 0.0 || 1 / y > 0.0) {
-	                return Math.PI;
+	                return System.Math.PI;
 	            }
 	
 	            if (y < 0 || 1 / y < 0) {
-	                return -Math.PI;
+	                return -System.Math.PI;
 	            }
 	        }
 	
@@ -2650,17 +2650,17 @@ namespace Apache.Commons.Math.Util
 	
 	        if (x == 0) {
 	            if (y > 0 || 1 / y > 0) {
-	                return Math.PI * F_1_2;
+	                return System.Math.PI * F_1_2;
 	            }
 	
 	            if (y < 0 || 1 / y < 0) {
-	                return -Math.PI * F_1_2;
+	                return -System.Math.PI * F_1_2;
 	            }
 	        }
 	
 	        // Compute ratio r = y/x
 	        double r = y / x;
-	        if (Double.isInfinite(r)) { // bypass calculations that can create NaN
+	        if (Double.IsInfinity(r)) { // bypass calculations that can create NaN
 	            return atan(r, 0, x < 0);
 	        }
 	
@@ -2682,7 +2682,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // Call atan
-	        result = atan(ra, rb, x < 0);
+	        result = Math.atan(ra, rb, x < 0);
 	
 	        return result;
 	    }
@@ -2692,7 +2692,7 @@ namespace Apache.Commons.Math.Util
 	     * @return arc sine of x
 	     */
 	    public static double asin(double x) {
-	      if (x != x) {
+	      if (Double.IsNaN(x)) {
 	          return Double.NaN;
 	      }
 	
@@ -2701,11 +2701,11 @@ namespace Apache.Commons.Math.Util
 	      }
 	
 	      if (x == 1.0) {
-	          return Math.PI/2.0;
+	          return System.Math.PI/2.0;
 	      }
 	
 	      if (x == -1.0) {
-	          return -Math.PI/2.0;
+	          return -System.Math.PI/2.0;
 	      }
 	
 	      if (x == 0.0) { // Matches +/- 0.0; return correct sign
@@ -2768,7 +2768,7 @@ namespace Apache.Commons.Math.Util
 	     * @return arc cosine of x
 	     */
 	    public static double acos(double x) {
-	      if (x != x) {
+	      if (Double.IsNaN(x)) {
 	          return Double.NaN;
 	      }
 	
@@ -2777,7 +2777,7 @@ namespace Apache.Commons.Math.Util
 	      }
 	
 	      if (x == -1.0) {
-	          return Math.PI;
+	          return System.Math.PI;
 	      }
 	
 	      if (x == 1.0) {
@@ -2785,7 +2785,7 @@ namespace Apache.Commons.Math.Util
 	      }
 	
 	      if (x == 0) {
-	          return Math.PI/2.0;
+	          return System.Math.PI/2.0;
 	      }
 	
 	      /* Compute acos(x) = atan(sqrt(1-x*x)/x) */
@@ -2828,8 +2828,8 @@ namespace Apache.Commons.Math.Util
 	      double r = y/x;
 	
 	      // Did r overflow?
-	      if (Double.isInfinite(r)) { // x is effectively zero
-	          return Math.PI/2; // so return the appropriate value
+	      if (Double.IsInfinity(r)) { // x is effectively zero
+	          return System.Math.PI/2; // so return the appropriate value
 	      }
 	
 	      double ra = doubleHighPart(r);
@@ -2853,7 +2853,7 @@ namespace Apache.Commons.Math.Util
 	      /* Convert input double to bits */
 	      long inbits = Double.doubleToLongBits(x);
 	      int exponent = (int) ((inbits >> 52) & 0x7ff) - 1023;
-	      boolean subnormal = false;
+	      bool subnormal = false;
 	
 	      if (exponent == -1023) {
 	          if (x == 0) {
@@ -2936,7 +2936,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static double toRadians(double x)
 	    {
-	        if (Double.isInfinite(x) || x == 0.0) { // Matches +/- 0.0; return correct sign
+	        if (Double.IsInfinity(x) || x == 0.0) { // Matches +/- 0.0; return correct sign
 	            return x;
 	        }
 	
@@ -2961,7 +2961,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static double toDegrees(double x)
 	    {
-	        if (Double.isInfinite(x) || x == 0.0) { // Matches +/- 0.0; return correct sign
+	        if (Double.IsInfinity(x) || x == 0.0) { // Matches +/- 0.0; return correct sign
 	            return x;
 	        }
 	
@@ -2990,7 +2990,7 @@ namespace Apache.Commons.Math.Util
 	     * @return abs(x)
 	     */
 	    public static long abs(long x) {
-	        return (x < 0l) ? -x : x;
+	        return (x < 0L) ? -x : x;
 	    }
 	
 	    /**
@@ -3017,10 +3017,10 @@ namespace Apache.Commons.Math.Util
 	     * @return ulp(x)
 	     */
 	    public static double ulp(double x) {
-	        if (Double.isInfinite(x)) {
-	            return Double.POSITIVE_INFINITY;
+	        if (Double.IsInfinity(x)) {
+	            return Double.PositiveInfinity;
 	        }
-	        return abs(x - Double.longBitsToDouble(Double.doubleToLongBits(x) ^ 1));
+	        return Math.Abs(x - Double.longBitsToDouble(Double.doubleToLongBits(x) ^ 1));
 	    }
 	
 	    /**
@@ -3049,14 +3049,14 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // handle special cases
-	        if (Double.isNaN(d) || Double.isInfinite(d) || (d == 0)) {
+	        if (Double.IsNaN(d) || Double.IsInfinity(d) || (d == 0)) {
 	            return d;
 	        }
 	        if (n < -2098) {
 	            return (d > 0) ? 0.0 : -0.0;
 	        }
 	        if (n > 2097) {
-	            return (d > 0) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+	            return (d > 0) ? Double.PositiveInfinity : Double.NegativeInfinity;
 	        }
 	
 	        // decompose d
@@ -3081,7 +3081,7 @@ namespace Apache.Commons.Math.Util
 	
 	                // scales down complete mantissa, hence losing least significant bits
 	                long mostSignificantLostBit = mantissa & (1L << (-scaledExponent));
-	                mantissa = ((ulong)mantissa) >> (1 - scaledExponent);
+	                mantissa = (long)(((ulong)mantissa) >> (1 - scaledExponent));
 	                if (mostSignificantLostBit != 0) {
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
@@ -3107,13 +3107,13 @@ namespace Apache.Commons.Math.Util
 	                if (scaledExponent < 2047) {
 	                    return Double.longBitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
 	                } else {
-	                    return (sign == 0L) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+	                    return (sign == 0L) ? Double.PositiveInfinity : Double.NegativeInfinity;
 	                }
 	
 	            } else if (scaledExponent < 2047) {
 	                return Double.longBitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
 	            } else {
-	                return (sign == 0L) ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+	                return (sign == 0L) ? Double.PositiveInfinity : Double.NegativeInfinity;
 	            }
 	        }
 	
@@ -3237,11 +3237,11 @@ namespace Apache.Commons.Math.Util
 	    public static double nextAfter(double d, double direction) {
 	
 	        // handling of some important special cases
-	        if (Double.isNaN(d) || Double.isNaN(direction)) {
+	        if (Double.IsNaN(d) || Double.IsNaN(direction)) {
 	            return Double.NaN;
 	        } else if (d == direction) {
 	            return direction;
-	        } else if (Double.isInfinite(d)) {
+	        } else if (Double.IsInfinity(d)) {
 	            return (d < 0) ? -Double.MAX_VALUE : Double.MAX_VALUE;
 	        } else if (d == 0) {
 	            return (direction < 0) ? -Double.MIN_VALUE : Double.MIN_VALUE;
@@ -3322,7 +3322,7 @@ namespace Apache.Commons.Math.Util
 	    public static double floor(double x) {
 	        long y;
 	
-	        if (x != x) { // NaN
+	        if (Double.IsNaN(x)) { // NaN
 	            return x;
 	        }
 	
@@ -3349,7 +3349,7 @@ namespace Apache.Commons.Math.Util
 	    public static double ceil(double x) {
 	        double y;
 	
-	        if (x != x) { // NaN
+	        if (Double.IsNaN(x)) { // NaN
 	            return x;
 	        }
 	
@@ -3557,9 +3557,9 @@ namespace Apache.Commons.Math.Util
 	     * @return sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>)
 	     */
 	    public static double hypot(double x, double y) {
-	        if (Double.isInfinite(x) || Double.isInfinite(y)) {
-	            return Double.POSITIVE_INFINITY;
-	        } else if (Double.isNaN(x) || Double.isNaN(y)) {
+	        if (Double.IsInfinity(x) || Double.IsInfinity(y)) {
+	            return Double.PositiveInfinity;
+	        } else if (Double.IsNaN(x) || Double.IsNaN(y)) {
 	            return Double.NaN;
 	        } else {
 	
@@ -3681,18 +3681,18 @@ namespace Apache.Commons.Math.Util
 	     * @param a unused
 	     */
 	    public static void main(String[] a) {
-	        PrintStream out = System.out;
-	        FastMathCalc.printarray(out, "EXP_INT_TABLE_A", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_A);
-	        FastMathCalc.printarray(out, "EXP_INT_TABLE_B", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_B);
-	        FastMathCalc.printarray(out, "EXP_FRAC_TABLE_A", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_A);
-	        FastMathCalc.printarray(out, "EXP_FRAC_TABLE_B", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_B);
-	        FastMathCalc.printarray(out, "LN_MANT",LN_MANT_LEN, lnMant.LN_MANT);
-	        FastMathCalc.printarray(out, "SINE_TABLE_A", SINE_TABLE_LEN, SINE_TABLE_A);
-	        FastMathCalc.printarray(out, "SINE_TABLE_B", SINE_TABLE_LEN, SINE_TABLE_B);
-	        FastMathCalc.printarray(out, "COSINE_TABLE_A", SINE_TABLE_LEN, COSINE_TABLE_A);
-	        FastMathCalc.printarray(out, "COSINE_TABLE_B", SINE_TABLE_LEN, COSINE_TABLE_B);
-	        FastMathCalc.printarray(out, "TANGENT_TABLE_A", SINE_TABLE_LEN, TANGENT_TABLE_A);
-	        FastMathCalc.printarray(out, "TANGENT_TABLE_B", SINE_TABLE_LEN, TANGENT_TABLE_B);
+	        System.IO.TextWriter output = Console.Out;
+	        FastMathCalc.printarray(output, "EXP_INT_TABLE_A", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_A);
+	        FastMathCalc.printarray(output, "EXP_INT_TABLE_B", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_B);
+	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_A", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_A);
+	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_B", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_B);
+	        FastMathCalc.printarray(output, "LN_MANT",LN_MANT_LEN, lnMant.LN_MANT);
+	        FastMathCalc.printarray(output, "SINE_TABLE_A", SINE_TABLE_LEN, SINE_TABLE_A);
+	        FastMathCalc.printarray(output, "SINE_TABLE_B", SINE_TABLE_LEN, SINE_TABLE_B);
+	        FastMathCalc.printarray(output, "COSINE_TABLE_A", SINE_TABLE_LEN, COSINE_TABLE_A);
+	        FastMathCalc.printarray(output, "COSINE_TABLE_B", SINE_TABLE_LEN, COSINE_TABLE_B);
+	        FastMathCalc.printarray(output, "TANGENT_TABLE_A", SINE_TABLE_LEN, TANGENT_TABLE_A);
+	        FastMathCalc.printarray(output, "TANGENT_TABLE_B", SINE_TABLE_LEN, TANGENT_TABLE_B);
 	    }
 	
 	    /** Enclose large data table in nested static class so it's only loaded on first access. */
@@ -3700,11 +3700,11 @@ namespace Apache.Commons.Math.Util
 	        /** Exponential evaluated at integer values,
 	         * exp(x) =  expIntTableA[x + EXP_INT_TABLE_MAX_INDEX] + expIntTableB[x+EXP_INT_TABLE_MAX_INDEX].
 	         */
-	        private static readonly double[] EXP_INT_TABLE_A;
+	        public static readonly double[] EXP_INT_TABLE_A;
 	        /** Exponential evaluated at integer values,
 	         * exp(x) =  expIntTableA[x + EXP_INT_TABLE_MAX_INDEX] + expIntTableB[x+EXP_INT_TABLE_MAX_INDEX]
 	         */
-	        private static readonly double[] EXP_INT_TABLE_B;
+	        public static readonly double[] EXP_INT_TABLE_B;
 	
 	        static ExpIntTable() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
@@ -3740,11 +3740,11 @@ namespace Apache.Commons.Math.Util
 	         * exp(x/1024) =  expFracTableA[x] + expFracTableB[x].
 	         * 1024 = 2^10
 	         */
-	        private static readonly double[] EXP_FRAC_TABLE_A;
+	        public static readonly double[] EXP_FRAC_TABLE_A;
 	        /** Exponential over the range of 0 - 1 in increments of 2^-10
 	         * exp(x/1024) =  expFracTableA[x] + expFracTableB[x].
 	         */
-	        private static readonly double[] EXP_FRAC_TABLE_B;
+	        public static readonly double[] EXP_FRAC_TABLE_B;
 	
 	        static ExpFracTable() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
@@ -3770,7 +3770,7 @@ namespace Apache.Commons.Math.Util
 	    /** Enclose large data table in nested static class so it's only loaded on first access. */
 	    private static class lnMant {
 	        /** Extended precision logarithm table over the range 1 - 2 in increments of 2^-10. */
-	        private static readonly double[][] LN_MANT;
+	        public static readonly double[][] LN_MANT;
 	
 	        static lnMant() {
 	            if (RECOMPUTE_TABLES_AT_RUNTIME) {
