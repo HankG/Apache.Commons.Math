@@ -39,7 +39,7 @@ exception statement from your version. */
 
 namespace JavaDotNet.Math
 {
-	public class BigDecimal extends Number implements Comparable<BigDecimal>
+	public class BigDecimal extends Number implements IComparable<BigDecimal>
 	{
 	  private BigInteger intVal;
 	  private int scale;

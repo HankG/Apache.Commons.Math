@@ -54,17 +54,18 @@ namespace JavaDotNet.Lang
 	 * @since 1.0
 	 * @status updated to 1.4
 	 */
-	public abstract class Number implements Serializable
+	[Serializable]
+	public abstract class Number
 	{
 	  /**
 	   * Compatible with JDK 1.1+.
 	   */
-	  private static final long serialVersionUID = -8742448824652078965L;
+	  private static readonly long serialVersionUID = -8742448824652078965L;
 	
 	  /**
 	   * Table for calculating digits, used in Character, Long, and Integer.
 	   */
-	  static final char[] digits = {
+	  static readonly char[] digits = {
 	    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 	    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
