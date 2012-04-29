@@ -864,6 +864,7 @@ namespace Apache.Commons.Math.Util
 	     * @return k<sup>e</sup>
 	     * @throws NotPositiveException if {@code e < 0}.
 	     */
+		//TODO: Implement this with an efficient algorithm which doesn't rely on the missing BigInteger functions
 	    public static BigInteger pow(BigInteger k, BigInteger e) {
 	        if (e.CompareTo(BigInteger.Zero) < 0) {
 	            throw new NotPositiveException<BigInteger>(LocalizedFormats.EXPONENT, e);
@@ -871,13 +872,20 @@ namespace Apache.Commons.Math.Util
 	
 	        BigInteger result = BigInteger.One;
 	        BigInteger k2p    = k;
-	        while (!BigInteger.Zero.Equals(e)) {
-	            if (e.testBit(0)) {
-	                result = result.multiply(k2p);
-	            }
-	            k2p = k2p.multiply(k2p);
-	            e = e.shiftRight(1);
-	        }
+			
+			BigInteger incrementer = e;
+			while(!BigInteger.Zero.Equals(incrementer)) {
+				result = BigInteger.Multiply(result,k);
+				incrementer = BigInteger.Subtract(incrementer,1);
+			}
+
+//	        while (!BigInteger.Zero.Equals(e)) {
+//	            if (e.testBit(0)) {
+//	                result = result.multiply(k2p);
+//	            }
+//	            k2p = k2p.multiply(k2p);
+//	            e = e.shiftRight(1);
+//	        }
 	
 	        return result;
 	    }
