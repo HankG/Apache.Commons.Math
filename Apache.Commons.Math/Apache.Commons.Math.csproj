@@ -82,6 +82,7 @@
     <Compile Include="Exceptions\Util\LocalizedFormats.cs" />
     <Compile Include="Util\FastMath.cs" />
     <Compile Include="Util\FastMathCalc.cs" />
+    <Compile Include="Util\Precision.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
