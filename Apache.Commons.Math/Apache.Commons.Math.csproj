@@ -99,4 +99,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
 </Project>

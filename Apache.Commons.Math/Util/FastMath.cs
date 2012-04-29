@@ -64,7 +64,9 @@ using System;
 namespace Apache.Commons.Math.Util
 {
 	public class FastMath {
-	
+		/** static random object holder for static random function **/
+		private static readonly System.Random baseRandomNumberGenerator = new System.Random();
+		
 	    /** Archimede's constant PI, ratio of circle circumference to diameter. */
 	    public static readonly double PI = 105414357.0 / 33554432.0 + 1.984187159361080883e-9;
 	
@@ -347,9 +349,9 @@ namespace Apache.Commons.Math.Util
 	        if (d > -Precision.SAFE_MIN && d < Precision.SAFE_MIN){
 	            return d; // These are un-normalised - don't try to convert
 	        }
-	        long xl = Double.doubleToLongBits(d);
+	        long xl = System.BitConverter.DoubleToInt64Bits(d);
 	        xl = xl & MASK_30BITS; // Drop low order bits
-	        return Double.longBitsToDouble(xl);
+	        return System.BitConverter.Int64BitsToDouble(xl);
 	    }
 	
 	    /** Compute the square root of a number.
@@ -758,7 +760,7 @@ namespace Apache.Commons.Math.Util
 	     * @return neighbor of a towards positive infinity
 	     */
 	    public static float nextUp(float a) {
-	        return nextAfter(a, Float.PositiveInfinity);
+	        return nextAfter(a, Single.PositiveInfinity);
 	    }
 	
 	    /** Returns a pseudo-random number between 0.0 and 1.0.
@@ -766,7 +768,7 @@ namespace Apache.Commons.Math.Util
 	     * @return a random number between 0.0 and 1.0
 	     */
 	    public static double random() {
-	        return Math.random();
+	        return baseRandomNumberGenerator.NextDouble();
 	    }
 	
 	    /**
@@ -1092,12 +1094,14 @@ namespace Apache.Commons.Math.Util
 	     */
 	    private static double log(double x, double[] hiPrec) {
 	        if (x==0) { // Handle special case of +0/-0
-	            return Double.Neg;
+	            return Double.NegativeInfinity;
 	        }
-	        long bits = Double.doubleToLongBits(x);
+			
+			//TODO: Check that type change isn't going to be a problem
+	        ulong bits = (ulong)BitConverter.DoubleToInt64Bits(x);
 	
 	        /* Handle special cases of negative input, and NaN */
-	        if ((bits & 0x8000000000000000L) != 0 || x != x) {
+	        if ((bits & 0x8000000000000000L) != 0 || Double.IsNaN(x)) {
 	            if (x != 0.0) {
 	                if (hiPrec != null) {
 	                    hiPrec[0] = Double.NaN;
@@ -1108,12 +1112,12 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        /* Handle special cases of Positive infinity. */
-	        if (x == Double.POSITIVE_INFINITY) {
+	        if (x == Double.PositiveInfinity) {
 	            if (hiPrec != null) {
-	                hiPrec[0] = Double.POSITIVE_INFINITY;
+	                hiPrec[0] = Double.PositiveInfinity;
 	            }
 	
-	            return Double.POSITIVE_INFINITY;
+	            return Double.PositiveInfinity;
 	        }
 	
 	        /* Extract the exponent */
@@ -1124,10 +1128,10 @@ namespace Apache.Commons.Math.Util
 	            if (x == 0) {
 	                // Zero
 	                if (hiPrec != null) {
-	                    hiPrec[0] = Double.NEGATIVE_INFINITY;
+	                    hiPrec[0] = Double.NegativeInfinity;
 	                }
 	
-	                return Double.NEGATIVE_INFINITY;
+	                return Double.NegativeInfinity;
 	            }
 	
 	            /* Normalize the subnormal number. */
@@ -1153,10 +1157,10 @@ namespace Apache.Commons.Math.Util
 	                xa = aa;
 	                xb = ab;
 	
-	                double ya = LN_QUICK_COEF[LN_QUICK_COEF.length-1][0];
-	                double yb = LN_QUICK_COEF[LN_QUICK_COEF.length-1][1];
+	                double ya = LN_QUICK_COEF[LN_QUICK_COEF.Length-1][0];
+	                double yb = LN_QUICK_COEF[LN_QUICK_COEF.Length-1][1];
 	
-	                for (int i = LN_QUICK_COEF.length - 2; i >= 0; i--) {
+	                for (int i = LN_QUICK_COEF.Length - 2; i >= 0; i--) {
 	                    /* Multiply a = y * x */
 	                    aa = ya * xa;
 	                    ab = ya * xb + yb * xa + yb * xb;
@@ -1218,10 +1222,10 @@ namespace Apache.Commons.Math.Util
 	            xb += aa / denom;
 	
 	            /* Remez polynomial evaluation */
-	            double ya = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1][0];
-	            double yb = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1][1];
+	            double ya = LN_HI_PREC_COEF[LN_HI_PREC_COEF.Length-1][0];
+	            double yb = LN_HI_PREC_COEF[LN_HI_PREC_COEF.Length-1][1];
 	
-	            for (int i = LN_HI_PREC_COEF.length - 2; i >= 0; i--) {
+	            for (int i = LN_HI_PREC_COEF.Length - 2; i >= 0; i--) {
 	                /* Multiply a = y * x */
 	                aa = ya * xa;
 	                ab = ya * xb + yb * xa + yb * xb;
@@ -1333,7 +1337,7 @@ namespace Apache.Commons.Math.Util
 	            double[] hiPrec = new double[2];
 	
 	            double lores = log(xpa, hiPrec);
-	            if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
+	            if (Double.IsInfinity(lores)){ // don't allow this to be converted to NaN
 	                return lores;
 	            }
 	
@@ -1363,7 +1367,7 @@ namespace Apache.Commons.Math.Util
 	        double[] hiPrec = new double[2];
 	
 	        double lores = log(x, hiPrec);
-	        if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
+	        if (Double.IsInfinity(lores)){ // don't allow this to be converted to NaN
 	            return lores;
 	        }
 	
@@ -1411,19 +1415,19 @@ namespace Apache.Commons.Math.Util
 	            return 1.0;
 	        }
 	
-	        if (x != x) { // X is NaN
+	        if (Double.IsNaN(x)) { // X is NaN
 	            return x;
 	        }
 	
 	
 	        if (x == 0) {
-	            long bits = Double.doubleToLongBits(x);
+	            ulong bits = (ulong)BitConverter.DoubleToInt64Bits(x);
 	            if ((bits & 0x8000000000000000L) != 0) {
 	                // -zero
 	                long yi = (long) y;
 	
 	                if (y < 0 && y == yi && (yi & 1) == 1) {
-	                    return Double.NEGATIVE_INFINITY;
+	                    return Double.NegativeInfinity;
 	                }
 	
 	                if (y > 0 && y == yi && (yi & 1) == 1) {
@@ -1432,7 +1436,7 @@ namespace Apache.Commons.Math.Util
 	            }
 	
 	            if (y < 0) {
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            }
 	            if (y > 0) {
 	                return 0.0;
@@ -1441,31 +1445,31 @@ namespace Apache.Commons.Math.Util
 	            return Double.NaN;
 	        }
 	
-	        if (x == Double.POSITIVE_INFINITY) {
-	            if (y != y) { // y is NaN
+	        if (x == Double.PositiveInfinity) {
+	            if (Double.IsNaN(y)) { // y is NaN
 	                return y;
 	            }
 	            if (y < 0.0) {
 	                return 0.0;
 	            } else {
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            }
 	        }
 	
-	        if (y == Double.POSITIVE_INFINITY) {
+	        if (y == Double.PositiveInfinity) {
 	            if (x * x == 1.0) {
 	                return Double.NaN;
 	            }
 	
 	            if (x * x > 1.0) {
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            } else {
 	                return 0.0;
 	            }
 	        }
 	
-	        if (x == Double.NEGATIVE_INFINITY) {
-	            if (y != y) { // y is NaN
+	        if (x == Double.NegativeInfinity) {
+	            if (Double.IsNaN(y)) { // y is NaN
 	                return y;
 	            }
 	
@@ -1481,21 +1485,21 @@ namespace Apache.Commons.Math.Util
 	            if (y > 0)  {
 	                long yi = (long) y;
 	                if (y == yi && (yi & 1) == 1) {
-	                    return Double.NEGATIVE_INFINITY;
+	                    return Double.NegativeInfinity;
 	                }
 	
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            }
 	        }
 	
-	        if (y == Double.NEGATIVE_INFINITY) {
+	        if (y == Double.NegativeInfinity) {
 	
 	            if (x * x == 1.0) {
 	                return Double.NaN;
 	            }
 	
 	            if (x * x < 1.0) {
-	                return Double.POSITIVE_INFINITY;
+	                return Double.PositiveInfinity;
 	            } else {
 	                return 0.0;
 	            }
@@ -1534,7 +1538,7 @@ namespace Apache.Commons.Math.Util
 	
 	        /* Compute ln(x) */
 	        double lores = log(x, lns);
-	        if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
+	        if (Double.IsInfinity(lores)){ // don't allow this to be converted to NaN
 	            return lores;
 	        }
 	
@@ -1907,7 +1911,7 @@ namespace Apache.Commons.Math.Util
 	    private static void reducePayneHanek(double x, double[] result)
 	    {
 	        /* Convert input double to bits */
-	        long inbits = Double.doubleToLongBits(x);
+	        long inbits = BitConverter.DoubleToInt64Bits(x);
 	        int exponent = (int) ((inbits >> 52) & 0x7ff) - 1023;
 	
 	        /* Convert to fixed point representation */
@@ -1926,8 +1930,7 @@ namespace Apache.Commons.Math.Util
 	        int shift = exponent - (idx << 6);
 
 			if (shift != 0) {
-	            shpi0 = (idx == 0) ? 0 : (RECIP_2PI[idx-1] << shift);
-				uLongBuffer = (ulong)RECIP_2PI[idx-1];
+				shpi0 = (idx == 0) ? 0 : (RECIP_2PI[idx-1] << shift);
 	            shpi0 |= (long)(((ulong)RECIP_2PI[idx]) >> (64-shift));
 	            shpiA = (RECIP_2PI[idx] << shift) | (long)(((ulong)RECIP_2PI[idx+1]) >> (64-shift));
 	            shpiB = (RECIP_2PI[idx+1] << shift) | (long)(((ulong)(RECIP_2PI[idx+2]) >> (64-shift)));
@@ -1952,9 +1955,9 @@ namespace Apache.Commons.Math.Util
 	        long prodB = bd + (ad << 32);
 	        long prodA = ac + (long)(((ulong)ad) >> 32);
 	
-	        boolean bita = (bd & 0x8000000000000000L) != 0;
-	        boolean bitb = (ad & 0x80000000L ) != 0;
-	        boolean bitsum = (prodB & 0x8000000000000000L) != 0;
+	        bool bita = ((ulong)bd & 0x8000000000000000L) != 0;
+	        bool bitb = (ad & 0x80000000L ) != 0;
+	        bool bitsum = ((ulong)prodB & 0x8000000000000000L) != 0;
 	
 	        /* Carry */
 	        if ( (bita && bitb) ||
@@ -1962,13 +1965,13 @@ namespace Apache.Commons.Math.Util
 	            prodA++;
 	        }
 	
-	        bita = (prodB & 0x8000000000000000L) != 0;
+	        bita = ((ulong)prodB & 0x8000000000000000L) != 0;
 	        bitb = (bc & 0x80000000L ) != 0;
 	
 	        prodB = prodB + (bc << 32);
 	        prodA = prodA + (long)(((ulong)bc) >> 32);
 	
-	        bitsum = (prodB & 0x8000000000000000L) != 0;
+	        bitsum = ((ulong)prodB & 0x8000000000000000L) != 0;
 	
 	        /* Carry */
 	        if ( (bita && bitb) ||
@@ -1986,10 +1989,10 @@ namespace Apache.Commons.Math.Util
 	        /* Collect terms */
 	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
-	        bita = (prodB & 0x8000000000000000L) != 0;
-	        bitb = (ac & 0x8000000000000000L ) != 0;
+	        bita = ((ulong)prodB & 0x8000000000000000L) != 0;
+	        bitb = ((ulong)ac & 0x8000000000000000L ) != 0;
 	        prodB += ac;
-	        bitsum = (prodB & 0x8000000000000000L) != 0;
+	        bitsum = ((ulong)prodB & 0x8000000000000000L) != 0;
 	        /* Carry */
 	        if ( (bita && bitb) ||
 	                ((bita || bitb) && !bitsum) ) {
@@ -2038,9 +2041,9 @@ namespace Apache.Commons.Math.Util
 	        long prod2B = bd + (ad << 32);
 	        long prod2A = ac + (long)(((ulong)ad) >> 32);
 	
-	        bita = (bd & 0x8000000000000000L) != 0;
-	        bitb = (ad & 0x80000000L ) != 0;
-	        bitsum = (prod2B & 0x8000000000000000L) != 0;
+	        bita = ((ulong)bd & 0x8000000000000000L) != 0;
+	        bitb = ((ulong)ad & 0x80000000L ) != 0;
+	        bitsum = ((ulong)prod2B & 0x8000000000000000L) != 0;
 	
 	        /* Carry */
 	        if ( (bita && bitb) ||
@@ -2048,13 +2051,13 @@ namespace Apache.Commons.Math.Util
 	            prod2A++;
 	        }
 	
-	        bita = (prod2B & 0x8000000000000000L) != 0;
+	        bita = ((ulong)prod2B & 0x8000000000000000L) != 0;
 	        bitb = (bc & 0x80000000L ) != 0;
 	
 	        prod2B = prod2B + (bc << 32);
 	        prod2A = prod2A + (long)(((ulong)bc) >> 32);
 	
-	        bitsum = (prod2B & 0x8000000000000000L) != 0;
+	        bitsum = ((ulong)prod2B & 0x8000000000000000L) != 0;
 	
 	        /* Carry */
 	        if ( (bita && bitb) ||
@@ -2072,10 +2075,10 @@ namespace Apache.Commons.Math.Util
 	        /* Collect terms */
 	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
-	        bita = (prod2B & 0x8000000000000000L) != 0;
-	        bitb = (ac & 0x8000000000000000L ) != 0;
+	        bita = ((ulong)prod2B & 0x8000000000000000L) != 0;
+	        bitb = ((ulong)ac & 0x8000000000000000L ) != 0;
 	        prod2B += ac;
-	        bitsum = (prod2B & 0x8000000000000000L) != 0;
+	        bitsum = ((ulong)prod2B & 0x8000000000000000L) != 0;
 	        /* Carry */
 	        if ( (bita && bitb) ||
 	                ((bita || bitb) && !bitsum) ) {
@@ -2094,10 +2097,10 @@ namespace Apache.Commons.Math.Util
 	        /* Collect terms */
 	        ac = ac + (long)(((ulong)(bc + ad)) >> 32);
 	
-	        bita = (prod2B & 0x8000000000000000L) != 0;
-	        bitb = (ac & 0x8000000000000000L ) != 0;
+	        bita = ((ulong)prod2B & 0x8000000000000000L) != 0;
+	        bitb = ((ulong)ac & 0x8000000000000000L ) != 0;
 	        prod2B += ac;
-	        bitsum = (prod2B & 0x8000000000000000L) != 0;
+	        bitsum = ((ulong)prod2B & 0x8000000000000000L) != 0;
 	        /* Carry */
 	        if ( (bita && bitb) ||
 	                ((bita || bitb) && !bitsum) ) {
@@ -2123,7 +2126,7 @@ namespace Apache.Commons.Math.Util
 	     *  @return sin(x)
 	     */
 	    public static double sin(double x) {
-	        boolean negative = false;
+	        bool negative = false;
 	        int quadrant = 0;
 	        double xa;
 	        double xb = 0.0;
@@ -2137,14 +2140,14 @@ namespace Apache.Commons.Math.Util
 	
 	        /* Check for zero and negative zero */
 	        if (xa == 0.0) {
-	            long bits = Double.doubleToLongBits(x);
+	            long bits = BitConverter.DoubleToInt64Bits(x);
 	            if (bits < 0) {
 	                return -0.0;
 	            }
 	            return 0.0;
 	        }
 	
-	        if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+	        if (xa != xa || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -2229,7 +2232,7 @@ namespace Apache.Commons.Math.Util
 	            xa = -xa;
 	        }
 	
-	        if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+	        if (xa != xa || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -2306,7 +2309,7 @@ namespace Apache.Commons.Math.Util
 	     *  @return tan(x)
 	     */
 	    public static double tan(double x) {
-	        boolean negative = false;
+	        bool negative = false;
 	        int quadrant = 0;
 	
 	        /* Take absolute value of the input */
@@ -2318,14 +2321,14 @@ namespace Apache.Commons.Math.Util
 	
 	        /* Check for zero and negative zero */
 	        if (xa == 0.0) {
-	            long bits = Double.doubleToLongBits(x);
+	            long bits = BitConverter.DoubleToInt64Bits(x);
 	            if (bits < 0) {
 	                return -0.0;
 	            }
 	            return 0.0;
 	        }
 	
-	        if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+	        if (xa != xa || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -2424,11 +2427,11 @@ namespace Apache.Commons.Math.Util
 	     * @return atan(xa + xb) (or angle shifted by {@code PI} if leftPlane is true)
 	     */
 	    private static double atan(double xa, double xb, bool leftPlane) {
-	        boolean negate = false;
+	        bool negate = false;
 	        int idx;
 	
 	        if (xa == 0.0) { // Matches +/- 0.0; return correct sign
-	            return leftPlane ? copySign(Math.PI, xa) : xa;
+	            return leftPlane ? copySign(System.Math.PI, xa) : xa;
 	        }
 	
 	        if (xa < 0) {
@@ -2439,7 +2442,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        if (xa > 1.633123935319537E16) { // Very large input
-	            return (negate ^ leftPlane) ? (-Math.PI * F_1_2) : (Math.PI * F_1_2);
+	            return (negate ^ leftPlane) ? (-System.Math.PI * F_1_2) : (System.Math.PI * F_1_2);
 	        }
 	
 	        /* Estimate the closest tabulated arctan value, compute eps = xa-tangentTable */
@@ -2461,6 +2464,9 @@ namespace Apache.Commons.Math.Util
 	        temp = xa * HEX_40000000;
 	        double ya = xa + temp - temp;
 	        double yb = xb + xa - ya;
+			
+			double za;
+			double zb;
 	        xa = ya;
 	        xb += yb;
 	
@@ -2474,8 +2480,8 @@ namespace Apache.Commons.Math.Util
 	            yb = epsB * denom;
 	        } else {
 	            double temp2 = xa * TANGENT_TABLE_A[idx];
-	            double za = 1d + temp2;
-	            double zb = -(za - 1d - temp2);
+	            za = 1d + temp2;
+	            zb = -(za - 1d - temp2);
 	            temp2 = xb * TANGENT_TABLE_A[idx] + xa * TANGENT_TABLE_B[idx];
 	            temp = za + temp2;
 	            zb += -(temp - za - temp2);
@@ -2571,12 +2577,13 @@ namespace Apache.Commons.Math.Util
 	     * @return phase angle of point (x,y) between {@code -PI} and {@code PI}
 	     */
 	    public static double atan2(double y, double x) {
-	        if (x != x || y != y) {
+			double result;
+	        if (Double.IsNaN(x) || Double.IsNaN(y)) {
 	            return Double.NaN;
 	        }
 	
 	        if (y == 0) {
-	            double result = x * y;
+	            result = x * y;
 	            double invx = 1d / x;
 	            double invy = 1d / y;
 	
@@ -2584,15 +2591,15 @@ namespace Apache.Commons.Math.Util
 	                if (x > 0) {
 	                    return y; // return +/- 0.0
 	                } else {
-	                    return copySign(Math.PI, y);
+	                    return copySign(System.Math.PI, y);
 	                }
 	            }
 	
 	            if (x < 0 || invx < 0) {
 	                if (y < 0 || invy < 0) {
-	                    return -Math.PI;
+	                    return -System.Math.PI;
 	                } else {
-	                    return Math.PI;
+	                    return System.Math.PI;
 	                }
 	            } else {
 	                return result;
@@ -2601,12 +2608,12 @@ namespace Apache.Commons.Math.Util
 	
 	        // y cannot now be zero
 	
-	        if (y == Double.POSITIVE_INFINITY) {
+	        if (y == Double.PositiveInfinity) {
 	            if (x == Double.PositiveInfinity) {
 	                return System.Math.PI * F_1_4;
 	            }
 	
-	            if (x == Double.NEGATIVE_INFINITY) {
+	            if (x == Double.NegativeInfinity) {
 	                return System.Math.PI * F_3_4;
 	            }
 	
@@ -2682,7 +2689,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // Call atan
-	        result = Math.atan(ra, rb, x < 0);
+	        result = atan(ra, rb, x < 0);
 	
 	        return result;
 	    }
@@ -2851,7 +2858,7 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static double cbrt(double x) {
 	      /* Convert input double to bits */
-	      long inbits = Double.doubleToLongBits(x);
+	      long inbits = BitConverter.DoubleToInt64Bits(x);
 	      int exponent = (int) ((inbits >> 52) & 0x7ff) - 1023;
 	      bool subnormal = false;
 	
@@ -2863,7 +2870,7 @@ namespace Apache.Commons.Math.Util
 	          /* Subnormal, so normalize */
 	          subnormal = true;
 	          x *= 1.8014398509481984E16;  // 2^54
-	          inbits = Double.doubleToLongBits(x);
+	          inbits = BitConverter.DoubleToInt64Bits(x);
 	          exponent = (int) ((inbits >> 52) & 0x7ff) - 1023;
 	      }
 	
@@ -2876,11 +2883,11 @@ namespace Apache.Commons.Math.Util
 	      int exp3 = exponent / 3;
 	
 	      /* p2 will be the nearest power of 2 to x with its exponent divided by 3 */
-	      double p2 = Double.longBitsToDouble((inbits & 0x8000000000000000L) |
-	                                          (long)(((exp3 + 1023) & 0x7ff)) << 52);
+	      double p2 = BitConverter.DoubleToInt64Bits(((ulong)inbits & 0x8000000000000000L) |
+	                                          (ulong)(((exp3 + 1023) & 0x7ff)) << 52);
 	
 	      /* This will be a number between 1 and 2 */
-	      double mant = Double.longBitsToDouble((inbits & 0x000fffffffffffffL) | 0x3ff0000000000000L);
+	      double mant = BitConverter.Int64BitsToDouble((inbits & 0x000fffffffffffffL) | 0x3ff0000000000000L);
 	
 	      /* Estimate the cube root of mant by polynomial */
 	      double est = -0.010714690733195933;
@@ -3020,7 +3027,7 @@ namespace Apache.Commons.Math.Util
 	        if (Double.IsInfinity(x)) {
 	            return Double.PositiveInfinity;
 	        }
-	        return Math.Abs(x - Double.longBitsToDouble(Double.doubleToLongBits(x) ^ 1));
+	        return System.Math.Abs(x - BitConverter.Int64BitsToDouble(BitConverter.DoubleToInt64Bits(x) ^ 1));
 	    }
 	
 	    /**
@@ -3029,8 +3036,8 @@ namespace Apache.Commons.Math.Util
 	     * @return ulp(x)
 	     */
 	    public static float ulp(float x) {
-	        if (Float.isInfinite(x)) {
-	            return Float.POSITIVE_INFINITY;
+	        if (Single.IsInfinity(x)) {
+	            return Single.PositiveInfinity;
 	        }
 	        return abs(x - Float.intBitsToFloat(Float.floatToIntBits(x) ^ 1));
 	    }
@@ -3045,7 +3052,7 @@ namespace Apache.Commons.Math.Util
 	
 	        // first simple and fast handling when 2^n can be represented using normal numbers
 	        if ((n > -1023) && (n < 1024)) {
-	            return d * Double.longBitsToDouble(((long) (n + 1023)) << 52);
+	            return d * BitConverter.Int64BitsToDouble(((long) (n + 1023)) << 52);
 	        }
 	
 	        // handle special cases
@@ -3060,8 +3067,8 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // decompose d
-	        long bits = Double.doubleToLongBits(d);
-	        long sign = bits & 0x8000000000000000L;
+	        long bits = BitConverter.DoubleToInt64Bits(d);
+	        long sign = (long)((ulong)bits & 0x8000000000000000L);
 	        int  exponent   = ((int) (((uint)bits) >> 52)) & 0x7ff;
 	        long mantissa   = bits & 0x000fffffffffffffL;
 	
@@ -3072,7 +3079,7 @@ namespace Apache.Commons.Math.Util
 	            // we are really in the case n <= -1023
 	            if (scaledExponent > 0) {
 	                // both the input and the result are normal numbers, we only adjust the exponent
-	                return Double.longBitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
+	                return BitConverter.Int64BitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
 	            } else if (scaledExponent > -53) {
 	                // the input is a normal number and the result is a subnormal number
 	
@@ -3086,7 +3093,7 @@ namespace Apache.Commons.Math.Util
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
 	                }
-	                return Double.longBitsToDouble(sign | mantissa);
+	                return BitConverter.Int64BitsToDouble(sign | mantissa);
 	
 	            } else {
 	                // no need to compute the mantissa, the number scales down to 0
@@ -3105,13 +3112,13 @@ namespace Apache.Commons.Math.Util
 	                mantissa = mantissa & 0x000fffffffffffffL;
 	
 	                if (scaledExponent < 2047) {
-	                    return Double.longBitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
+	                    return BitConverter.Int64BitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
 	                } else {
 	                    return (sign == 0L) ? Double.PositiveInfinity : Double.NegativeInfinity;
 	                }
 	
 	            } else if (scaledExponent < 2047) {
-	                return Double.longBitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
+	                return BitConverter.Int64BitsToDouble(sign | (((long) scaledExponent) << 52) | mantissa);
 	            } else {
 	                return (sign == 0L) ? Double.PositiveInfinity : Double.NegativeInfinity;
 	            }
@@ -3133,20 +3140,20 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // handle special cases
-	        if (Float.isNaN(f) || Float.isInfinite(f) || (f == 0f)) {
+	        if (Single.IsNaN(f) || Single.IsInfinity(f) || (f == 0f)) {
 	            return f;
 	        }
 	        if (n < -277) {
 	            return (f > 0) ? 0.0f : -0.0f;
 	        }
 	        if (n > 276) {
-	            return (f > 0) ? Float.POSITIVE_INFINITY : Float.NEGATIVE_INFINITY;
+	            return (f > 0) ? Single.PositiveInfinity : Single.NegativeInfinity;
 	        }
 	
 	        // decompose f
 	        int bits = Float.floatToIntBits(f);
-	        int sign = bits & 0x80000000;
-	        int exponent  = (((uint)bits) >> 23) & 0xff;
+	        int sign = (int)(bits & 0x80000000);
+	        int exponent  = (int)((((uint)bits) >> 23) & 0xff);
 	        int mantissa   = bits & 0x007fffff;
 	
 	        // compute scaled exponent
@@ -3165,7 +3172,7 @@ namespace Apache.Commons.Math.Util
 	
 	                // scales down complete mantissa, hence losing least significant bits
 	                int mostSignificantLostBit = mantissa & (1 << (-scaledExponent));
-	                mantissa = ((uint)mantissa) >> (1 - scaledExponent);
+	                mantissa = (int)(((uint)mantissa) >> (1 - scaledExponent));
 	                if (mostSignificantLostBit != 0) {
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
@@ -3191,13 +3198,13 @@ namespace Apache.Commons.Math.Util
 	                if (scaledExponent < 255) {
 	                    return Float.intBitsToFloat(sign | (scaledExponent << 23) | mantissa);
 	                } else {
-	                    return (sign == 0) ? Float.POSITIVE_INFINITY : Float.NEGATIVE_INFINITY;
+	                    return (sign == 0) ? Single.PositiveInfinity : Single.NegativeInfinity;
 	                }
 	
 	            } else if (scaledExponent < 255) {
 	                return Float.intBitsToFloat(sign | (scaledExponent << 23) | mantissa);
 	            } else {
-	                return (sign == 0) ? Float.POSITIVE_INFINITY : Float.NEGATIVE_INFINITY;
+	                return (sign == 0) ? Single.PositiveInfinity : Single.NegativeInfinity;
 	            }
 	        }
 	
@@ -3242,19 +3249,19 @@ namespace Apache.Commons.Math.Util
 	        } else if (d == direction) {
 	            return direction;
 	        } else if (Double.IsInfinity(d)) {
-	            return (d < 0) ? -Double.MAX_VALUE : Double.MAX_VALUE;
+	            return (d < 0) ? -Double.MaxValue : Double.MaxValue;
 	        } else if (d == 0) {
-	            return (direction < 0) ? -Double.MIN_VALUE : Double.MIN_VALUE;
+	            return (direction < 0) ? -Double.MinValue : Double.MinValue;
 	        }
 	        // special cases MAX_VALUE to infinity and  MIN_VALUE to 0
 	        // are handled just as normal numbers
 	
-	        long bits = Double.doubleToLongBits(d);
-	        long sign = bits & 0x8000000000000000L;
+	        long bits = BitConverter.DoubleToInt64Bits(d);
+	        long sign = (long)((ulong)bits & 0x8000000000000000L);
 	        if ((direction < d) ^ (sign == 0L)) {
-	            return Double.longBitsToDouble(sign | ((bits & 0x7fffffffffffffffL) + 1));
+	            return BitConverter.Int64BitsToDouble(sign | ((bits & 0x7fffffffffffffffL) + 1));
 	        } else {
-	            return Double.longBitsToDouble(sign | ((bits & 0x7fffffffffffffffL) - 1));
+	            return BitConverter.Int64BitsToDouble(sign | ((bits & 0x7fffffffffffffffL) - 1));
 	        }
 	
 	    }
@@ -3293,20 +3300,20 @@ namespace Apache.Commons.Math.Util
 	    public static float nextAfter(float f, double direction) {
 	
 	        // handling of some important special cases
-	        if (Double.isNaN(f) || Double.isNaN(direction)) {
-	            return Float.NaN;
+	        if (Single.IsNaN(f) || Double.IsNaN(direction)) {
+	            return Single.NaN;
 	        } else if (f == direction) {
 	            return (float) direction;
-	        } else if (Float.isInfinite(f)) {
-	            return (f < 0f) ? -Float.MAX_VALUE : Float.MAX_VALUE;
+	        } else if (Single.IsInfinity(f)) {
+	            return (f < 0f) ? -Single.MaxValue : Single.MaxValue;
 	        } else if (f == 0f) {
-	            return (direction < 0) ? -Float.MIN_VALUE : Float.MIN_VALUE;
+	            return (direction < 0) ? -Single.MinValue : Single.MinValue;
 	        }
 	        // special cases MAX_VALUE to infinity and  MIN_VALUE to 0
 	        // are handled just as normal numbers
 	
 	        int bits = Float.floatToIntBits(f);
-	        int sign = bits & 0x80000000;
+	        int sign = (int)((uint)bits & 0x80000000);
 	        if ((direction < f) ^ (sign == 0)) {
 	            return Float.intBitsToFloat(sign | ((bits & 0x7fffffff) + 1));
 	        } else {
@@ -3438,12 +3445,12 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* if either arg is NaN, return NaN */
 	        if (a != b) {
-	            return Float.NaN;
+	            return Single.NaN;
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x80000000 == Float.floatToRawIntBits(-0.0d) */
 	        int bits = Float.floatToRawIntBits(a);
-	        if (bits == 0x80000000) {
+	        if ((uint)bits == 0x80000000) {
 	            return a;
 	        }
 	        return b;
@@ -3467,7 +3474,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x8000000000000000L == Double.doubleToRawLongBits(-0.0d) */
-	        long bits = Double.doubleToRawLongBits(a);
+	        ulong bits = (ulong)BitConverter.DoubleToInt64Bits(a);
 	        if (bits == 0x8000000000000000L) {
 	            return a;
 	        }
@@ -3506,11 +3513,11 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* if either arg is NaN, return NaN */
 	        if (a != b) {
-	            return Float.NaN;
+	            return Single.NaN;
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x80000000 == Float.floatToRawIntBits(-0.0d) */
-	        int bits = Float.floatToRawIntBits(a);
+	        uint bits = (uint)Float.floatToRawIntBits(a);
 	        if (bits == 0x80000000) {
 	            return b;
 	        }
@@ -3535,7 +3542,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x8000000000000000L == Double.doubleToRawLongBits(-0.0d) */
-	        long bits = Double.doubleToRawLongBits(a);
+	        ulong bits = (ulong)BitConverter.DoubleToInt64Bits(a);
 	        if (bits == 0x8000000000000000L) {
 	            return b;
 	        }
@@ -3624,8 +3631,8 @@ namespace Apache.Commons.Math.Util
 	     * @return the magnitude with the same sign as the {@code sign} argument
 	     */
 	    public static double copySign(double magnitude, double sign){
-	        long m = Double.doubleToLongBits(magnitude);
-	        long s = Double.doubleToLongBits(sign);
+	        long m = BitConverter.DoubleToInt64Bits(magnitude);
+	        long s = BitConverter.DoubleToInt64Bits(sign);
 	        if ((m >= 0 && s >= 0) || (m < 0 && s < 0)) { // Sign is currently OK
 	            return magnitude;
 	        }
@@ -3659,7 +3666,7 @@ namespace Apache.Commons.Math.Util
 	     * @return exponent for d in IEEE754 representation, without bias
 	     */
 	    public static int getExponent(double d) {
-	        return (int) ((((ulong)Double.doubleToLongBits(d)) >> 52) & 0x7ff) - 1023;
+	        return (int) ((((ulong)BitConverter.DoubleToInt64Bits(d)) >> 52) & 0x7ff) - 1023;
 	    }
 	
 	    /**
@@ -3755,7 +3762,7 @@ namespace Apache.Commons.Math.Util
 	
 	                // Populate expFracTable
 	                double factor = 1d / (EXP_FRAC_TABLE_LEN - 1);
-	                for (int i = 0; i < EXP_FRAC_TABLE_A.length; i++) {
+	                for (int i = 0; i < EXP_FRAC_TABLE_A.Length; i++) {
 	                    FastMathCalc.slowexp(i * factor, tmp);
 	                    EXP_FRAC_TABLE_A[i] = tmp[0];
 	                    EXP_FRAC_TABLE_B[i] = tmp[1];
@@ -3777,8 +3784,8 @@ namespace Apache.Commons.Math.Util
 	                LN_MANT = new double[FastMath.LN_MANT_LEN][];
 	
 	                // Populate lnMant table
-	                for (int i = 0; i < LN_MANT.length; i++) {
-	                    double d = Double.longBitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
+	                for (int i = 0; i < LN_MANT.Length; i++) {
+	                    double d = BitConverter.Int64BitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
 	                    LN_MANT[i] = FastMathCalc.slowLog(d);
 	                }
 	            } else {

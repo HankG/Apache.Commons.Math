@@ -871,7 +871,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        BigInteger result = BigInteger.One;
-	        BigInteger k2p    = k;
+	        //BigInteger k2p    = k;
 			
 			BigInteger incrementer = e;
 			while(!BigInteger.Zero.Equals(incrementer)) {

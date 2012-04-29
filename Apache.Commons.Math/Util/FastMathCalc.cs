@@ -181,7 +181,7 @@ namespace Apache.Commons.Math.Util
 	     * (may be null)
 	     * @return cos(x)
 	     */
-	    static double slowCos(double x, double[] result) {
+	    public static double slowCos(double x, double[] result) {
 	
 	        double[] xs = new double[2];
 	        double[] ys = new double[2];
@@ -226,7 +226,7 @@ namespace Apache.Commons.Math.Util
 	     * (may be null)
 	     * @return sin(x)
 	     */
-	    static double slowSin(double x, double[] result) {
+	    public static double slowSin(double x, double[] result) {
 	        double[] xs = new double[2];
 	        double[] ys = new double[2];
 	        double[] facts = new double[2];
@@ -270,7 +270,7 @@ namespace Apache.Commons.Math.Util
 	     *  for extra precision (i.e. exp(x) = result[0] + result[1]
 	     *  @return exp(x)
 	     */
-	    static double slowexp(double x, double[] result) {
+	    public static double slowexp(double x, double[] result) {
 	        double[] xs = new double[2];
 	        double[] ys = new double[2];
 	        double[] facts = new double[2];
@@ -378,7 +378,7 @@ namespace Apache.Commons.Math.Util
 	     *  @param in initial number, in split form
 	     *  @param result placeholder where to put the result
 	     */
-	    static void splitReciprocal(double[] inp, double[] result) {
+	    public static void splitReciprocal(double[] inp, double[] result) {
 	        double b = 1.0/4194304.0;
 	        double a = 1.0 - b;
 	
@@ -467,7 +467,7 @@ namespace Apache.Commons.Math.Util
 	     * @param result placeholder where to put the result in extended precision
 	     * @return exp(p) in standard precision (equal to result[0] + result[1])
 	     */
-	    static double expint(int p, double[] result) {
+	    public static double expint(int p, double[] result) {
 	        //double x = M_E;
 	        double[] xs = new double[2];
 	        double[] ans = new double[2];
@@ -525,7 +525,7 @@ namespace Apache.Commons.Math.Util
 	     * @param xi number from which log is requested
 	     * @return log(xi)
 	     */
-	    static double[] slowLog(double xi) {
+	    public static double[] slowLog(double xi) {
 	        double[] x = new double[2];
 	        double[] x2 = new double[2];
 	        double[] y = new double[2];

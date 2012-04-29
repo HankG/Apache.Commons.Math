@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 /**
  * Utilities for comparing numbers.
@@ -12,7 +13,7 @@ namespace Apache.Commons.Math.Util
 	public class Precision {
 	
 	    /** Exponent offset in IEEE754 representation. */
-	    private static final long EXPONENT_OFFSET = 1023l;
+	    private static readonly long EXPONENT_OFFSET = 1023L;
 	
 	    /**
 	     * Smallest positive number such that {@code 1 - EPSILON} is not
@@ -20,7 +21,7 @@ namespace Apache.Commons.Math.Util
 	     * <br/>
 	     * In IEEE 754 arithmetic, this is 2<sup>-53</sup>.
 	     */
-	    public static final double EPSILON = Double.longBitsToDouble((EXPONENT_OFFSET - 53l) << 52);
+	    public static readonly double EPSILON = Double.longBitsToDouble((EXPONENT_OFFSET - 53L) << 52);
 	    //This was previously expressed as = 0x1.0p-53;
 	    // However, OpenJDK (Sparc Solaris) cannot handle such small constants: MATH-721
 	
@@ -30,14 +31,14 @@ namespace Apache.Commons.Math.Util
 	     * In IEEE 754 arithmetic, this is also the smallest normalized
 	     * number 2<sup>-1022</sup>.
 	     */
-	    public static final double SAFE_MIN = Double.longBitsToDouble((EXPONENT_OFFSET - 1022l) << 52);
+	    public static readonly double SAFE_MIN = Double.longBitsToDouble((EXPONENT_OFFSET - 1022L) << 52);
 	    // This was previously expressed as = 0x1.0p-1022;
 	    // However, OpenJDK (Sparc Solaris) cannot handle such small constants: MATH-721
 	
 	    /** Offset to order signed double numbers lexicographically. */
-	    private static final long SGN_MASK = 0x8000000000000000L;
+	    private static readonly long SGN_MASK = 0x8000000000000000L;
 	    /** Offset to order signed double numbers lexicographically. */
-	    private static final int SGN_MASK_FLOAT = 0x80000000;
+	    private static readonly int SGN_MASK_FLOAT = 0x80000000;
 	
 	    /**
 	     * Private constructor.
@@ -80,7 +81,7 @@ namespace Apache.Commons.Math.Util
 	     *       <li>&lt; 0 if !{@link #equals(double, double, int) equals(x, y, maxUlps)} &amp;&amp; x &lt; y</li>
 	     *       <li>> 0 if !{@link #equals(double, double, int) equals(x, y, maxUlps)} &amp;&amp; x > y</li></ul>
 	     */
-	    public static int compareTo(final double x, final double y, final int maxUlps) {
+	    public static int compareTo(double x, double y, int maxUlps) {
 	        if (equals(x, y, maxUlps)) {
 	            return 0;
 	        } else if (x < y) {
@@ -97,7 +98,7 @@ namespace Apache.Commons.Math.Util
 	     * @param y second value
 	     * @return {@code true} if the values are equal.
 	     */
-	    public static boolean equals(float x, float y) {
+	    public static bool equals(float x, float y) {
 	        return equals(x, y, 1);
 	    }
 	
@@ -110,7 +111,7 @@ namespace Apache.Commons.Math.Util
 	     * @return {@code true} if the values are equal or both are NaN.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(float x, float y) {
+	    public static bool equalsIncludingNaN(float x, float y) {
 	        return (Float.isNaN(x) && Float.isNaN(y)) || equals(x, y, 1);
 	    }
 	
@@ -124,7 +125,7 @@ namespace Apache.Commons.Math.Util
 	     * @return {@code true} if the values are equal or within range of each other.
 	     * @since 2.2
 	     */
-	    public static boolean equals(float x, float y, float eps) {
+	    public static bool equals(float x, float y, float eps) {
 	        return equals(x, y, 1) || FastMath.abs(y - x) <= eps;
 	    }
 	
@@ -139,7 +140,7 @@ namespace Apache.Commons.Math.Util
 	     * or both are NaN.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(float x, float y, float eps) {
+	    public static bool equalsIncludingNaN(float x, float y, float eps) {
 	        return equalsIncludingNaN(x, y) || (FastMath.abs(y - x) <= eps);
 	    }
 	
@@ -161,7 +162,7 @@ namespace Apache.Commons.Math.Util
 	     * point values between {@code x} and {@code y}.
 	     * @since 2.2
 	     */
-	    public static boolean equals(float x, float y, int maxUlps) {
+	    public static bool equals(float x, float y, int maxUlps) {
 	        int xInt = Float.floatToIntBits(x);
 	        int yInt = Float.floatToIntBits(y);
 	
@@ -173,7 +174,7 @@ namespace Apache.Commons.Math.Util
 	            yInt = SGN_MASK_FLOAT - yInt;
 	        }
 	
-	        final boolean isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
+	        bool isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
 	
 	        return isEqual && !Float.isNaN(x) && !Float.isNaN(y);
 	    }
@@ -190,7 +191,7 @@ namespace Apache.Commons.Math.Util
 	     * {@code maxUlps} floating point values between {@code x} and {@code y}.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(float x, float y, int maxUlps) {
+	    public static bool equalsIncludingNaN(float x, float y, int maxUlps) {
 	        return (Float.isNaN(x) && Float.isNaN(y)) || equals(x, y, maxUlps);
 	    }
 	
@@ -202,7 +203,7 @@ namespace Apache.Commons.Math.Util
 	     * @param y second value
 	     * @return {@code true} if the values are equal.
 	     */
-	    public static boolean equals(double x, double y) {
+	    public static bool equals(double x, double y) {
 	        return equals(x, y, 1);
 	    }
 	
@@ -215,8 +216,8 @@ namespace Apache.Commons.Math.Util
 	     * @return {@code true} if the values are equal or both are NaN.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(double x, double y) {
-	        return (Double.isNaN(x) && Double.isNaN(y)) || equals(x, y, 1);
+	    public static bool equalsIncludingNaN(double x, double y) {
+	        return (Double.IsNaN(x) && Double.IsNaN(y)) || equals(x, y, 1);
 	    }
 	
 	    /**
@@ -230,7 +231,7 @@ namespace Apache.Commons.Math.Util
 	     * @return {@code true} if the values are two adjacent floating point
 	     * numbers or they are within range of each other.
 	     */
-	    public static boolean equals(double x, double y, double eps) {
+	    public static bool equals(double x, double y, double eps) {
 	        return equals(x, y, 1) || FastMath.abs(y - x) <= eps;
 	    }
 	
@@ -245,7 +246,7 @@ namespace Apache.Commons.Math.Util
 	     * or both are NaN.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(double x, double y, double eps) {
+	    public static bool equalsIncludingNaN(double x, double y, double eps) {
 	        return equalsIncludingNaN(x, y) || (FastMath.abs(y - x) <= eps);
 	    }
 	
@@ -266,7 +267,7 @@ namespace Apache.Commons.Math.Util
 	     * @return {@code true} if there are fewer than {@code maxUlps} floating
 	     * point values between {@code x} and {@code y}.
 	     */
-	    public static boolean equals(double x, double y, int maxUlps) {
+	    public static bool equals(double x, double y, int maxUlps) {
 	        long xInt = Double.doubleToLongBits(x);
 	        long yInt = Double.doubleToLongBits(y);
 	
@@ -278,9 +279,9 @@ namespace Apache.Commons.Math.Util
 	            yInt = SGN_MASK - yInt;
 	        }
 	
-	        final boolean isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
+	        bool isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
 	
-	        return isEqual && !Double.isNaN(x) && !Double.isNaN(y);
+	        return isEqual && !Double.IsNaN(x) && !Double.IsNaN(y);
 	    }
 	
 	    /**
@@ -295,8 +296,8 @@ namespace Apache.Commons.Math.Util
 	     * {@code maxUlps} floating point values between {@code x} and {@code y}.
 	     * @since 2.2
 	     */
-	    public static boolean equalsIncludingNaN(double x, double y, int maxUlps) {
-	        return (Double.isNaN(x) && Double.isNaN(y)) || equals(x, y, maxUlps);
+	    public static bool equalsIncludingNaN(double x, double y, int maxUlps) {
+	        return (Double.IsNaN(x) && Double.IsNaN(y)) || equals(x, y, maxUlps);
 	    }
 	
 	    /**
@@ -309,7 +310,7 @@ namespace Apache.Commons.Math.Util
 	     * @since 1.1 (previously in {@code MathUtils}, moved as of version 3.0)
 	     */
 	    public static double round(double x, int scale) {
-	        return round(x, scale, BigDecimal.ROUND_HALF_UP);
+	        return round(x, scale, BigDecimal);
 	    }
 	
 	    /**
@@ -369,8 +370,8 @@ namespace Apache.Commons.Math.Util
 	     * @since 1.1 (previously in {@code MathUtils}, moved as of version 3.0)
 	     */
 	    public static float round(float x, int scale, int roundingMethod) {
-	        final float sign = FastMath.copySign(1f, x);
-	        final float factor = (float) FastMath.pow(10.0f, scale) * sign;
+	        float sign = FastMath.copySign(1f, x);
+	        float factor = (float) FastMath.pow(10.0f, scale) * sign;
 	        return (float) roundUnscaled(x * factor, sign, roundingMethod) / factor;
 	    }
 	
