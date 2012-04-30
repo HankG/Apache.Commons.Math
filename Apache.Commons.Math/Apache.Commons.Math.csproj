@@ -48,7 +48,6 @@
     <Compile Include="Exceptions\NullArgumentException.cs" />
     <Compile Include="Exceptions\NumberIsTooLargeException.cs" />
     <Compile Include="Exceptions\DimensionMismatchException.cs" />
-    <Compile Include="Exceptions\MathArgumentException.cs" />
     <Compile Include="Exceptions\MathArithmeticException.cs" />
     <Compile Include="Exceptions\MathIllegalNumberException.cs" />
     <Compile Include="Exceptions\MathIllegalStateException.cs" />
@@ -84,6 +83,7 @@
     <Compile Include="Util\FastMathCalc.cs" />
     <Compile Include="Util\Precision.cs" />
     <Compile Include="Util\FastMathLiteralArrays.cs" />
+    <Compile Include="Exceptions\MathIllegalArgumentException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
@@ -102,5 +102,11 @@
   -->
   <ItemGroup>
     <Folder Include="Helper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JavaDotNet\JavaDotNet.csproj">
+      <Project>{827CE27B-43EE-4023-9E72-883B17B364B7}</Project>
+      <Name>JavaDotNet</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

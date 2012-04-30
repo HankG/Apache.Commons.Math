@@ -29,7 +29,7 @@ namespace Apache.Commons.Math.Exceptions
     /// <see cref="ArgumentException"/>.</para>
     /// </summary>
     [Serializable]
-    public class MathArgumentException: ArgumentException, IExceptionContextProvider
+    public class MathIllegalArgumentException: ArgumentException, IExceptionContextProvider
     {
         /// <summary>
         /// Context.
@@ -41,7 +41,7 @@ namespace Apache.Commons.Math.Exceptions
         /// </summary>
         /// <param name="pattern">Message pattern explaining the cause of the error.</param>
         /// <param name="args">Arguments.</param>
-        public MathArgumentException(ILocalizable pattern, params object[] args)
+        public MathIllegalArgumentException(ILocalizable pattern, params object[] args)
         {
             context = new ExceptionContext(this);
             context.AddMessage(pattern, args);
