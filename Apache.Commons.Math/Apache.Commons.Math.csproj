@@ -84,6 +84,7 @@
     <Compile Include="Util\Precision.cs" />
     <Compile Include="Util\FastMathLiteralArrays.cs" />
     <Compile Include="Exceptions\MathIllegalArgumentException.cs" />
+    <Compile Include="Util\BigReal.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
