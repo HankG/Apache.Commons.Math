@@ -28,7 +28,7 @@ namespace Apache.Commons.Math.Exceptions
     /// <see cref="NotSupportedException"/>, but must also provide a localized message.</para>
     /// </summary>
     [Serializable]
-    public class MathNotSupportedException: NotSupportedException, IExceptionContextProvider
+    public class MathUnsupportedOperationException: NotSupportedException, IExceptionContextProvider
     {
         /// <summary>
         /// Context.
@@ -38,14 +38,14 @@ namespace Apache.Commons.Math.Exceptions
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public MathNotSupportedException() : this(LocalizedFormats.UNSUPPORTED_OPERATION) { }
+        public MathUnsupportedOperationException() : this(LocalizedFormats.UNSUPPORTED_OPERATION) { }
 
         /// <summary>
         /// Simple constructor.
         /// </summary>
         /// <param name="pattern">Message pattern providing the specific context of the error.</param>
         /// <param name="args">Arguments</param>
-        public MathNotSupportedException(ILocalizable pattern, params object[] args)
+        public MathUnsupportedOperationException(ILocalizable pattern, params object[] args)
         {
             this.context = new ExceptionContext(this);
             this.context.AddMessage(pattern, args);
