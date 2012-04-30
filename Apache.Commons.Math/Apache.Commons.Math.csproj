@@ -86,6 +86,7 @@
     <Compile Include="Util\BigReal.cs" />
     <Compile Include="Exceptions\MathUnsupportedOperationException.cs" />
     <Compile Include="Util\BigRealField.cs" />
+    <Compile Include="Util\CompositeFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
