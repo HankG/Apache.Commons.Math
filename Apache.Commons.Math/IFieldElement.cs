@@ -34,20 +34,20 @@ namespace Apache.Commons.Math
         /// </summary>
         /// <param name="a">Element to add.</param>
         /// <returns>A new element representing <c>this + a</c>.</returns>
-        T Add(T a);
+        T add(T a);
 
         /// <summary>
         /// Compute <c>this - a</c>.
         /// </summary>
         /// <param name="a">Element to subtract.</param>
         /// <returns>A new element representing <c>this - a</c>.</returns>
-        T Subtract(T a);
+        T subtract(T a);
 
         /// <summary>
         /// Returns the additive inverse of <c>this</c> element.
         /// </summary>
         /// <returns>The opposite of <c>this</c>.</returns>
-        T Negate();
+        T negate();
 
         /// <summary>
         /// Compute <c>n &times; this</c>.
@@ -56,14 +56,14 @@ namespace Apache.Commons.Math
         /// </summary>
         /// <param name="n">Number of times <c>this</c> must be added to itself.</param>
         /// <returns>A new element representing n &times; this.</returns>
-        T Multiply(int n);
+        T multiply(int n);
 
         /// <summary>
         /// Compute <c>this &times; a</c>.
         /// </summary>
         /// <param name="a">Element to multiply</param>
         /// <returns>A new element representing <c>this &times; a</c>.</returns>
-        T Multiply(T a);
+        T multiply(T a);
 
         /// <summary>
         /// Compute <c>this &divide; a</c>.
@@ -71,13 +71,13 @@ namespace Apache.Commons.Math
         /// <param name="a">Element to divide for.</param>
         /// <returns>A new element representing <c>this &divide; a</c>.</returns>
         /// <exception cref="ArithmeticException">If <paramref name="a"/> is the zero of the additive operation (i.e. additive identity).</exception>
-        T Divide(T a);
+        T divide(T a);
 
         /// <summary>
         /// Return the multiplicative inverse of <c>this</c>.
         /// </summary>
         /// <returns>The inverse of <c>this</c>.</returns>
-        T Reciprocal();
+        T reciprocal();
 
         /// <summary>
         /// Get the <see cref="IField"/> to which the instance belongs.
