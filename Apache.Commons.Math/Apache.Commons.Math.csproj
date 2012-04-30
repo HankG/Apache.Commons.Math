@@ -87,6 +87,7 @@
     <Compile Include="Exceptions\MathUnsupportedOperationException.cs" />
     <Compile Include="Util\BigRealField.cs" />
     <Compile Include="Util\CompositeFormat.cs" />
+    <Compile Include="Util\ContinuedFraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
