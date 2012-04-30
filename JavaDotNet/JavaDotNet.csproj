@@ -45,10 +45,12 @@
     <Compile Include="Lang\Number.cs" />
     <Compile Include="Math\MathContext.cs" />
     <Compile Include="Math\RoundingMode.cs" />
+    <Compile Include="Text\ParsePosition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Math\" />
     <Folder Include="Lang\" />
+    <Folder Include="Text\" />
   </ItemGroup>
 </Project>
