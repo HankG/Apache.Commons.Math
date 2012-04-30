@@ -1,4 +1,9 @@
 using System;
+using System.Numerics;
+using JavaDotNet.Math;
+using Apache.Commons.Math.Exceptions;
+using Apache.Commons.Math.Exceptions.Util;
+
 
 /**
  * Arbitrary precision decimal number.
@@ -12,19 +17,20 @@ using System;
 
 namespace Apache.Commons.Math.Util
 {
-	public class BigReal implements FieldElement<BigReal>, Comparable<BigReal>, Serializable {
-	
+	[Serializable]
+	public class BigReal:IFieldElement<BigReal>, IComparable<BigReal> 
+	{
 	    /** A big real representing 0. */
-	    public static final BigReal ZERO = new BigReal(BigDecimal.ZERO);
+	    public static readonly BigReal ZERO = new BigReal(BigDecimal.ZERO);
 	
 	    /** A big real representing 1. */
-	    public static final BigReal ONE = new BigReal(BigDecimal.ONE);
+	    public static readonly BigReal ONE = new BigReal(BigDecimal.ONE);
 	
 	    /** Serializable version identifier. */
-	    private static final long serialVersionUID = 4984534880991310382L;
+	    internal static readonly long serialVersionUID = 4984534880991310382L;
 	
 	    /** Underlying BigDecimal. */
-	    private final BigDecimal d;
+	    private readonly BigDecimal d;
 	
 	    /** Rounding mode for divisions. **/
 	    private RoundingMode roundingMode = RoundingMode.HALF_UP;
@@ -74,8 +80,8 @@ namespace Apache.Commons.Math.Util
 	    /** Build an instance from a characters representation.
 	     * @param in character representation of the value
 	     */
-	    public BigReal(char[] in) {
-	        d = new BigDecimal(in);
+	    public BigReal(char[] input) {
+	        d = new BigDecimal(input);
 	    }
 	
 	    /** Build an instance from a characters representation.
@@ -83,8 +89,8 @@ namespace Apache.Commons.Math.Util
 	     * @param offset offset of the first character to analyze
 	     * @param len length of the array slice to analyze
 	     */
-	    public BigReal(char[] in, int offset, int len) {
-	        d = new BigDecimal(in, offset, len);
+	    public BigReal(char[] input, int offset, int len) {
+	        d = new BigDecimal(input, offset, len);
 	    }
 	
 	    /** Build an instance from a characters representation.
@@ -93,16 +99,16 @@ namespace Apache.Commons.Math.Util
 	     * @param len length of the array slice to analyze
 	     * @param mc context to use
 	     */
-	    public BigReal(char[] in, int offset, int len, MathContext mc) {
-	        d = new BigDecimal(in, offset, len, mc);
+	    public BigReal(char[] input, int offset, int len, MathContext mc) {
+	        d = new BigDecimal(input, offset, len, mc);
 	    }
 	
 	    /** Build an instance from a characters representation.
 	     * @param in character representation of the value
 	     * @param mc context to use
 	     */
-	    public BigReal(char[] in, MathContext mc) {
-	        d = new BigDecimal(in, mc);
+	    public BigReal(char[] input, MathContext mc) {
+	        d = new BigDecimal(input, mc);
 	    }
 	
 	    /** Build an instance from a double.
@@ -252,7 +258,7 @@ namespace Apache.Commons.Math.Util
 	    }
 	
 	    /** {@inheritDoc} */
-	    public BigReal multiply(final int n) {
+	    public BigReal multiply(int n) {
 	        return new BigReal(d.multiply(new BigDecimal(n)));
 	    }
 	
@@ -276,28 +282,36 @@ namespace Apache.Commons.Math.Util
 	    }
 	
 	    /** {@inheritDoc} */
-	    @Override
-	    public boolean equals(Object other) {
+	    public bool equals(Object other) {
 	        if (this == other){
 	            return true;
 	        }
 	
-	        if (other instanceof BigReal){
+	        if (other is BigReal){
 	            return d.equals(((BigReal) other).d);
 	        }
 	        return false;
 	    }
 	
 	    /** {@inheritDoc} */
-	    @Override
 	    public int hashCode() {
 	        return d.hashCode();
 	    }
 	
 	    /** {@inheritDoc} */
-	    public Field<BigReal> getField() {
-	        return BigRealField.getInstance();
+	    public IField<BigReal> Field {
+			get
+			{
+	        	return BigRealField.getInstance();
+			}
 	    }
+
+		#region IComparable[BigReal] implementation
+		int IComparable<BigReal>.CompareTo (BigReal other)
+		{
+			return this.compareTo(other);
+		}
+		#endregion
 	}
 }
 

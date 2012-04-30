@@ -12,10 +12,11 @@ using System;
 
 namespace Apache.Commons.Math.Util
 {
-	public class BigRealField implements Field<BigReal>, Serializable  {
+	[Serializable]
+	public class BigRealField: IField<BigReal>  {
 	
 	    /** Serializable version identifier */
-	    private static final long serialVersionUID = 4756431066541037559L;
+	    internal static readonly long serialVersionUID = 4756431066541037559L;
 	
 	    /** Private constructor for the singleton.
 	     */
@@ -28,7 +29,26 @@ namespace Apache.Commons.Math.Util
 	    public static BigRealField getInstance() {
 	        return LazyHolder.INSTANCE;
 	    }
-	
+
+		#region IField[BigReal] implementation
+		BigReal IField<BigReal>.Zero {
+			get {
+				return BigReal.ZERO;
+			}
+		}
+
+		BigReal IField<BigReal>.One {
+			get {
+				return BigReal.ONE;
+			}
+		}
+
+		Type IField<BigReal>.RuntimeType {
+			get {
+				return new BigReal(0).GetType();
+			}
+		}
+		#endregion	
 	    /** {@inheritDoc} */
 	    public BigReal getOne() {
 	        return BigReal.ONE;
@@ -38,19 +58,14 @@ namespace Apache.Commons.Math.Util
 	    public BigReal getZero() {
 	        return BigReal.ZERO;
 	    }
-	
-	    /** {@inheritDoc} */
-	    public Class<? extends FieldElement<BigReal>> getRuntimeClass() {
-	        return BigReal.class;
-	    }
-	
+		
 	    // CHECKSTYLE: stop HideUtilityClassConstructor
 	    /** Holder for the instance.
 	     * <p>We use here the Initialization On Demand Holder Idiom.</p>
 	     */
 	    private static class LazyHolder {
 	        /** Cached field instance. */
-	        private static final BigRealField INSTANCE = new BigRealField();
+	        internal static readonly BigRealField INSTANCE = new BigRealField();
 	    }
 	    // CHECKSTYLE: resume HideUtilityClassConstructor
 	
