@@ -19,7 +19,7 @@ namespace Apache.Commons.Math
 {
 	public abstract class ContinuedFraction {
 	    /** Maximum allowed numerical error. */
-	    private static final double DEFAULT_EPSILON = 10e-9;
+	    private static readonly double DEFAULT_EPSILON = 10e-9;
 	
 	    /**
 	     * Default constructor.
@@ -127,8 +127,8 @@ namespace Apache.Commons.Math
 	                 */
 	                double scaleFactor = 1d;
 	                double lastScaleFactor = 1d;
-	                final int maxPower = 5;
-	                final double scale = FastMath.max(a,b);
+	                int maxPower = 5;
+	                double scale = FastMath.max(a,b);
 	                if (scale <= 0) {  // Can't scale
 	                    throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,
 	                                                   x);

@@ -130,9 +130,9 @@ namespace JavaDotNet.Text
 	   * @return <code>true</code> if the specified object is equal to
 	   * this object, <code>false</code> otherwise.
 	   */
-	  public boolean equals (Object obj)
+	  public bool equals (Object obj)
 	  {
-	    if (! (obj instanceof ParsePosition))
+	    if (! (obj is ParsePosition))
 	      return false;
 	
 	    ParsePosition other = (ParsePosition) obj;
@@ -156,7 +156,7 @@ namespace JavaDotNet.Text
 	   */
 	  public String toString ()
 	  {
-	    return (getClass ().getName () + "[index=" + getIndex ()
+	    return (this.GetType().Name + "[index=" + getIndex ()
 		    + ",errorIndex=" + getErrorIndex () + "]");
 	  }
 	}

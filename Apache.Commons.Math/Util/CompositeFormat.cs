@@ -1,5 +1,11 @@
 using System;
+using System.Text;
+using System.Globalization;
 
+using JavaDotNet.Text;
+
+using Apache.Commons.Math.Exceptions;
+using Apache.Commons.Math.Exceptions.Util;
 /**
  * Base class for formatters of composite objects (complex numbers, vectors ...).
  *
@@ -21,8 +27,8 @@ namespace Apache.Commons.Math
 	     * maximum number of fraction digits is set to 2.
 	     * @return the default number format.
 	     */
-	    public static NumberFormat getDefaultNumberFormat() {
-	        return getDefaultNumberFormat(Locale.getDefault());
+	    public static NumberFormatInfo getDefaultNumberFormat() {
+	        return getDefaultNumberFormat(CultureInfo.CurrentCulture);
 	    }
 	
 	    /**
@@ -32,8 +38,8 @@ namespace Apache.Commons.Math
 	     * @param locale the specific locale used by the format.
 	     * @return the default number format specific to the given locale.
 	     */
-	    public static NumberFormat getDefaultNumberFormat(final Locale locale) {
-	        final NumberFormat nf = NumberFormat.getInstance(locale);
+	    public static NumberFormatInfo getDefaultNumberFormat(CultureInfo locale) {
+	        NumberFormat nf = NumberFormat.getInstance(locale);
 	        nf.setMaximumFractionDigits(2);
 	        return nf;
 	    }
@@ -45,8 +51,8 @@ namespace Apache.Commons.Math
 	     * @param pos input/ouput parsing parameter.  On output, <code>pos</code>
 	     *        holds the index of the next non-whitespace character.
 	     */
-	    public static void parseAndIgnoreWhitespace(final String source,
-	                                                final ParsePosition pos) {
+	    public static void parseAndIgnoreWhitespace(String source,
+	                                                ParsePosition pos) {
 	        parseNextCharacter(source, pos);
 	        pos.setIndex(pos.getIndex() - 1);
 	    }
@@ -58,10 +64,10 @@ namespace Apache.Commons.Math
 	     * @param pos input/ouput parsing parameter.
 	     * @return the first non-whitespace character.
 	     */
-	    public static char parseNextCharacter(final String source,
-	                                          final ParsePosition pos) {
+	    public static char parseNextCharacter(String source,
+	                                          ParsePosition pos) {
 	         int index = pos.getIndex();
-	         final int n = source.length();
+	         int n = source.length();
 	         char ret = 0;
 	
 	         if (index < n) {
@@ -88,8 +94,8 @@ namespace Apache.Commons.Math
 	     * @param pos input/ouput parsing parameter.
 	     * @return the special number.
 	     */
-	    private static Number parseNumber(final String source, final double value,
-	                                      final ParsePosition pos) {
+	    private static Number parseNumber(String source, double value,
+	                                      ParsePosition pos) {
 	        Number ret = null;
 	
 	        StringBuilder sb = new StringBuilder();
@@ -97,9 +103,9 @@ namespace Apache.Commons.Math
 	        sb.append(value);
 	        sb.append(')');
 	
-	        final int n = sb.length();
-	        final int startIndex = pos.getIndex();
-	        final int endIndex = startIndex + n;
+	        int n = sb.length();
+	        int startIndex = pos.getIndex();
+	        int endIndex = startIndex + n;
 	        if (endIndex < source.length()) {
 	            if (source.substring(startIndex, endIndex).compareTo(sb.toString()) == 0) {
 	                ret = Double.valueOf(value);
@@ -120,16 +126,16 @@ namespace Apache.Commons.Math
 	     * @param pos input/ouput parsing parameter.
 	     * @return the parsed number.
 	     */
-	    public static Number parseNumber(final String source, final NumberFormat format,
-	                                     final ParsePosition pos) {
-	        final int startIndex = pos.getIndex();
+	    public static Number parseNumber(String source, NumberFormat format,
+	                                     ParsePosition pos) {
+	        int startIndex = pos.getIndex();
 	        Number number = format.parse(source, pos);
-	        final int endIndex = pos.getIndex();
+	        int endIndex = pos.getIndex();
 	
 	        // check for error parsing number
 	        if (startIndex == endIndex) {
 	            // try parsing special numbers
-	            final double[] special = {
+	            double[] special = {
 	                Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY
 	            };
 	            for (int i = 0; i < special.length; ++i) {
@@ -150,12 +156,12 @@ namespace Apache.Commons.Math
 	     * @param pos input/ouput parsing parameter.
 	     * @return true if the expected string was there
 	     */
-	    public static boolean parseFixedstring(final String source,
-	                                           final String expected,
-	                                           final ParsePosition pos) {
+	    public static bool parseFixedstring(String source,
+	                                           String expected,
+	                                           ParsePosition pos) {
 	
-	        final int startIndex = pos.getIndex();
-	        final int endIndex = startIndex + expected.length();
+	        int startIndex = pos.getIndex();
+	        int endIndex = startIndex + expected.length();
 	        if ((startIndex >= source.length()) ||
 	            (endIndex > source.length()) ||
 	            (source.substring(startIndex, endIndex).compareTo(expected) != 0)) {
@@ -187,13 +193,13 @@ namespace Apache.Commons.Math
 	     *            offsets of the alignment field
 	     * @return the value passed in as toAppendTo.
 	     */
-	    public static StringBuffer formatDouble(final double value, final NumberFormat format,
-	                                            final StringBuffer toAppendTo,
-	                                            final FieldPosition pos) {
+	    public static StringBuilder formatDouble(double value, NumberFormat format,
+	                                            StringBuilder toAppendTo,
+	                                            FieldPosition pos) {
 	        if( Double.isNaN(value) || Double.isInfinite(value) ) {
-	            toAppendTo.append('(');
-	            toAppendTo.append(value);
-	            toAppendTo.append(')');
+	            toAppendTo.Append('(');
+	            toAppendTo.Append(value);
+	            toAppendTo.Append(')');
 	        } else {
 	            format.format(value, toAppendTo, pos);
 	        }
