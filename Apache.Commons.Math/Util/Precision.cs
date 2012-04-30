@@ -1,5 +1,8 @@
 using System;
 using System.Numerics;
+using JavaDotNet.Math;
+using Apache.Commons.Math.Exceptions;
+using Apache.Commons.Math.Exceptions.Util;
 
 /**
  * Utilities for comparing numbers.
@@ -21,7 +24,7 @@ namespace Apache.Commons.Math.Util
 	     * <br/>
 	     * In IEEE 754 arithmetic, this is 2<sup>-53</sup>.
 	     */
-	    public static readonly double EPSILON = Double.longBitsToDouble((EXPONENT_OFFSET - 53L) << 52);
+	    public static readonly double EPSILON = BitConverter.Int64BitsToDouble((EXPONENT_OFFSET - 53L) << 52);
 	    //This was previously expressed as = 0x1.0p-53;
 	    // However, OpenJDK (Sparc Solaris) cannot handle such small constants: MATH-721
 	
@@ -31,14 +34,16 @@ namespace Apache.Commons.Math.Util
 	     * In IEEE 754 arithmetic, this is also the smallest normalized
 	     * number 2<sup>-1022</sup>.
 	     */
-	    public static readonly double SAFE_MIN = Double.longBitsToDouble((EXPONENT_OFFSET - 1022L) << 52);
+	    public static readonly double SAFE_MIN = BitConverter.Int64BitsToDouble((EXPONENT_OFFSET - 1022L) << 52);
 	    // This was previously expressed as = 0x1.0p-1022;
 	    // However, OpenJDK (Sparc Solaris) cannot handle such small constants: MATH-721
 	
+		//TODO: Why are these masks okay as long and int but have to be ulong and uint in .NET?
 	    /** Offset to order signed double numbers lexicographically. */
-	    private static readonly long SGN_MASK = 0x8000000000000000L;
+	    private static readonly ulong SGN_MASK = 0x8000000000000000L;
+		
 	    /** Offset to order signed double numbers lexicographically. */
-	    private static readonly int SGN_MASK_FLOAT = 0x80000000;
+	    private static readonly uint SGN_MASK_FLOAT = 0x80000000;
 	
 	    /**
 	     * Private constructor.
@@ -112,7 +117,7 @@ namespace Apache.Commons.Math.Util
 	     * @since 2.2
 	     */
 	    public static bool equalsIncludingNaN(float x, float y) {
-	        return (Float.isNaN(x) && Float.isNaN(y)) || equals(x, y, 1);
+	        return (Single.IsNaN(x) && Single.IsNaN(y)) || equals(x, y, 1);
 	    }
 	
 	    /**
@@ -163,20 +168,20 @@ namespace Apache.Commons.Math.Util
 	     * @since 2.2
 	     */
 	    public static bool equals(float x, float y, int maxUlps) {
-	        int xInt = Float.floatToIntBits(x);
-	        int yInt = Float.floatToIntBits(y);
+	        int xInt = ACMBitConverter.SingleToInt32Bits(x);
+	        int yInt = ACMBitConverter.SingleToInt32Bits(y);
 	
 	        // Make lexicographically ordered as a two's-complement integer.
 	        if (xInt < 0) {
-	            xInt = SGN_MASK_FLOAT - xInt;
+	            xInt = (int)SGN_MASK_FLOAT - xInt;
 	        }
 	        if (yInt < 0) {
-	            yInt = SGN_MASK_FLOAT - yInt;
+	            yInt = (int)SGN_MASK_FLOAT - yInt;
 	        }
 	
 	        bool isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
 	
-	        return isEqual && !Float.isNaN(x) && !Float.isNaN(y);
+	        return isEqual && !Single.IsNaN(x) && !Single.IsNaN(y);
 	    }
 	
 	    /**
@@ -192,7 +197,7 @@ namespace Apache.Commons.Math.Util
 	     * @since 2.2
 	     */
 	    public static bool equalsIncludingNaN(float x, float y, int maxUlps) {
-	        return (Float.isNaN(x) && Float.isNaN(y)) || equals(x, y, maxUlps);
+	        return (Single.IsNaN(x) && Single.IsNaN(y)) || equals(x, y, maxUlps);
 	    }
 	
 	    /**
@@ -268,15 +273,16 @@ namespace Apache.Commons.Math.Util
 	     * point values between {@code x} and {@code y}.
 	     */
 	    public static bool equals(double x, double y, int maxUlps) {
-	        long xInt = Double.doubleToLongBits(x);
-	        long yInt = Double.doubleToLongBits(y);
+	        long xInt = BitConverter.DoubleToInt64Bits(x);
+	        long yInt = BitConverter.DoubleToInt64Bits(y);
 	
 	        // Make lexicographically ordered as a two's-complement integer.
+			//TODO: Look at impact of type conversion (mask changed to fix compiler warning on size of mask at definition)
 	        if (xInt < 0) {
-	            xInt = SGN_MASK - xInt;
+	            xInt = (long)SGN_MASK - xInt;
 	        }
 	        if (yInt < 0) {
-	            yInt = SGN_MASK - yInt;
+	            yInt = (long)SGN_MASK - yInt;
 	        }
 	
 	        bool isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
@@ -310,7 +316,7 @@ namespace Apache.Commons.Math.Util
 	     * @since 1.1 (previously in {@code MathUtils}, moved as of version 3.0)
 	     */
 	    public static double round(double x, int scale) {
-	        return round(x, scale, BigDecimal);
+	        return round(x, scale, BigDecimal.ROUND_HALF_UP);
 	    }
 	
 	    /**
@@ -333,11 +339,11 @@ namespace Apache.Commons.Math.Util
 	    public static double round(double x, int scale, int roundingMethod) {
 	        try {
 	            return (new BigDecimal
-	                   (Double.toString(x))
+	                   (String.Format ("{0}",x))
 	                   .setScale(scale, roundingMethod))
 	                   .doubleValue();
-	        } catch (NumberFormatException ex) {
-	            if (Double.isInfinite(x)) {
+	        } catch (FormatException ex) {
+	            if (Double.IsInfinity(x)) {
 	                return x;
 	            } else {
 	                return Double.NaN;
@@ -393,23 +399,23 @@ namespace Apache.Commons.Math.Util
 	        switch (roundingMethod) {
 	        case BigDecimal.ROUND_CEILING :
 	            if (sign == -1) {
-	                unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NEGATIVE_INFINITY));
+	                unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NegativeInfinity));
 	            } else {
-	                unscaled = FastMath.ceil(FastMath.nextAfter(unscaled, Double.POSITIVE_INFINITY));
+	                unscaled = FastMath.ceil(FastMath.nextAfter(unscaled, Double.PositiveInfinity));
 	            }
 	            break;
 	        case BigDecimal.ROUND_DOWN :
-	            unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NEGATIVE_INFINITY));
+	            unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NegativeInfinity));
 	            break;
 	        case BigDecimal.ROUND_FLOOR :
 	            if (sign == -1) {
-	                unscaled = FastMath.ceil(FastMath.nextAfter(unscaled, Double.POSITIVE_INFINITY));
+	                unscaled = FastMath.ceil(FastMath.nextAfter(unscaled, Double.PositiveInfinity));
 	            } else {
-	                unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NEGATIVE_INFINITY));
+	                unscaled = FastMath.floor(FastMath.nextAfter(unscaled, Double.NegativeInfinity));
 	            }
 	            break;
 	        case BigDecimal.ROUND_HALF_DOWN : {
-	            unscaled = FastMath.nextAfter(unscaled, Double.NEGATIVE_INFINITY);
+	            unscaled = FastMath.nextAfter(unscaled, Double.NegativeInfinity);
 	            double fraction = unscaled - FastMath.floor(unscaled);
 	            if (fraction > 0.5) {
 	                unscaled = FastMath.ceil(unscaled);
@@ -426,8 +432,8 @@ namespace Apache.Commons.Math.Util
 	                unscaled = FastMath.floor(unscaled);
 	            } else {
 	                // The following equality test is intentional and needed for rounding purposes
-	                if (FastMath.floor(unscaled) / 2.0 == FastMath.floor(Math
-	                    .floor(unscaled) / 2.0)) { // even
+	                if (FastMath.floor(unscaled) / 2.0 == FastMath.floor(
+						System.Math.Floor(unscaled) / 2.0)) { // even
 	                    unscaled = FastMath.floor(unscaled);
 	                } else { // odd
 	                    unscaled = FastMath.ceil(unscaled);
@@ -436,7 +442,7 @@ namespace Apache.Commons.Math.Util
 	            break;
 	        }
 	        case BigDecimal.ROUND_HALF_UP : {
-	            unscaled = FastMath.nextAfter(unscaled, Double.POSITIVE_INFINITY);
+	            unscaled = FastMath.nextAfter(unscaled, Double.PositiveInfinity);
 	            double fraction = unscaled - FastMath.floor(unscaled);
 	            if (fraction >= 0.5) {
 	                unscaled = FastMath.ceil(unscaled);
@@ -451,7 +457,7 @@ namespace Apache.Commons.Math.Util
 	            }
 	            break;
 	        case BigDecimal.ROUND_UP :
-	            unscaled = FastMath.ceil(FastMath.nextAfter(unscaled,  Double.POSITIVE_INFINITY));
+	            unscaled = FastMath.ceil(FastMath.nextAfter(unscaled,  Double.PositiveInfinity));
 	            break;
 	        default :
 	            throw new MathIllegalArgumentException(LocalizedFormats.INVALID_ROUNDING_METHOD,

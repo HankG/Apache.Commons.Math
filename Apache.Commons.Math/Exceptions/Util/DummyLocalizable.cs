@@ -30,7 +30,7 @@ namespace Apache.Commons.Math.Exceptions.Util
         /// <summary>
         /// Source string.
         /// </summary>
-        private readonly string source;
+        private readonly string source = "";
 
         public virtual string SourceString
         {

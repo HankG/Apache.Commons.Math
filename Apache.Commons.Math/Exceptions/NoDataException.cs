@@ -26,7 +26,7 @@ namespace Apache.Commons.Math.Exceptions
     /// Exception to be thrown when the required data is missing.
     /// </summary>
     [Serializable]
-    public class NoDataException: MathArgumentException
+    public class NoDataException: MathIllegalArgumentException
     {
         /// <summary>
         /// Default constructor.

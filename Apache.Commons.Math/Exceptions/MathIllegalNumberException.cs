@@ -29,7 +29,7 @@ namespace Apache.Commons.Math.Exceptions
     /// violated by a number argument.</para>
     /// </summary>
     [Serializable]
-    public class MathIllegalNumberException<T>: MathArgumentException
+    public class MathIllegalNumberException<T>: MathIllegalArgumentException
     {
         /// <summary>
         /// The argument.

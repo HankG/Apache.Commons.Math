@@ -26,7 +26,7 @@ namespace Apache.Commons.Math.Exceptions
     /// Exception thrown when two sets of dimensions differ.
     /// </summary>
     [Serializable]
-    public class MultiDimensionMismatchException: MathArgumentException
+    public class MultiDimensionMismatchException: MathIllegalArgumentException
     {
         /// <summary>
         /// Wrong dimensions.

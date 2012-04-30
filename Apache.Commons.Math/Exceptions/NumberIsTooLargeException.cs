@@ -22,6 +22,8 @@ using Apache.Commons.Math.Exceptions.Util;
 
 namespace Apache.Commons.Math.Exceptions
 {
+	//TODO: Handle default argument to zero better
+	
     /// <summary>
     /// Exception to be thrown when a number is too small.
     /// </summary>
@@ -47,6 +49,18 @@ namespace Apache.Commons.Math.Exceptions
             this(boundIsAllowed ? LocalizedFormats.NUMBER_TOO_SMALL : LocalizedFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
              wrong, min, boundIsAllowed) { }
 
+		/// <summary>
+        /// Construct the exception, assuming minimum value is zero
+        /// </summary>
+        /// <param name="wrong">The wrong value.</param>
+        /// <param name="boundIsAllowed">Whether <paramref name="min"/> is included in the allowed range.</param>
+        public NumberIsTooSmallException(T wrong, bool boundIsAllowed) :
+            base(boundIsAllowed ? LocalizedFormats.NUMBER_TOO_SMALL : LocalizedFormats.NUMBER_TOO_SMALL_BOUND_EXCLUDED,
+             wrong, boundIsAllowed) 
+		{ 
+
+				}
+
         /// <summary>
         /// Construct the exception with a specific context.
         /// </summary>
@@ -60,5 +74,17 @@ namespace Apache.Commons.Math.Exceptions
             this.Min = min;
             this.BoundIsAllowed = boundIsAllowed;
         }
-    }
+
+	    /// <summary>
+        /// Construct the exception with a specific context.
+        /// </summary>
+        /// <param name="specific">Specific context.</param>
+        /// <param name="wrong">The wrong value.</param>
+        /// <param name="boundIsAllowed">Whether <paramref name="min"/> is included in the allowed range.</param>
+        public NumberIsTooSmallException(ILocalizable specific, T wrong, bool boundIsAllowed):
+            base(specific, wrong)
+        {
+            this.BoundIsAllowed = boundIsAllowed;
+        }
+	}
 }

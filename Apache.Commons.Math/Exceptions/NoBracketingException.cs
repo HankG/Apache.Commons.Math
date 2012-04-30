@@ -26,7 +26,7 @@ namespace Apache.Commons.Math.Exceptions
     /// Exception to be thrown when function values have the same sign at both ends of an interval.
     /// </summary>
     [Serializable]
-    public class NoBracketingException: MathArgumentException
+    public class NoBracketingException: MathIllegalArgumentException
     {
         /// <summary>
         /// Lower end of the interval.

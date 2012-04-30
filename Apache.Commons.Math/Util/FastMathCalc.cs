@@ -3,7 +3,7 @@ using Apache.Commons.Math.Exceptions;
 
 namespace Apache.Commons.Math.Util
 {
-	class FastMathCalc {
+	public class FastMathCalc {
 	
 	    /**
 	     * 0x40000000 - used to split a double into two parts, both with the low order bits cleared.
@@ -577,7 +577,7 @@ namespace Apache.Commons.Math.Util
 	     * @param expectedLen expected length of the array
 	     * @param array2d array data
 	     */
-	    static void printarray(System.IO.TextWriter output, String name, int expectedLen, double[][] array2d) {
+	    public static void printarray(System.IO.TextWriter output, String name, int expectedLen, double[][] array2d) {
 	        output.WriteLine(name);
 	        checkLen(expectedLen, array2d.Length);
 	        output.WriteLine(TABLE_START_DECL + " ");

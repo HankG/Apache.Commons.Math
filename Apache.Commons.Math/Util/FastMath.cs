@@ -1,4 +1,5 @@
 using System;
+using JavaDotNet.Math;
 
 /**
  * Faster, more accurate, portable alternative to {@link Math} and
@@ -121,8 +122,10 @@ namespace Apache.Commons.Math.Util
 	    };
 	
 	    /** Sine, Cosine, Tangent tables are for 0, 1/8, 2/8, ... 13/8 = PI/2 approx. */
+#pragma warning disable 0414
 	    private static readonly int SINE_TABLE_LEN = 14;
-	
+#pragma warning restore 0414
+		
 	    /** Sine table (high bits). */
 	    private static readonly double[] SINE_TABLE_A =
 	        {
@@ -2147,7 +2150,7 @@ namespace Apache.Commons.Math.Util
 	            return 0.0;
 	        }
 	
-	        if (xa != xa || xa == Double.PositiveInfinity) {
+	        if (Double.IsNaN(xa) || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -2232,7 +2235,7 @@ namespace Apache.Commons.Math.Util
 	            xa = -xa;
 	        }
 	
-	        if (xa != xa || xa == Double.PositiveInfinity) {
+	        if (Double.IsNaN(xa) || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -2328,7 +2331,7 @@ namespace Apache.Commons.Math.Util
 	            return 0.0;
 	        }
 	
-	        if (xa != xa || xa == Double.PositiveInfinity) {
+	        if (Double.IsNaN(xa) || xa == Double.PositiveInfinity) {
 	            return Double.NaN;
 	        }
 	
@@ -3039,7 +3042,7 @@ namespace Apache.Commons.Math.Util
 	        if (Single.IsInfinity(x)) {
 	            return Single.PositiveInfinity;
 	        }
-	        return abs(x - Float.intBitsToFloat(Float.floatToIntBits(x) ^ 1));
+	        return abs(x - ACMBitConverter.Int32BitsToSingle(ACMBitConverter.SingleToInt32Bits(x) ^ 1));
 	    }
 	
 	    /**
@@ -3136,7 +3139,7 @@ namespace Apache.Commons.Math.Util
 	
 	        // first simple and fast handling when 2^n can be represented using normal numbers
 	        if ((n > -127) && (n < 128)) {
-	            return f * Float.intBitsToFloat((n + 127) << 23);
+	            return f * ACMBitConverter.Int32BitsToSingle((n + 127) << 23);
 	        }
 	
 	        // handle special cases
@@ -3151,7 +3154,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	
 	        // decompose f
-	        int bits = Float.floatToIntBits(f);
+	        int bits = ACMBitConverter.SingleToInt32Bits(f);
 	        int sign = (int)(bits & 0x80000000);
 	        int exponent  = (int)((((uint)bits) >> 23) & 0xff);
 	        int mantissa   = bits & 0x007fffff;
@@ -3163,7 +3166,7 @@ namespace Apache.Commons.Math.Util
 	            // we are really in the case n <= -127
 	            if (scaledExponent > 0) {
 	                // both the input and the result are normal numbers, we only adjust the exponent
-	                return Float.intBitsToFloat(sign | (scaledExponent << 23) | mantissa);
+	                return ACMBitConverter.Int32BitsToSingle(sign | (scaledExponent << 23) | mantissa);
 	            } else if (scaledExponent > -24) {
 	                // the input is a normal number and the result is a subnormal number
 	
@@ -3177,7 +3180,7 @@ namespace Apache.Commons.Math.Util
 	                    // we need to add 1 bit to round up the result
 	                    mantissa++;
 	                }
-	                return Float.intBitsToFloat(sign | mantissa);
+	                return ACMBitConverter.Int32BitsToSingle(sign | mantissa);
 	
 	            } else {
 	                // no need to compute the mantissa, the number scales down to 0
@@ -3196,13 +3199,13 @@ namespace Apache.Commons.Math.Util
 	                mantissa = mantissa & 0x007fffff;
 	
 	                if (scaledExponent < 255) {
-	                    return Float.intBitsToFloat(sign | (scaledExponent << 23) | mantissa);
+	                    return ACMBitConverter.Int32BitsToSingle(sign | (scaledExponent << 23) | mantissa);
 	                } else {
 	                    return (sign == 0) ? Single.PositiveInfinity : Single.NegativeInfinity;
 	                }
 	
 	            } else if (scaledExponent < 255) {
-	                return Float.intBitsToFloat(sign | (scaledExponent << 23) | mantissa);
+	                return ACMBitConverter.Int32BitsToSingle(sign | (scaledExponent << 23) | mantissa);
 	            } else {
 	                return (sign == 0) ? Single.PositiveInfinity : Single.NegativeInfinity;
 	            }
@@ -3312,12 +3315,12 @@ namespace Apache.Commons.Math.Util
 	        // special cases MAX_VALUE to infinity and  MIN_VALUE to 0
 	        // are handled just as normal numbers
 	
-	        int bits = Float.floatToIntBits(f);
+	        int bits = ACMBitConverter.SingleToInt32Bits(f);
 	        int sign = (int)((uint)bits & 0x80000000);
 	        if ((direction < f) ^ (sign == 0)) {
-	            return Float.intBitsToFloat(sign | ((bits & 0x7fffffff) + 1));
+	            return ACMBitConverter.Int32BitsToSingle(sign | ((bits & 0x7fffffff) + 1));
 	        } else {
-	            return Float.intBitsToFloat(sign | ((bits & 0x7fffffff) - 1));
+	            return ACMBitConverter.Int32BitsToSingle(sign | ((bits & 0x7fffffff) - 1));
 	        }
 	
 	    }
@@ -3449,7 +3452,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x80000000 == Float.floatToRawIntBits(-0.0d) */
-	        int bits = Float.floatToRawIntBits(a);
+	        int bits = ACMBitConverter.SingleToRawInt32Bits(a);
 	        if ((uint)bits == 0x80000000) {
 	            return a;
 	        }
@@ -3517,7 +3520,7 @@ namespace Apache.Commons.Math.Util
 	        }
 	        /* min(+0.0,-0.0) == -0.0 */
 	        /* 0x80000000 == Float.floatToRawIntBits(-0.0d) */
-	        uint bits = (uint)Float.floatToRawIntBits(a);
+	        uint bits = (uint)ACMBitConverter.SingleToRawInt32Bits(a);
 	        if (bits == 0x80000000) {
 	            return b;
 	        }
@@ -3619,7 +3622,7 @@ namespace Apache.Commons.Math.Util
 	     * @return the remainder, rounded
 	     */
 	    public static double IEEEremainder(double dividend, double divisor) {
-	        return StrictMath.IEEEremainder(dividend, divisor); // TODO provide our own implementation
+	        return System.Math.IEEERemainder(dividend, divisor); // TODO provide our own implementation
 	    }
 	
 	    /**
@@ -3648,8 +3651,8 @@ namespace Apache.Commons.Math.Util
 	     * @return the magnitude with the same sign as the {@code sign} argument
 	     */
 	    public static float copySign(float magnitude, float sign){
-	        int m = Float.floatToIntBits(magnitude);
-	        int s = Float.floatToIntBits(sign);
+	        int m = ACMBitConverter.SingleToInt32Bits(magnitude);
+	        int s = ACMBitConverter.SingleToInt32Bits(sign);
 	        if ((m >= 0 && s >= 0) || (m < 0 && s < 0)) { // Sign is currently OK
 	            return magnitude;
 	        }
@@ -3679,7 +3682,7 @@ namespace Apache.Commons.Math.Util
 	     * @return exponent for d in IEEE754 representation, without bias
 	     */
 	    public static int getExponent(float f) {
-	        return ((((uint)Float.floatToIntBits(f)) >> 23) & 0xff) - 127;
+	        return (int)((((uint)ACMBitConverter.SingleToInt32Bits(f)) >> 23) & 0xff) - 127;
 	    }
 	
 	    /**
@@ -3689,17 +3692,17 @@ namespace Apache.Commons.Math.Util
 	     */
 	    public static void main(String[] a) {
 	        System.IO.TextWriter output = Console.Out;
-	        FastMathCalc.printarray(output, "EXP_INT_TABLE_A", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_A);
-	        FastMathCalc.printarray(output, "EXP_INT_TABLE_B", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_B);
-	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_A", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_A);
-	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_B", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_B);
+//	        FastMathCalc.printarray(output, "EXP_INT_TABLE_A", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_A);
+//	        FastMathCalc.printarray(output, "EXP_INT_TABLE_B", EXP_INT_TABLE_LEN, ExpIntTable.EXP_INT_TABLE_B);
+//	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_A", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_A);
+//	        FastMathCalc.printarray(output, "EXP_FRAC_TABLE_B", EXP_FRAC_TABLE_LEN, ExpFracTable.EXP_FRAC_TABLE_B);
 	        FastMathCalc.printarray(output, "LN_MANT",LN_MANT_LEN, lnMant.LN_MANT);
-	        FastMathCalc.printarray(output, "SINE_TABLE_A", SINE_TABLE_LEN, SINE_TABLE_A);
-	        FastMathCalc.printarray(output, "SINE_TABLE_B", SINE_TABLE_LEN, SINE_TABLE_B);
-	        FastMathCalc.printarray(output, "COSINE_TABLE_A", SINE_TABLE_LEN, COSINE_TABLE_A);
-	        FastMathCalc.printarray(output, "COSINE_TABLE_B", SINE_TABLE_LEN, COSINE_TABLE_B);
-	        FastMathCalc.printarray(output, "TANGENT_TABLE_A", SINE_TABLE_LEN, TANGENT_TABLE_A);
-	        FastMathCalc.printarray(output, "TANGENT_TABLE_B", SINE_TABLE_LEN, TANGENT_TABLE_B);
+//	        FastMathCalc.printarray(output, "SINE_TABLE_A", SINE_TABLE_LEN, SINE_TABLE_A);
+//	        FastMathCalc.printarray(output, "SINE_TABLE_B", SINE_TABLE_LEN, SINE_TABLE_B);
+//	        FastMathCalc.printarray(output, "COSINE_TABLE_A", SINE_TABLE_LEN, COSINE_TABLE_A);
+//	        FastMathCalc.printarray(output, "COSINE_TABLE_B", SINE_TABLE_LEN, COSINE_TABLE_B);
+//	        FastMathCalc.printarray(output, "TANGENT_TABLE_A", SINE_TABLE_LEN, TANGENT_TABLE_A);
+//	        FastMathCalc.printarray(output, "TANGENT_TABLE_B", SINE_TABLE_LEN, TANGENT_TABLE_B);
 	    }
 	
 	    /** Enclose large data table in nested static class so it's only loaded on first access. */

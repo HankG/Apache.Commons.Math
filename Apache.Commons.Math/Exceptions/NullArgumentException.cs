@@ -26,7 +26,7 @@ namespace Apache.Commons.Math.Exceptions
     /// All conditions checks that fail due to a <c>null</c> argument must throw this exception.
     /// </summary>
     [Serializable]
-    public class NullArgumentException: MathArgumentException
+    public class NullArgumentException: MathIllegalArgumentException
     {
         /// <summary>
         /// Default constructor.
