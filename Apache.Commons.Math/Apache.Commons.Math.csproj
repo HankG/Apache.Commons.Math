@@ -53,7 +53,6 @@
     <Compile Include="Exceptions\MathIllegalStateException.cs" />
     <Compile Include="Exceptions\MathInternalError.cs" />
     <Compile Include="Exceptions\MathParseException.cs" />
-    <Compile Include="Exceptions\MathNotSupportedException.cs" />
     <Compile Include="Exceptions\MaxCountExceededException.cs" />
     <Compile Include="Exceptions\MultiDimensionMismatchException.cs" />
     <Compile Include="Exceptions\NoBracketingException.cs" />
@@ -85,6 +84,8 @@
     <Compile Include="Util\FastMathLiteralArrays.cs" />
     <Compile Include="Exceptions\MathIllegalArgumentException.cs" />
     <Compile Include="Util\BigReal.cs" />
+    <Compile Include="Exceptions\MathUnsupportedOperationException.cs" />
+    <Compile Include="Util\BigRealField.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Exceptions\Util\LocalizedFormatBuilder.resx">
